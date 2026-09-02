@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>校招 · 官网投递岗位筛选器</title>
+<style>
+  :root {
+    --bg: #f5f6f8;
+    --card: #ffffff;
+    --border: #e6e8ec;
+    --text: #1f2329;
+    --muted: #7a8088;
+    --accent: #2563eb;
+    --accent-soft: #eef4ff;
+    --green: #16a34a;
+    --green-soft: #eaf7ef;
+    --chip-hover: #eef0f3;
+    --shadow: 0 1px 3px rgba(16,24,40,.06), 0 1px 2px rgba(16,24,40,.04);
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 28px 20px 80px; }
+
+  header { margin-bottom: 20px; }
+  h1 { margin: 0 0 6px; font-size: 24px; font-weight: 700; letter-spacing: .5px; }
+  .subtitle { color: var(--muted); font-size: 14px; margin: 0 0 12px; }
+  .badge-official {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: var(--green-soft); color: var(--green);
+    font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px;
+  }
+  .badge-official::before { content: "✓"; font-weight: 700; }
+
+  /* 搜索 + 工具栏 */
+  .toolbar {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 14px 16px; box-shadow: var(--shadow); position: sticky; top: 12px; z-index: 5;
+  }
+  .search-row { display: flex; gap: 10px; align-items: center; }
+  .search-box { position: relative; flex: 1; }
+  .search-box input {
+    width: 100%; padding: 9px 12px 9px 34px; font-size: 14px;
+    border: 1px solid var(--border); border-radius: 9px; outline: none; background: #fbfbfd;
+  }
+  .search-box input:focus { border-color: var(--accent); background: #fff; }
+  .search-box .icon { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 14px; }
+  .btn {
+    border: 1px solid var(--border); background: #fff; color: var(--text);
+    padding: 8px 13px; border-radius: 9px; font-size: 13px; cursor: pointer; white-space: nowrap;
+    transition: background .15s, border-color .15s;
+  }
+  .btn:hover { background: var(--chip-hover); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn.primary:hover { background: #1d4ed8; }
+  .btn.ghost { background: transparent; border-color: transparent; color: var(--muted); }
+  .btn.ghost:hover { color: var(--text); background: var(--chip-hover); }
+  .btn.small { padding: 4px 9px; font-size: 12px; border-radius: 7px; }
+
+  /* 筛选组 */
+  .filter-group { margin-top: 12px; display: flex; align-items: flex-start; gap: 10px; }
+  .filter-label { flex: 0 0 auto; font-size: 13px; color: var(--muted); padding-top: 6px; width: 64px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 7px; }
+  .chip {
+    padding: 5px 12px; font-size: 13px; border-radius: 999px; cursor: pointer; user-select: none;
+    background: #f2f3f5; color: #3c4248; border: 1px solid transparent; transition: all .15s;
+  }
+  .chip:hover { background: var(--chip-hover); }
+  .chip.on { background: var(--accent-soft); color: var(--accent); border-color: #bfd4fb; font-weight: 600; }
+
+  /* 结果统计 */
+  .stats { margin: 18px 2px 12px; font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+  .stats b { color: var(--text); }
+
+  /* 卡片列表 */
+  .list { display: grid; gap: 12px; }
+  .card {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 16px 18px; box-shadow: var(--shadow); transition: box-shadow .15s, transform .15s;
+  }
+  .card:hover { box-shadow: 0 4px 12px rgba(16,24,40,.09); }
+  .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+  .card-name { font-size: 16px; font-weight: 700; }
+  .card-name .en { font-size: 12px; font-weight: 500; color: var(--muted); margin-left: 6px; }
+  .card-actions { display: flex; gap: 6px; flex: 0 0 auto; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 9px 0; }
+  .tag {
+    font-size: 12px; padding: 2px 9px; border-radius: 6px; background: #f2f3f5; color: #4b525a;
+  }
+  .tag.city { background: #eef4ff; color: #2563eb; }
+  .tag.role { background: #f5f0ff; color: #7c3aed; }
+  .tag.ind { background: #fff7ed; color: #c2410c; }
+  .status-badge, .status-select { border: 1px solid; border-radius: 6px; font-size: 12px; }
+  .status-badge { display: inline-flex; align-items: center; padding: 2px 9px; font-weight: 600; }
+  .status-select { padding: 4px 8px; cursor: pointer; outline: none; background: #fff; }
+  .s-todo { color: #6b7280; border-color: #d1d5db; background: #f9fafb; }
+  .s-applied { color: #2563eb; border-color: #bfdbfe; background: #eff6ff; }
+  .s-exam { color: #7c3aed; border-color: #ddd6fe; background: #f5f3ff; }
+  .s-interview { color: #d97706; border-color: #fde68a; background: #fffbeb; }
+  .s-offer { color: #16a34a; border-color: #bbf7d0; background: #f0fdf4; }
+  .s-reject { color: #dc2626; border-color: #fecaca; background: #fef2f2; }
+  .s-closed { color: #4b5563; border-color: #d1d5db; background: #f3f4f6; }
+  .card-desc { font-size: 13.5px; color: #3c4248; margin: 0 0 8px; }
+  .card-meta { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12.5px; color: var(--muted); }
+  .card-meta span { display: inline-flex; align-items: center; gap: 4px; }
+  .card-meta .k { color: #b0b5bc; }
+  .note { font-size: 12px; color: #b45309; background: #fffbeb; border-radius: 6px; padding: 4px 8px; margin-top: 8px; }
+  .card-foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+  .link-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: var(--accent); font-weight: 600; font-size: 13.5px; text-decoration: none;
+    padding: 6px 12px; border: 1px solid #d3e0fb; border-radius: 8px; background: var(--accent-soft);
+    transition: background .15s;
+  }
+  .link-btn:hover { background: #dbe7fd; }
+  .empty { text-align: center; color: var(--muted); padding: 60px 20px; font-size: 14px; }
+
+  /* 弹窗 */
+  .overlay { position: fixed; inset: 0; background: rgba(15,23,42,.45); display: none; align-items: center; justify-content: center; z-index: 50; padding: 20px; }
+  .overlay.show { display: flex; }
+  .modal { background: #fff; border-radius: 14px; width: 100%; max-width: 560px; max-height: 90vh; overflow-y: auto; padding: 22px; box-shadow: 0 20px 50px rgba(0,0,0,.2); }
+  .modal h2 { margin: 0 0 16px; font-size: 17px; }
+  .field { margin-bottom: 12px; }
+  .field label { display: block; font-size: 13px; color: #4b525a; margin-bottom: 5px; }
+  .field label em { color: #b0b5bc; font-style: normal; font-size: 12px; margin-left: 6px; }
+  .field input, .field textarea {
+    width: 100%; padding: 8px 11px; font-size: 14px; border: 1px solid var(--border); border-radius: 8px; outline: none; font-family: inherit;
+  }
+  .field input:focus, .field textarea:focus { border-color: var(--accent); }
+  .field textarea { resize: vertical; min-height: 52px; }
+  .modal-foot { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; }
+  .hint { font-size: 12px; color: var(--muted); }
+  footer { margin-top: 40px; text-align: center; font-size: 12px; color: #b0b5bc; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>校招 · 官网投递岗位筛选器</h1>
+    <p class="subtitle">仅收录<strong>企业官网</strong>投递渠道（不包含招聘软件），可按城市 / 行业 / 岗位类别筛选</p>
+    <span class="badge-official">全部为官网投递渠道</span>
+  </header>
+
+  <div class="toolbar">
+    <div class="search-row">
+      <div class="search-box">
+        <span class="icon">🔍</span>
+        <input id="search" type="text" placeholder="搜索公司名 / 岗位方向 / 校招项目…">
+      </div>
+      <button class="btn ghost" id="resetBtn" title="清空全部筛选">重置</button>
+      <button class="btn primary" id="addBtn">＋ 新增</button>
+      <button class="btn" id="exportBtn">导出</button>
+      <button class="btn" id="importBtn">导入</button>
+      <input type="file" id="importFile" accept=".json" style="display:none">
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">城市</span>
+      <div class="chips" id="cityChips"></div>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">行业</span>
+      <div class="chips" id="industryChips"></div>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">岗位类别</span>
+      <div class="chips" id="roleChips"></div>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">投递状态</span>
+      <div class="chips" id="statusChips"></div>
+    </div>
+  </div>
+
+  <div class="stats" id="stats"></div>
+  <div class="list" id="list"></div>
+
+  <footer>数据更新于 2026-09-01 · 具体岗位 / 截止日期 / 薪资以各公司官网实时信息为准 · 数据保存在浏览器本地</footer>
+</div>
+
+<!-- 新增/编辑弹窗 -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <h2 id="modalTitle">新增公司</h2>
+    <div class="field">
+      <label>公司名 <em>必填</em></label>
+      <input id="f_name" type="text" placeholder="如：腾讯">
+    </div>
+    <div class="field">
+      <label>英文名 / 简称</label>
+      <input id="f_en" type="text" placeholder="如：Tencent（可留空）">
+    </div>
+    <div class="field">
+      <label>城市 <em>多个用逗号分隔</em></label>
+      <input id="f_city" type="text" placeholder="深圳, 香港">
+    </div>
+    <div class="field">
+      <label>行业 <em>多个用逗号分隔</em></label>
+      <input id="f_ind" type="text" placeholder="互联网, 科技, AI, 出海, 金融">
+    </div>
+    <div class="field">
+      <label>岗位类别 <em>多个用逗号分隔</em></label>
+      <input id="f_role" type="text" placeholder="产品, 运营, 销售, 管培生, 职能">
+    </div>
+    <div class="field">
+      <label>官网投递链接</label>
+      <input id="f_url" type="text" placeholder="https://…">
+    </div>
+    <div class="field">
+      <label>校招项目 / 岗位说明</label>
+      <textarea id="f_desc" placeholder="如：2027校园招聘，产品/运营/职能方向…"></textarea>
+    </div>
+    <div class="field">
+      <label>截止日期</label>
+      <input id="f_deadline" type="text" placeholder="如：招满即止 / 以官网为准">
+    </div>
+    <div class="field">
+      <label>薪资 <em>如有</em></label>
+      <input id="f_salary" type="text" placeholder="如：以官网为准">
+    </div>
+    <div class="field">
+      <label>备注</label>
+      <input id="f_note" type="text" placeholder="如：入口以官网为准（可留空）">
+    </div>
+    <div class="modal-foot">
+      <button class="btn" id="cancelBtn">取消</button>
+      <button class="btn primary" id="saveBtn">保存</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============ 数据 ============
+// 字段：name 公司名 / en 英文简称 / city 城市[] / ind 行业[] / role 岗位类别[] / url 官网链接
+//       desc 校招项目说明 / deadline 截止 / salary 薪资 / note 备注(可为空)
+let SEED = [
+  // —— 深圳 · 互联网 / 科技大厂 ——
+  { name:"腾讯", en:"Tencent", city:["深圳"], ind:["互联网","科技","AI"], role:["产品","运营","职能"],
+    url:"https://join.qq.com", desc:"2027校园招聘，技术/产品/设计/市场/职能五大类100+岗位，新增大量AI原生岗位（AI产品经理等）。",
+    deadline:"8月已启动，滚动招满即止", salary:"以官网为准", note:"" },
+  { name:"字节跳动", en:"ByteDance", city:["深圳"], ind:["互联网","AI"], role:["产品","运营","销售"],
+    url:"https://jobs.bytedance.com/campus", desc:"2027校招，产品/运营/商业化等方向，深圳为办公地之一。",
+    deadline:"以官网为准", salary:"以官网为准", note:"深圳为办公地之一" },
+  { name:"美团", en:"Meituan", city:["深圳"], ind:["互联网"], role:["产品","运营","销售"],
+    url:"https://campus.meituan.com", desc:"2027校招，产品/运营/业务等方向，深圳为办公地之一。",
+    deadline:"以官网为准", salary:"以官网为准", note:"深圳为办公地之一" },
+  { name:"阿里巴巴", en:"Alibaba", city:["深圳"], ind:["互联网"], role:["产品","运营","销售"],
+    url:"https://talent.alibaba.com/campus", desc:"2027届应届生招聘，产品/运营/商务拓展等方向，8月5日启动。",
+    deadline:"以官网为准", salary:"以官网为准", note:"深圳为办公地之一" },
+  { name:"京东", en:"JD", city:["深圳"], ind:["互联网"], role:["产品","运营","销售","职能"],
+    url:"https://campus.jd.com", desc:"2027校招「JDS-新星计划」，采销/产品/运营/职能等方向。",
+    deadline:"网申至11月30日", salary:"以官网为准", note:"深圳为办公地之一" },
+  { name:"快手", en:"Kuaishou", city:["深圳"], ind:["互联网"], role:["产品","运营","销售"],
+    url:"https://campus.kuaishou.cn", desc:"2027全球校招（8月12日开放），产品/运营/商业化等方向。",
+    deadline:"以官网为准", salary:"以官网为准", note:"深圳为办公地之一" },
+  { name:"网易", en:"NetEase", city:["深圳"], ind:["互联网"], role:["产品","运营","职能"],
+    url:"https://campus.163.com", desc:"2027届校招（8月20日启动），产品/运营/职能/市场等方向。",
+    deadline:"以官网为准", salary:"以官网为准", note:"深圳为办公地之一" },
+  { name:"腾讯音乐", en:"Tencent Music", city:["深圳"], ind:["互联网"], role:["产品","运营","职能"],
+    url:"https://join.tencentmusic.com/campus", desc:"2027校招，产品/内容/市场/职能方向，每人限投1职。",
+    deadline:"以官网为准", salary:"以官网为准", note:"" },
+  { name:"华为", en:"HUAWEI", city:["深圳"], ind:["科技"], role:["销售","职能"],
+    url:"https://career.huawei.com", desc:"2027校招（含实习生），销售类「消费者管理培训生」、职能等方向。",
+    deadline:"以官网为准", salary:"以官网为准", note:"" },
+  { name:"荣耀", en:"HONOR", city:["深圳"], ind:["科技"], role:["产品","运营"],
+    url:"https://www.honor.com/cn/career/", desc:"2027校招，14大类别70+岗位，AI类岗位占比超60%，含产品/营销等方向。",
+    deadline:"以官网为准", salary:"以官网为准", note:"" },
+  { name:"中兴通讯", en:"ZTE", city:["深圳","香港"], ind:["科技"], role:["销售","运营"],
+    url:"https://job.zte.com.cn", desc:"2027校招，营销类（MKT经理-技术、客户经理）、运营支撑类等方向，含深圳/香港。",
+    deadline:"网申约6月底—8月底", salary:"以官网为准", note:"" },
+  { name:"比亚迪", en:"BYD", city:["深圳"], ind:["科技"], role:["职能","管培生"],
+    url:"https://job.byd.com", desc:"2027秋季校招「寻找爱迪生」，境内毕业2026.9—2027.8，含职能/管理方向。",
+    deadline:"以官网为准", salary:"以官网为准", note:"" },
+  { name:"迈瑞医疗", en:"Mindray", city:["深圳"], ind:["科技"], role:["销售","运营","职能"],
+    url:"https://career.mindray.com/campus", desc:"2027校招，研发/营销/供应链/技术支持/职能五大类，深圳为主要地点。",
+    deadline:"网申约9月1日—9月29日", salary:"以官网为准", note:"" },
+  { name:"大疆", en:"DJI", city:["深圳"], ind:["科技","出海"], role:["产品","销售"],
+    url:"https://careers.dji.com", desc:"2027「拓疆者」校招，销售培训生（国内/海外）、产品运营岗、售前方案等；限投1个职位。",
+    deadline:"6月开启，招满即止", salary:"以官网为准", note:"" },
+  { name:"微众银行", en:"WeBank", city:["深圳"], ind:["互联网","金融"], role:["产品","运营","职能"],
+    url:"https://hr.webank.com", desc:"2027校招（含暑期实习），技术/数据/产品（互联网产品、产品运营）等方向，深圳总部。",
+    deadline:"以官网为准", salary:"以官网为准", note:"" },
+  { name:"富途", en:"Futu", city:["深圳"], ind:["互联网","金融","出海"], role:["产品","运营","销售"],
+    url:"https://join.futunn.com", desc:"金融科技/互联网券商方向，深圳总部（香港亦有岗位）。",
+    deadline:"以官网为准", salary:"以官网为准", note:"" },
+  { name:"货拉拉", en:"Huolala", city:["深圳"], ind:["互联网","科技"], role:["产品","运营","职能"],
+    url:"https://join.huolala.cn", desc:"互联网货运平台，深圳总部。",
+    deadline:"以官网为准", salary:"以官网为准", note:"" },
+
+  // —— 深圳 · 金融 / 金融科技 ——
+  { name:"平安人寿", en:"Ping An Life", city:["深圳"], ind:["金融"], role:["产品","运营","管培生","职能"],
+    url:"https://campus.pingan.com/life", desc:"2027校招「NS管培生」计划（规模约500-1000人），产品/运营/业务/职能方向，专业不限。",
+    deadline:"以官网为准", salary:"以官网为准", note:"" },
+  { name:"招商基金", en:"CMF", city:["深圳"], ind:["金融"], role:["销售","产品"],
+    url:"https://cmfchina.zhiye.com/campus/jobs", desc:"2027校招，机构销售/营销运营/产品经理/投顾等岗位，面向硕士及以上。",
+    deadline:"以官网为准", salary:"以官网为准", note:"面向硕士及以上" },
+  { name:"招商银行", en:"CMB", city:["深圳"], ind:["金融"], role:["销售","职能","管培生"],
+    url:"https://career.cmbchina.com", desc:"2027秋招「梦想靠岸」，总行/分行/子公司，产品/营销/管培/职能方向，深圳总部。",
+    deadline:"网申截至10月10日", salary:"以官网为准", note:"" },
+  { name:"金证科技", en:"Kingdom", city:["深圳"], ind:["金融","科技"], role:["职能"],
+    url:"https://szkingdom.zhiye.com/campus", desc:"2027届秋季校招，金融科技方向，招聘150余人。",
+    deadline:"以官网为准", salary:"以官网为准", note:"" },
+
+  // —— 深圳 · 出海 ——
+  { name:"传音控股", en:"Transsion", city:["深圳"], ind:["科技","出海"], role:["产品","运营","销售","职能"],
+    url:"https://transsion.zhiye.com/campus", desc:"2027全球校招（雏鹰计划/TAIG-AI计划/海东青计划），产品/运营/市场/职能方向，品牌TECNO、itel、Infinix。",
+    deadline:"8月启动", salary:"以官网为准", note:"" },
+  { name:"安克创新", en:"Anker", city:["深圳"], ind:["出海","科技"], role:["产品","销售","职能"],
+    url:"https://career.anker-in.com", desc:"2027全球校招（8月18日启动），产品/市场/职能方向，深圳/长沙/苏州等。",
+    deadline:"8月18日启动", salary:"约15k–17.5k（参考）", note:"" },
+  { name:"SHEIN", en:"希音", city:["深圳"], ind:["出海"], role:["运营","职能","管培生"],
+    url:"https://careers.shein.cn/Students-&-Graduates", desc:"全球运营/职能管理/管培生方向，深圳为办公地之一。",
+    deadline:"以官网为准", salary:"管培生16k–21k（以岗位为准）", note:"" },
+  { name:"影石 Insta360", en:"Insta360", city:["深圳"], ind:["出海","科技"], role:["产品","运营","销售","管培生"],
+    url:"https://www.insta360.com/cn/jobs", desc:"2027秋季校招，产品经理/产品运营/海外销售/影石管培生/职能等方向，深圳/上海/珠海。",
+    deadline:"以官网为准", salary:"以官网为准", note:"" },
+  { name:"拓竹科技", en:"Bambu Lab", city:["深圳"], ind:["出海","科技"], role:["产品","销售","职能"],
+    url:"https://bambulab.com/zh/join-us", desc:"2027秋招正式批（史上最大规模，100+岗位），产品/海外营销/GTM零售/职能方向，深圳总部。",
+    deadline:"以官网为准", salary:"以官网为准", note:"" },
+  { name:"韶音科技", en:"Shokz", city:["深圳","香港"], ind:["出海","科技"], role:["产品","销售","管培生","职能"],
+    url:"https://hr.shokz.com.cn", desc:"2027秋季校招，产品/营销运营/公司级管培/职能方向，深圳总部，部分岗位base香港。",
+    deadline:"以官网为准", salary:"以官网为准", note:"" },
+  { name:"万兴科技", en:"Wondershare", city:["深圳"], ind:["出海","科技"], role:["产品","运营"],
+    url:"https://wondersharecampus.zhiye.com/", desc:"2027秋招，AI产品经理/AI社媒策划等方向，长沙/深圳/杭州等。",
+    deadline:"以官网为准", salary:"以官网为准", note:"公众号「万兴人」" },
+  { name:"云鲸智能", en:"Narwal", city:["深圳"], ind:["出海","科技"], role:["运营","职能"],
+    url:"https://careers.narwal.com/campus", desc:"2027校招，GTM/电商运营/新零售营销等方向，扫拖机器人出海。",
+    deadline:"以官网为准", salary:"以官网为准", note:"总部东莞、深圳有研发中心" },
+  { name:"绿联科技", en:"UGREEN", city:["深圳"], ind:["出海","科技"], role:["产品","销售","运营"],
+    url:"https://hrh5.ugreensmart.com/UgreenWeiXin/campus", desc:"2027校招，3C消费电子出海，海外产品/海外销售/运营等方向，深圳。",
+    deadline:"以官网为准", salary:"以官网为准", note:"" },
+  { name:"追觅", en:"Dreame", city:["深圳"], ind:["出海","科技"], role:["产品","运营","销售"],
+    url:"https://dreame.zhiye.com/Campus", desc:"2027校招，智能清洁硬件出海，产品/市场/运营方向，深圳/苏州。",
+    deadline:"以官网为准", salary:"以官网为准", note:"" },
+  { name:"极兔速递", en:"J&T Express", city:["深圳"], ind:["出海"], role:["运营","销售","管培生","职能"],
+    url:"https://jtexpress.jobs.feishu.cn/478610", desc:"2027校招「繁星计划」，物流营运/市场/管培/职能方向，深圳/上海/海外。",
+    deadline:"以官网为准", salary:"约12万–35万（参考）", note:"总部上海，深圳为办公地之一" },
+
+  // —— 深圳 · AI ——
+  { name:"商汤科技", en:"SenseTime", city:["深圳","香港"], ind:["AI"], role:["产品","职能"],
+    url:"https://hr.sensetime.com", desc:"「无限原力」顶尖人才计划等，深圳/香港均有岗位。",
+    deadline:"以官网为准", salary:"以官网为准", note:"" },
+  { name:"优必选", en:"UBTECH", city:["深圳"], ind:["AI"], role:["产品","职能"],
+    url:"https://ubtrobot.zhiye.com", desc:"2027校招，人形机器人方向，网申8月19日开启，11月发offer。",
+    deadline:"网申8月19日起", salary:"以官网为准", note:"" },
+  { name:"云天励飞", en:"Intellifusion", city:["深圳"], ind:["AI","科技"], role:["职能"],
+    url:"https://intellif.zhiye.com/Campus", desc:"2027校园招聘，AI推理芯片方向。",
+    deadline:"以官网为准", salary:"以官网为准", note:"公众号「云天励飞招聘」" },
+  { name:"元戎启行", en:"DeepRoute", city:["深圳"], ind:["AI"], role:["产品","运营"],
+    url:"https://app.mokahr.com/campus-recruitment/deeproute/145894", desc:"2027秋招（7月6日开放），产品经理/商业分析/用户增长运营/品牌创意等岗位，base深圳/北京/上海。",
+    deadline:"招满即止", salary:"以官网为准", note:"官方网申入口（MokaHR）" },
+  { name:"小马智行", en:"Pony.ai", city:["深圳"], ind:["AI"], role:["产品"],
+    url:"https://campus.pony.ai", desc:"2027校招，按Generalist Engineer招聘（以技术岗为主），产品/职能岗较少。",
+    deadline:"9月上旬面试", salary:"以官网为准", note:"以技术岗为主" },
+  { name:"元象", en:"XVERSE", city:["深圳"], ind:["AI"], role:["产品","运营","职能"],
+    url:"https://careers.xverse.cn", desc:"AI与3D技术服务，大模型算法/海外产品运营等方向，深圳南山。",
+    deadline:"以官网为准", salary:"以官网为准", note:"" },
+  { name:"追一科技", en:"Zhuiyi", city:["深圳"], ind:["AI"], role:["产品","职能"],
+    url:"https://zhuiyi.ai/talent/", desc:"对话式AI/NLP方向，深圳。",
+    deadline:"以官网为准", salary:"以官网为准", note:"以技术岗为主" },
+
+  // —— 香港 ——
+  { name:"汇丰", en:"HSBC", city:["香港"], ind:["金融"], role:["管培生","销售"],
+    url:"https://www.hsbc.com/careers/students-and-graduates", desc:"环球毕业生培训计划（Global Graduate Programme），含商业银行/财富管理等方向，滚动招聘。",
+    deadline:"9–10月开放，滚动", salary:"本地MT约34.5k–36k HKD/月", note:"" },
+  { name:"中银香港", en:"BOCHK", city:["香港"], ind:["金融"], role:["管培生","职能"],
+    url:"https://www.boc.cn/aboutboc/bi4", desc:"2026秋季校招（约300人），见习管理人员（24个月MT计划）、客户服务主任等。",
+    deadline:"以官网为准", salary:"以官网为准", note:"中国银行统一校招网申，中银香港归入「港澳台及海外机构」；公众号「中国银行人才招聘」" },
+  { name:"友邦保险", en:"AIA", city:["香港"], ind:["金融"], role:["管培生","销售"],
+    url:"https://www.aia.com.hk", desc:"财富管理经理/管理培训生等，欢迎IANG/高才通签证持有者。",
+    deadline:"以官网为准", salary:"提成制，参考口径较高", note:"香港岗位多由区域团队招聘，认准官方渠道" },
+  { name:"渣打银行", en:"Standard Chartered", city:["香港"], ind:["金融"], role:["管培生","销售"],
+    url:"https://www.sc.com/careers", desc:"环球银行/交易服务等方向实习及毕业生计划，香港。",
+    deadline:"以官网为准", salary:"以官网为准", note:"校招入口以官网为准" },
+  { name:"恒生银行", en:"Hang Seng Bank", city:["香港"], ind:["金融"], role:["管培生","职能"],
+    url:"https://www.hangseng.com/careers", desc:"学生实习计划及毕业生项目，含环球市场/零售银行/商业银行业务等。",
+    deadline:"以官网为准", salary:"以官网为准", note:"恒生属汇丰集团，全年仅可申请一次" },
+  { name:"德勤", en:"Deloitte", city:["香港"], ind:["金融"], role:["管培生","职能"],
+    url:"https://www.deloitte.com/cn/zh/careers", desc:"香港Graduate Programme，审计/咨询/税务等方向，不限专业。",
+    deadline:"网申约8月—10月31日", salary:"以官网为准", note:"香港/澳门需英文简历；公众号「德勤招聘」" },
+  { name:"毕马威", en:"KPMG", city:["香港"], ind:["金融"], role:["管培生","职能"],
+    url:"https://app.mokahr.com/campus-recruitment/kpmg/74217#/jobs", desc:"香港Graduate Programme（Audit/Advisory/Tax等），滚动招聘。",
+    deadline:"以官网为准", salary:"以官网为准", note:"香港职位需持香港身份或有效工作许可" },
+  { name:"安永", en:"EY", city:["香港"], ind:["金融"], role:["管培生","职能"],
+    url:"https://www.ey.com/zh_cn/careers/campus-recruitment-in-hong-kong", desc:"香港毕业生计划（Graduate Programme），不限专业。",
+    deadline:"以官网为准", salary:"以官网为准", note:"香港网申系统 hkcareers.ey.com.cn" },
+  { name:"普华永道", en:"PwC", city:["香港"], ind:["金融"], role:["管培生","职能"],
+    url:"https://www.pwccn.com/en/careers/students.html", desc:"香港Graduate Programme，审计/咨询/税务等方向。",
+    deadline:"以官网为准", salary:"以官网为准", note:"" },
+  { name:"港交所", en:"HKEX", city:["香港"], ind:["金融"], role:["管培生","职能"],
+    url:"https://www.hkexgroup.com/About-HKEX/Careers-at-HKEX/Early-Careers", desc:"Graduate Associate Programme，24个月轮岗，不限专业（GPA≥3.5）。",
+    deadline:"以官网为准", salary:"以官网为准", note:"深圳/上海亦有暑期实习" },
+  { name:"顺丰速运", en:"SF Express", city:["深圳"], ind:["科技"], role:["运营","管培生","职能"],
+    url:"https://campus.sf-express.com", desc:"2027校招，管培生/运营/职能方向，深圳总部。",
+    deadline:"以官网为准", salary:"以官网为准", note:"" },
+];
+
+// ============ 状态 ============
+const STORAGE_KEY = "campusFilterData_v2";
+let data = [];
+let selectedCity = new Set();
+let selectedInd = new Set();
+let selectedRole = new Set();
+let selectedStatus = null;
+let query = "";
+
+const ROLE_ORDER = ["产品","运营","销售","管培生","职能"];
+const IND_ORDER = ["互联网","科技","AI","出海","金融"];
+const CITY_ORDER = ["深圳","香港"];
+const STATUS_ORDER = ["待投递","已投递","已笔试","已面试","已Offer","已淘汰","已截止"];
+const STATUS_CLASS = {
+  "待投递":"s-todo", "已投递":"s-applied", "已笔试":"s-exam", "已面试":"s-interview",
+  "已Offer":"s-offer", "已淘汰":"s-reject", "已截止":"s-closed"
+};
+
+// ============ 存储 ============
+function loadData() {
+  let saved = [];
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) saved = JSON.parse(raw);
+  } catch (e) { /* ignore */ }
+  // 以最新 SEED 为基准，合并保留用户在本地的投递状态与手动新增公司
+  data = JSON.parse(JSON.stringify(SEED));
+  const byName = {};
+  saved.forEach(s => { byName[s.name] = s; });
+  data.forEach(d => {
+    const s = byName[d.name];
+    if (s && s.status) d.status = s.status;
+  });
+  saved.forEach(s => {
+    if (!data.some(d => d.name === s.name)) data.push(s);
+  });
+  data.forEach(d => { if (!d.status) d.status = "待投递"; });
+  saveData();
+}
+function saveData() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+// ============ 渲染 ============
+function uniqValues(field) {
+  const s = new Set();
+  data.forEach(d => (d[field] || []).forEach(v => s.add(v)));
+  return s;
+}
+function renderChips(containerId, order, values, selected, onToggle) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = "";
+  order.forEach(v => {
+    if (!values.has(v)) return;
+    const chip = document.createElement("div");
+    chip.className = "chip" + (selected.has(v) ? " on" : "");
+    chip.textContent = v;
+    chip.onclick = () => { onToggle(v); render(); };
+    el.appendChild(chip);
+  });
+}
+function renderStatusChips() {
+  const el = document.getElementById("statusChips");
+  el.innerHTML = "";
+  const all = document.createElement("div");
+  all.className = "chip" + (selectedStatus == null ? " on" : "");
+  all.textContent = "全部";
+  all.onclick = () => { selectedStatus = null; render(); };
+  el.appendChild(all);
+  STATUS_ORDER.forEach(s => {
+    const chip = document.createElement("div");
+    chip.className = "chip" + (selectedStatus === s ? " on" : "");
+    chip.textContent = s;
+    chip.onclick = () => { selectedStatus = (selectedStatus === s ? null : s); render(); };
+    el.appendChild(chip);
+  });
+}
+function matches(d) {
+  if (selectedCity.size && !d.city.some(c => selectedCity.has(c))) return false;
+  if (selectedInd.size && !d.ind.some(i => selectedInd.has(i))) return false;
+  if (selectedRole.size && !d.role.some(r => selectedRole.has(r))) return false;
+  if (selectedStatus && (d.status || "待投递") !== selectedStatus) return false;
+  if (query) {
+    const hay = [d.name, d.en, d.desc, d.note, d.city.join(" "), d.ind.join(" "), d.role.join(" ")].join(" ").toLowerCase();
+    if (!hay.includes(query.toLowerCase())) return false;
+  }
+  return true;
+}
+function render() {
+  renderChips("cityChips", CITY_ORDER, uniqValues("city"), selectedCity,
+    v => selectedCity.has(v) ? selectedCity.delete(v) : selectedCity.add(v));
+  renderChips("industryChips", IND_ORDER, uniqValues("ind"), selectedInd,
+    v => selectedInd.has(v) ? selectedInd.delete(v) : selectedInd.add(v));
+  renderChips("roleChips", ROLE_ORDER, uniqValues("role"), selectedRole,
+    v => selectedRole.has(v) ? selectedRole.delete(v) : selectedRole.add(v));
+  renderStatusChips();
+
+  const list = data.filter(matches);
+  document.getElementById("stats").innerHTML =
+    `共 <b>${data.length}</b> 家公司 · 当前显示 <b>${list.length}</b> 家` +
+    (list.length < data.length ? ` <span class="hint">（已筛选）</span>` : "");
+
+  const wrap = document.getElementById("list");
+  if (!list.length) {
+    wrap.innerHTML = `<div class="empty">没有匹配的结果，试试放宽筛选条件或清空搜索。</div>`;
+    return;
+  }
+  wrap.innerHTML = list.map((d, idx) => {
+    const realIdx = data.indexOf(d);
+    const status = d.status || "待投递";
+    const statusClass = STATUS_CLASS[status] || "s-todo";
+    const tags =
+      `<span class="status-badge ${statusClass}">${status}</span>` +
+      d.city.map(c => `<span class="tag city">📍 ${c}</span>`).join("") +
+      d.ind.map(i => `<span class="tag ind">${i}</span>`).join("") +
+      d.role.map(r => `<span class="tag role">${r}</span>`).join("");
+    return `
+    <div class="card">
+      <div class="card-top">
+        <div class="card-name">${esc(d.name)}<span class="en">${esc(d.en || "")}</span></div>
+        <div class="card-actions">
+          <select class="status-select ${statusClass}" onchange="setStatus(${realIdx}, this.value)">
+            ${STATUS_ORDER.map(s => `<option value="${s}" ${s === status ? "selected" : ""}>${s}</option>`).join("")}
+          </select>
+          <button class="btn small" onclick="editEntry(${realIdx})">编辑</button>
+          <button class="btn small" onclick="delEntry(${realIdx})">删除</button>
+        </div>
+      </div>
+      <div class="tags">${tags}</div>
+      <p class="card-desc">${esc(d.desc || "")}</p>
+      <div class="card-meta">
+        <span><span class="k">截止：</span>${esc(d.deadline || "以官网为准")}</span>
+        <span><span class="k">薪资：</span>${esc(d.salary || "以官网为准")}</span>
+      </div>
+      ${d.note ? `<div class="note">⚠ ${esc(d.note)}</div>` : ""}
+      <div class="card-foot">
+        <a class="link-btn" href="${esc(d.url || "#")}" target="_blank" rel="noopener noreferrer">官网投递 ↗</a>
+        <span class="badge-official">企业官网</span>
+      </div>
+    </div>`;
+  }).join("");
+}
+function esc(s) {
+  return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+}
+
+// ============ 事件 ============
+document.getElementById("search").addEventListener("input", e => { query = e.target.value.trim(); render(); });
+document.getElementById("resetBtn").onclick = () => {
+  selectedCity.clear(); selectedInd.clear(); selectedRole.clear(); selectedStatus = null;
+  query = ""; document.getElementById("search").value = ""; render();
+};
+
+// 新增 / 编辑
+let editingIdx = null;
+function openModal(idx) {
+  editingIdx = idx;
+  document.getElementById("modalTitle").textContent = idx == null ? "新增公司" : "编辑公司";
+  const d = idx == null ? {} : data[idx];
+  document.getElementById("f_name").value = d.name || "";
+  document.getElementById("f_en").value = d.en || "";
+  document.getElementById("f_city").value = (d.city || []).join(", ");
+  document.getElementById("f_ind").value = (d.ind || []).join(", ");
+  document.getElementById("f_role").value = (d.role || []).join(", ");
+  document.getElementById("f_url").value = d.url || "";
+  document.getElementById("f_desc").value = d.desc || "";
+  document.getElementById("f_deadline").value = d.deadline || "";
+  document.getElementById("f_salary").value = d.salary || "";
+  document.getElementById("f_note").value = d.note || "";
+  document.getElementById("overlay").classList.add("show");
+}
+function closeModal() { document.getElementById("overlay").classList.remove("show"); }
+document.getElementById("addBtn").onclick = () => openModal(null);
+document.getElementById("cancelBtn").onclick = closeModal;
+document.getElementById("overlay").addEventListener("click", e => { if (e.target.id === "overlay") closeModal(); });
+document.getElementById("saveBtn").onclick = () => {
+  const name = document.getElementById("f_name").value.trim();
+  if (!name) { alert("请填写公司名"); return; }
+  const obj = {
+    name,
+    en: document.getElementById("f_en").value.trim(),
+    city: splitList(document.getElementById("f_city").value),
+    ind: splitList(document.getElementById("f_ind").value),
+    role: splitList(document.getElementById("f_role").value),
+    url: document.getElementById("f_url").value.trim(),
+    desc: document.getElementById("f_desc").value.trim(),
+    deadline: document.getElementById("f_deadline").value.trim(),
+    salary: document.getElementById("f_salary").value.trim(),
+    note: document.getElementById("f_note").value.trim(),
+  };
+  if (editingIdx == null) data.push(obj); else data[editingIdx] = obj;
+  saveData(); closeModal(); render();
+};
+function splitList(v) { return v.split(/[,，、\s]+/).map(s => s.trim()).filter(Boolean); }
+
+function delEntry(idx) {
+  if (!confirm(`确定删除「${data[idx].name}」吗？`)) return;
+  data.splice(idx, 1); saveData(); render();
+}
+window.editEntry = editEntry;
+window.delEntry = delEntry;
+window.setStatus = function(idx, val) { data[idx].status = val; saveData(); render(); };
+function editEntry(idx) { openModal(idx); }
+
+// 导出 / 导入
+document.getElementById("exportBtn").onclick = () => {
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "校招官网岗位_" + new Date().toISOString().slice(0,10) + ".json";
+  a.click();
+  URL.revokeObjectURL(a.href);
+};
+document.getElementById("importBtn").onclick = () => document.getElementById("importFile").click();
+document.getElementById("importFile").addEventListener("change", e => {
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const arr = JSON.parse(reader.result);
+      if (!Array.isArray(arr)) throw new Error("格式错误");
+      if (!confirm(`导入将覆盖当前 ${data.length} 条数据为 ${arr.length} 条，确认？`)) return;
+      data = arr; saveData(); render();
+    } catch (err) { alert("导入失败：请选择由本工具导出的 JSON 文件"); }
+  };
+  reader.readAsText(file);
+  e.target.value = "";
+});
+
+// ============ 启动 ============
+// 优先拉取云端 data.json（托管时自动最新）；本地文件/离线则回退到内置 SEED
+async function bootstrap() {
+  try {
+    const res = await fetch("data.json?t=" + Date.now(), { cache: "no-store" });
+    if (res.ok) {
+      const j = await res.json();
+      if (Array.isArray(j) && j.length) SEED = j;
+    }
+  } catch (e) { /* 本地文件/离线：使用内置 SEED */ }
+  loadData();
+  render();
+}
+bootstrap();
+</script>
+</body>
+</html>
