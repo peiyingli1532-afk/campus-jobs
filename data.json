@@ -3,7 +3,8 @@
     "name": "腾讯",
     "en": "Tencent",
     "city": [
-      "深圳"
+      "深圳",
+      "香港"
     ],
     "ind": [
       "互联网",
@@ -16,8 +17,8 @@
       "职能"
     ],
     "url": "https://join.qq.com",
-    "desc": "2027校园招聘，技术/产品/设计/市场/职能五大类100+岗位，新增大量AI原生岗位（AI产品经理等）。",
-    "deadline": "8月已启动，滚动招满即止",
+    "desc": "2027校园招聘，8月11日启动；技术/产品/设计/市场/职能五大类100+岗位，覆盖深圳/北京/上海/香港等，新增大量AI原生岗位（AI产品经理、AI全栈工程师等）。",
+    "deadline": "8月11日启动，滚动招满即止",
     "salary": "以官网为准",
     "note": ""
   },
@@ -37,8 +38,8 @@
       "销售"
     ],
     "url": "https://jobs.bytedance.com/campus",
-    "desc": "2027校招，产品/运营/商业化等方向，深圳为办公地之一。",
-    "deadline": "以官网为准",
+    "desc": "2027校招，产品/运营/商业化等方向，深圳为办公地之一；全年滚动招聘，提供多次投递机会。",
+    "deadline": "全年滚动，8-12月两次投递机会",
     "salary": "以官网为准",
     "note": "深圳为办公地之一"
   },
@@ -177,8 +178,8 @@
       "职能"
     ],
     "url": "https://career.huawei.com",
-    "desc": "2027校招（含实习生），销售类「消费者管理培训生」、职能等方向。",
-    "deadline": "以官网为准",
+    "desc": "2027届应届生招聘8月15日启动，销售类「消费者管理培训生」、职能等方向。",
+    "deadline": "8月15日启动",
     "salary": "以官网为准",
     "note": ""
   },
@@ -525,7 +526,7 @@
     ],
     "url": "https://bambulab.com/zh/join-us",
     "desc": "2027秋招正式批（史上最大规模，100+岗位），产品/海外营销/GTM零售/职能方向，深圳总部。",
-    "deadline": "以官网为准",
+    "deadline": "8月7日启动",
     "salary": "以官网为准",
     "note": ""
   },
@@ -995,6 +996,100 @@
     ],
     "url": "https://campus.sf-express.com",
     "desc": "2027校招，管培生/运营/职能方向，深圳总部。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": ""
+  },
+  {
+    "name": "招银国际",
+    "en": "CMBI",
+    "city": [
+      "香港"
+    ],
+    "ind": [
+      "金融"
+    ],
+    "role": [
+      "管培生",
+      "职能"
+    ],
+    "url": "https://www.cmbi.com.hk/zh-HK/campus",
+    "desc": "暑期实习生计划（10周），可优先锁定2027年管培生工作机会；面向顶尖大学已录取硕士，GPA≥3.3，工作地点香港。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": ""
+  },
+  {
+    "name": "交通银行（香港）",
+    "en": "Bank of Communications (Hong Kong)",
+    "city": [
+      "香港"
+    ],
+    "ind": [
+      "金融"
+    ],
+    "role": [
+      "管培生",
+      "职能"
+    ],
+    "url": "https://www.hk.bankcomm.com/hk/shtml/hk/tw/2005189/2005197/2005198/2005199/2602091/list.shtml?channelId=2005189",
+    "desc": "银行业毕业生培训计划，含零售银行/商业银行/财资业务等方向。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": ""
+  },
+  {
+    "name": "香港金融管理局",
+    "en": "Hong Kong Monetary Authority",
+    "city": [
+      "香港"
+    ],
+    "ind": [
+      "金融"
+    ],
+    "role": [
+      "职能",
+      "管培生"
+    ],
+    "url": "https://www.hkma.gov.hk/chi/about-us/join-us/opportunities-for-students-and-graduates-to-join-the-hkma",
+    "desc": "学生和毕业生加入金管局的计划，具体开放岗位以官网为准。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": ""
+  },
+  {
+    "name": "深圳新凯来",
+    "en": "SiCarrier",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "科技"
+    ],
+    "role": [
+      "职能"
+    ],
+    "url": "https://career.sicarrier.com",
+    "desc": "2027届校招，软件/系统/研发/测试/制造/职能方向，以官网实时开放为准。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": ""
+  },
+  {
+    "name": "速腾聚创",
+    "en": "RoboSense",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "科技",
+      "AI"
+    ],
+    "role": [
+      "产品"
+    ],
+    "url": "https://app.mokahr.com/robosense",
+    "desc": "2027届提前批，覆盖机器人算法、SLAM、芯片工艺、硬件产品与系统工程等方向；未确认统一截止日。",
     "deadline": "以官网为准",
     "salary": "以官网为准",
     "note": ""
