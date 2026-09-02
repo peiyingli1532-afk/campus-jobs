@@ -53,11 +53,12 @@ def gather_news():
 
 def call_deepseek(current, news, today):
     system = (
-        "你是校招信息整理助手。下面是一份「深圳/香港·互联网/科技/AI/出海/金融」公司校招清单(JSON数组)，"
+        "你是校招信息整理助手。下面是一份「深圳/香港·互联网/科技/AI/出海/金融/外企」公司校招清单(JSON数组)，"
         "以及今天搜索到的校招新闻。请基于新闻对清单做增/改：\n"
         "- 有新公司或新一批校招启动/截止日期变化，更新对应字段；\n"
         "- 若新闻显示某公司已明确不招/停止，可删除；\n"
         "- 字段结构必须与现有完全一致：name/en/city/ind/role/url/desc/deadline/salary/note(可空)/hidden(可空布尔)；\n"
+        "- ind 行业可选值：互联网、科技、AI、出海、金融、外企；外资企业可同时标『外企』+其行业(如 ind:['金融','外企'])；\n"
         "- 只输出更新后的完整 JSON 数组，不要任何解释、不要 markdown 代码块。"
     )
     user = json.dumps({"date": today, "current": current, "news": news}, ensure_ascii=False)
