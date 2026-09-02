@@ -161,6 +161,23 @@
   .match-empty { color: var(--muted); padding: 30px; text-align: center; font-size: 14px; }
   .advice-item { padding: 9px 12px; border-left: 3px solid #f59e0b; background: #fffbeb; border-radius: 0 8px 8px 0; margin-bottom: 8px; font-size: 13px; line-height: 1.6; }
 
+  /* 数据看板 */
+  .dash-section { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; box-shadow: var(--shadow); margin-bottom: 14px; }
+  .dash-title { margin: 0 0 14px; font-size: 15px; font-weight: 600; }
+  .bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .bar-label { width: 64px; font-size: 13px; color: #3c4248; flex: 0 0 auto; }
+  .bar-track { flex: 1; height: 18px; background: #eef0f3; border-radius: 999px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 999px; transition: width .3s; }
+  .bar-count { width: 32px; text-align: right; font-size: 13px; font-weight: 600; color: #3c4248; flex: 0 0 auto; }
+  .tbl-row { padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .tbl-row:last-child { border-bottom: none; }
+  .tbl-status { display: flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+  .status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex: 0 0 auto; }
+  .tbl-n { font-size: 12px; color: var(--muted); font-weight: 400; }
+  .tbl-cells { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tbl-item { display: inline-flex; align-items: center; gap: 6px; background: #f2f3f5; border-radius: 6px; padding: 4px 10px; font-size: 13px; }
+  .tbl-role { font-size: 11px; color: #7c3aed; }
+
   /* 弹窗 */
   .overlay { position: fixed; inset: 0; background: rgba(15,23,42,.45); display: none; align-items: center; justify-content: center; z-index: 50; padding: 20px; }
   .overlay.show { display: flex; }
@@ -192,6 +209,7 @@
   <div class="tabs">
     <button class="tab on" id="tabBrowse" onclick="switchTab('browse')">岗位浏览</button>
     <button class="tab" id="tabMatch" onclick="switchTab('match')">简历匹配</button>
+    <button class="tab" id="tabDash" onclick="switchTab('dash')">数据看板</button>
   </div>
 
   <div id="browseView">
@@ -244,6 +262,17 @@
       <div id="resumeSummary"></div>
       <div id="matchResults"></div>
       <div id="resumeAdvice"></div>
+    </div>
+  </div>
+
+  <div id="dashView" style="display:none">
+    <div class="dash-section">
+      <h3 class="dash-title">📊 投递状态分布（横版条形图）</h3>
+      <div id="statusChart"></div>
+    </div>
+    <div class="dash-section">
+      <h3 class="dash-title">📋 投递状态明细（哪些公司 · 哪些岗位）</h3>
+      <div id="statusTable"></div>
     </div>
   </div>
 
@@ -728,10 +757,52 @@ bootstrap();
 let resumeText = "";
 
 function switchTab(t) {
-  document.getElementById("browseView").style.display = (t === "match") ? "none" : "block";
+  document.getElementById("browseView").style.display = (t === "browse") ? "block" : "none";
   document.getElementById("matchView").style.display = (t === "match") ? "block" : "none";
-  document.getElementById("tabBrowse").classList.toggle("on", t !== "match");
+  document.getElementById("dashView").style.display = (t === "dash") ? "block" : "none";
+  document.getElementById("tabBrowse").classList.toggle("on", t === "browse");
   document.getElementById("tabMatch").classList.toggle("on", t === "match");
+  document.getElementById("tabDash").classList.toggle("on", t === "dash");
+  if (t === "dash") renderDashboard();
+}
+
+const STATUS_COLOR = {
+  "待投递": "#6b7280", "已投递": "#2563eb", "已笔试": "#7c3aed", "已面试": "#d97706",
+  "已Offer": "#16a34a", "已淘汰": "#dc2626", "已截止": "#4b5563"
+};
+
+function renderDashboard() {
+  const active = data.filter(d => !d.hidden);
+  const counts = {};
+  STATUS_ORDER.forEach(s => counts[s] = 0);
+  active.forEach(d => { counts[d.status || "待投递"]++; });
+  const max = Math.max(1, ...STATUS_ORDER.map(s => counts[s]));
+
+  document.getElementById("statusChart").innerHTML = STATUS_ORDER.map(s => {
+    const n = counts[s];
+    const pct = Math.round(n / max * 100);
+    return `
+    <div class="bar-row" title="${s}：${n} 家">
+      <div class="bar-label">${s}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${STATUS_COLOR[s]}"></div></div>
+      <div class="bar-count">${n}</div>
+    </div>`;
+  }).join("");
+
+  const rows = [];
+  STATUS_ORDER.forEach(s => {
+    const items = active.filter(d => (d.status || "待投递") === s);
+    if (!items.length) return;
+    const cells = items.map(d =>
+      `<span class="tbl-item">${esc(d.name)}<span class="tbl-role">${esc((d.role || []).join("·"))}</span></span>`
+    ).join("");
+    rows.push(`
+    <div class="tbl-row">
+      <div class="tbl-status"><span class="status-dot" style="background:${STATUS_COLOR[s]}"></span>${s}<span class="tbl-n">${items.length} 家</span></div>
+      <div class="tbl-cells">${cells}</div>
+    </div>`);
+  });
+  document.getElementById("statusTable").innerHTML = rows.join("") || '<div class="match-empty">暂无投递记录</div>';
 }
 
 if (window.pdfjsLib) { pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js"; }
