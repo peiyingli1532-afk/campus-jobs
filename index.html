@@ -132,6 +132,10 @@
   .match-panel { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; box-shadow: var(--shadow); }
   .resume-input { width: 100%; min-height: 200px; padding: 12px; font-size: 14px; border: 1px solid var(--border); border-radius: 10px; resize: vertical; font-family: inherit; line-height: 1.7; }
   .resume-input:focus { outline: none; border-color: var(--accent); }
+  .upload-zone { display: block; border: 2px dashed var(--border); border-radius: 12px; padding: 30px 20px; text-align: center; cursor: pointer; transition: border-color .15s, background .15s; }
+  .upload-zone:hover { border-color: var(--accent); background: #f8faff; }
+  .upload-hint { font-size: 14px; color: var(--muted); }
+  .upload-name { margin-top: 8px; font-size: 13px; color: var(--accent); font-weight: 500; }
   .match-actions { display: flex; gap: 10px; margin: 12px 0; }
   .resume-summary { background: var(--accent-soft); border: 1px solid #d3e0fb; border-radius: 10px; padding: 12px 14px; margin-bottom: 16px; }
   .resume-summary h3, .match-results-title { margin: 0 0 8px; font-size: 14px; }
@@ -171,6 +175,8 @@
   .hint { font-size: 12px; color: var(--muted); }
   footer { margin-top: 40px; text-align: center; font-size: 12px; color: #b0b5bc; }
 </style>
+<script src="libs/jszip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -222,7 +228,11 @@
 
   <div id="matchView" style="display:none">
     <div class="match-panel">
-      <textarea id="resumeInput" class="resume-input" placeholder="在此粘贴你的简历全文（含教育背景、实习/项目经历、技能、意向岗位、意向城市等）…"></textarea>
+      <label class="upload-zone" for="resumeFile">
+        <input type="file" id="resumeFile" accept=".pdf,.docx" hidden>
+        <div class="upload-hint">📄 点击选择简历文件（支持 PDF / Word .docx）</div>
+        <div class="upload-name" id="uploadName" style="display:none"></div>
+      </label>
       <div class="match-actions">
         <button class="btn primary" onclick="analyzeResume()">🔍 分析匹配</button>
         <button class="btn ghost" onclick="clearResume()">清空</button>
@@ -700,24 +710,8 @@ async function bootstrap() {
 bootstrap();
 </script>
 <script>
-// ============ 简历匹配（纯本地规则） ============
-const ROLE_KW = {
-  "产品": ["产品经理","产品策划","产品运营","产品岗","产品实习","产品设计","需求分析","竞品分析","PRD","产品方向"],
-  "运营": ["运营","用户运营","内容运营","活动运营","新媒体","社群运营","电商运营","内容策划","短视频","直播运营","增长"],
-  "销售": ["销售","商务拓展","商务","客户经理","渠道","市场拓展","BD","大客户","GTM"],
-  "管培生": ["管培生","管理培训生","管培","轮岗","培训生","MT","储备干部"],
-  "职能": ["职能","人力资源","HR","财务","会计","法务","行政","招聘","薪酬","审计","税务","公关","政府关系"]
-};
-const IND_KW = {
-  "互联网": ["互联网","电商","内容平台","社交","短视频","游戏","社区","SaaS","在线","直播"],
-  "科技": ["科技","硬件","芯片","半导体","通信","机器人","智能制造","消费电子","嵌入式","自动驾驶"],
-  "AI": ["人工智能","AI","机器学习","深度学习","算法","大模型","NLP","计算机视觉","数据科学","AIGC"],
-  "出海": ["出海","海外","跨境电商","全球化","国际业务","外贸","本地化"],
-  "金融": ["金融","银行","证券","保险","投资","基金","风控","量化","资管","投行"]
-};
-const CITY_KW = { "深圳": ["深圳","深圳市"], "香港": ["香港","Hong Kong"] };
-const EDU_KW = ["博士","硕士","研究生","本科","985","211","海归","留学","应届"];
-const SKILLS = ["Python","SQL","Excel","数据分析","Tableau","英语","粤语","日语","项目管理","用户研究","用户调研","增长","文案","视频剪辑","Photoshop","Figma","PPT","Axure","市场分析","竞品分析","社群运营","直播","投放","A/B测试","埋点","原型设计","需求文档","逻辑思维","沟通表达"];
+// ============ 简历匹配（纯本地 · ATS 风格评分） ============
+let resumeText = "";
 
 function switchTab(t) {
   document.getElementById("browseView").style.display = (t === "match") ? "none" : "block";
@@ -726,54 +720,114 @@ function switchTab(t) {
   document.getElementById("tabMatch").classList.toggle("on", t === "match");
 }
 
-function parseResume(text) {
+if (window.pdfjsLib) { pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js"; }
+
+// —— 简历信息抽取 ——
+const EDU_TIER = { "博士": 100, "硕士": 85, "研究生": 85, "本科": 70, "专科": 55 };
+const SCHOOL_ELITE = ["985", "211", "双一流", "海归", "留学", "C9", "常春藤", "QS"];
+const MAJORS = {
+  "计算机/数据": ["计算机", "软件工程", "数据科学", "人工智能", "AI", "信息技术"],
+  "金融/经济": ["金融", "经济", "会计", "财务", "投资", "统计", "精算"],
+  "市场营销/传媒": ["市场营销", "广告", "传媒", "新闻", "传播", "品牌"],
+  "管理/人力": ["工商管理", "管理", "人力资源", "行政管理", "公共管理"],
+  "法律": ["法律", "法学", "法务"],
+  "理工": ["数学", "物理", "电子", "通信", "自动化", "机械", "材料", "工程"],
+  "外语": ["英语", "日语", "韩语", "翻译", "外语"]
+};
+const SKILLS = ["需求分析","竞品分析","用户研究","用户调研","数据分析","SQL","Excel","Tableau","Python","数据可视化","埋点","A/B测试","增长","活动策划","用户运营","内容运营","社群运营","新媒体","短视频","直播运营","投放","电商运营","销售","商务拓展","商务谈判","渠道拓展","客户关系","大客户","BD","GTM","市场拓展","项目管理","领导力","团队协作","跨部门协作","沟通表达","抗压能力","快速学习","组织协调","人力资源","招聘","薪酬绩效","财务","会计","审计","税务","法务","合规","行政","办公软件","PowerPoint","PPT","Photoshop","Figma","Axure","PRD","原型设计","需求文档","英语","粤语","日语","文案策划","用户增长","转化率"];
+const CERTS = ["CFA","CPA","PMP","FRM","ACCA","证券从业","基金从业","司法考试","法考","教师资格"];
+const ROLE_PROFILE = {
+  "产品": ["需求分析","竞品分析","用户研究","用户调研","数据分析","PRD","原型设计","需求文档","Figma","Axure","A/B测试","埋点"],
+  "运营": ["用户运营","内容运营","活动策划","社群运营","新媒体","短视频","直播运营","投放","增长","转化率","用户增长","数据分析","Excel"],
+  "销售": ["销售","商务拓展","商务谈判","渠道拓展","客户关系","大客户","BD","GTM","市场拓展","沟通表达","抗压能力"],
+  "管培生": ["领导力","团队协作","跨部门协作","沟通表达","组织协调","快速学习","抗压能力","项目管理"],
+  "职能": ["人力资源","招聘","薪酬绩效","财务","会计","审计","税务","法务","合规","行政","办公软件","Excel","PowerPoint"]
+};
+
+function extractProfile(text) {
   const t = text || "";
   const has = kws => kws.some(w => t.includes(w));
-  return {
-    roles: Object.keys(ROLE_KW).filter(k => has(ROLE_KW[k])),
-    inds: Object.keys(IND_KW).filter(k => has(IND_KW[k])),
-    cities: Object.keys(CITY_KW).filter(k => has(CITY_KW[k])),
-    edus: EDU_KW.filter(w => t.includes(w)),
-    skills: SKILLS.filter(w => t.includes(w))
-  };
+  let edu = "未识别", eduScore = 60;
+  for (const k of Object.keys(EDU_TIER)) { if (t.includes(k)) { edu = k; eduScore = EDU_TIER[k]; break; } }
+  const elite = SCHOOL_ELITE.filter(w => t.includes(w));
+  const eduFinal = Math.min(100, eduScore + (elite.length ? 10 : 0));
+  const majors = Object.keys(MAJORS).filter(k => has(MAJORS[k]));
+  const skills = SKILLS.filter(w => t.includes(w));
+  const certs = CERTS.filter(w => t.includes(w));
+  const langs = [];
+  if (/雅思|托福|专八|托业/i.test(t)) langs.push("英语(雅思/托福)");
+  else if (/六级|CET-?6/i.test(t)) langs.push("英语六级");
+  else if (/四级|CET-?4/i.test(t)) langs.push("英语四级");
+  if (/粤语|广东话/.test(t)) langs.push("粤语");
+  if (/日语|N1|N2/.test(t)) langs.push("日语");
+  const intern = /实习|intern/i.test(t);
+  const projects = (t.match(/项目/g) || []).length;
+  const leadership = has(["主席","部长","会长","社团","学生会","班委","队长","负责人","领导"]);
+  const quantified = /\d+\s*%|\d+\.?\d*\s*万|\d+\s*k\+|\d+\s*w\+/i.test(t);
+  return { edu, eduFinal, elite, majors, skills, certs, langs, intern, projects, leadership, quantified };
 }
 
-function matchScore(d, role, r) {
-  const targetHit = r.roles.length ? (r.roles.includes(role) ? 1 : 0.3) : 0.6;
-  const indScore = r.inds.length ? (d.ind.filter(i => r.inds.includes(i)).length / r.inds.length) : 0.6;
-  const cityScore = r.cities.length ? (d.city.some(c => r.cities.includes(c)) ? 1 : 0) : 0.6;
-  const skillScore = r.skills.length ? (r.skills.filter(s => (d.desc || "").includes(s)).length / r.skills.length) : 0.5;
-  return Math.round(100 * (0.45 * targetHit + 0.25 * indScore + 0.15 * cityScore + 0.15 * skillScore));
+// —— 评分 ——
+function scoreCandidate(p, d, role) {
+  const detected = new Set(p.skills);
+  const profile = ROLE_PROFILE[role] || [];
+  const jdHit = profile.length ? profile.filter(k => detected.has(k)).length / profile.length : 0.5;
+  const edu = p.eduFinal / 100;
+  let exp = 0;
+  if (p.intern) exp += 0.4;
+  if (p.projects >= 1) exp += 0.2;
+  if (p.leadership) exp += 0.2;
+  if (p.quantified) exp += 0.2;
+  exp = Math.min(1, exp);
+  let cert = 0;
+  if (p.certs.length) cert += 0.5;
+  if (p.langs.length) cert += 0.5;
+  cert = Math.min(1, cert);
+  const descHit = p.skills.length ? Math.min(1, p.skills.filter(s => (d.desc || "").includes(s)).length / 5) : 0.4;
+  const score = Math.round(100 * (0.40 * jdHit + 0.25 * edu + 0.15 * exp + 0.10 * cert + 0.10 * descHit));
+  return Math.max(0, Math.min(100, score));
 }
 
-function buildReason(d, role, r) {
+function buildReason(p, d, role) {
   const parts = [];
-  if (r.roles.length) parts.push(r.roles.includes(role) ? "岗位命中·" + role : "岗位方向·" + role);
-  else parts.push("岗位方向·" + role);
-  const indHit = d.ind.filter(i => r.inds.includes(i));
-  if (indHit.length) parts.push("行业·" + indHit.join("/"));
-  if (r.cities.length && d.city.some(c => r.cities.includes(c))) parts.push("城市·" + d.city.join("/"));
-  const skillHits = r.skills.filter(s => (d.desc || "").includes(s));
-  if (skillHits.length) parts.push("技能命中" + skillHits.length + "项");
-  return parts.join(" ｜ ");
+  const profile = ROLE_PROFILE[role] || [];
+  const hit = profile.filter(k => p.skills.includes(k));
+  if (hit.length) parts.push("JD命中·" + hit.slice(0, 3).join("/"));
+  parts.push("学历·" + p.edu + (p.elite.length ? "(" + p.elite[0] + ")" : ""));
+  const expParts = [];
+  if (p.intern) expParts.push("实习");
+  if (p.projects) expParts.push("项目");
+  if (p.leadership) expParts.push("社团/管理");
+  if (p.quantified) expParts.push("量化成果");
+  if (expParts.length) parts.push("经历·" + expParts.join("/"));
+  const c = [];
+  if (p.certs.length) c.push("证书");
+  if (p.langs.length) c.push("语言");
+  if (c.length) parts.push(c.join("/"));
+  return parts.join(" ｜ ") || "综合匹配";
 }
 
+// —— 渲染 ——
 function chips(arr, empty) {
   return arr.length ? arr.map(x => `<span class="chip-mini">${esc(x)}</span>`).join("") : `<span class="chip-mini" style="color:#b0b5bc">${empty || "未识别"}</span>`;
 }
-
-function renderSummary(r) {
+function renderSummary(p) {
+  const expParts = [];
+  if (p.intern) expParts.push("有实习");
+  if (p.projects) expParts.push(p.projects + "段项目");
+  if (p.leadership) expParts.push("有社团/管理");
+  if (p.quantified) expParts.push("有量化成果");
   document.getElementById("resumeSummary").innerHTML = `
     <h3>📄 我的简历（解析结果）</h3>
     <div class="row">
-      <span><span class="k">意向岗位：</span>${chips(r.roles)}</span>
-      <span><span class="k">行业偏好：</span>${chips(r.inds)}</span>
-      <span><span class="k">意向城市：</span>${chips(r.cities)}</span>
-      <span><span class="k">学历：</span>${chips(r.edus)}</span>
+      <span><span class="k">学历：</span>${chips([p.edu + (p.elite.length ? "·" + p.elite[0] : "")])}</span>
+      <span><span class="k">专业：</span>${chips(p.majors)}</span>
+      <span><span class="k">证书：</span>${chips(p.certs)}</span>
+      <span><span class="k">语言：</span>${chips(p.langs)}</span>
     </div>
-    <div class="row" style="margin-top:6px"><span class="k">技能：</span>${chips(r.skills)}</div>`;
+    <div class="row" style="margin-top:6px"><span class="k">经历：</span>${chips(expParts)}</div>
+    <div class="row" style="margin-top:6px"><span class="k">技能关键词：</span>${chips(p.skills)}</div>`;
 }
-
 function renderResults(results) {
   const el = document.getElementById("matchResults");
   if (!results.length) { el.innerHTML = '<div class="match-empty">暂无数据</div>'; return; }
@@ -796,61 +850,110 @@ function renderResults(results) {
   }).join("");
   el.innerHTML = `<h3 class="match-results-title">🎯 匹配结果（按匹配度降序，共 ${results.length} 条，展示前 ${top.length}）</h3>` + rows;
 }
-
-function generateAdvice(r, results) {
+function generateAdvice(p, results) {
   const tips = [];
-  if (!r.roles.length) tips.push("① 未识别到「意向岗位」。建议在简历开头明确写『意向岗位：产品经理 / 运营 / 管培生 等』——这是匹配度里权重最高的一项（45%）。");
-  if (!r.inds.length) tips.push("② 未识别到「行业偏好」。建议在实习/项目描述里带上目标行业关键词（互联网 / 科技 / AI / 出海 / 金融），占 25%。");
-  if (!r.cities.length) tips.push("③ 未识别到「意向城市」。建议写『意向城市：深圳』或『香港』，占 15%。");
-  if (!r.edus.length) tips.push("④ 未识别到「学历/毕业时间」。建议写清学校、学历、毕业年份（校招看重应届身份）。");
-  if (r.skills.length < 3) tips.push("⑤ 技能关键词偏少（识别到 " + r.skills.length + " 个）。建议补充与目标岗位相关的技能词，如数据分析、Excel、英语、项目管理、用户研究等。");
+  if (p.edu === "未识别") tips.push("① 未识别到「学历」。校招中学历/学校是硬性门槛（占 25%），建议在简历顶部写清学校、学历、毕业时间。");
+  else if (p.eduFinal < 75) tips.push("① 你的学历层级（" + p.edu + "）在部分学历要求高的岗位（金融/投行等）可能不占优，可突出学校排名/绩点/获奖弥补。");
+  if (!p.majors.length) tips.push("② 未识别到「专业」。建议写清专业，专业相关度是初筛的重要维度。");
+  if (p.skills.length < 3) tips.push("③ 技能关键词偏少（识别到 " + p.skills.length + " 个）。JD 关键词匹配占 40%，建议把目标岗位 JD 里的词（需求分析、数据分析、用户运营等）写进技能和经历。");
+  if (!p.intern) tips.push("④ 未识别到「实习经历」。大厂 AI 筛选很看重相关实习，建议补充实习/项目（哪怕是课程项目）。");
+  if (!p.quantified) tips.push("⑤ 缺少量化成果。建议把成果数字化（如『提升转化率 30%』『覆盖 10w 用户』），AI 筛选对数字更敏感。");
+  if (!p.certs.length && !p.langs.length) tips.push("⑥ 未识别到证书/语言成绩。建议补充（英语六级/雅思、CFA/CPA 等），能加分。");
 
   const ROLE_TIP = {
-    "产品": "产品岗：建议补充「需求分析、竞品分析、数据驱动、PRD、Axure/Figma」等关键词，并用项目经历证明。",
-    "运营": "运营岗：建议补充「增长、活动策划、用户运营、数据分析(Excel/SQL)、社群/内容」等关键词，尽量写量化结果。",
-    "销售": "销售岗：建议补充「业绩数字、客户资源、商务谈判、渠道拓展、GTM」等关键词，突出结果导向。",
-    "管培生": "管培生：建议突出「领导力、社团/学生会、跨部门协作、快速学习、轮岗适应力」。",
-    "职能": "职能岗：建议突出「专业证书、办公软件、流程优化、细心严谨、合规意识」。"
+    "产品": "🎯 产品岗 JD 高频词：需求分析、竞品分析、用户研究、数据分析、PRD、原型(Axure/Figma)。建议把这些词+对应经历写进简历。",
+    "运营": "🎯 运营岗 JD 高频词：用户运营、活动策划、增长、转化率、社群/内容、数据分析(Excel/SQL)。",
+    "销售": "🎯 销售岗 JD 高频词：业绩数字、客户关系、商务谈判、渠道拓展、抗压。",
+    "管培生": "🎯 管培生 JD 高频词：领导力、团队协作、跨部门、快速学习、社团/学生会。",
+    "职能": "🎯 职能岗 JD 高频词：专业证书、办公软件、流程、合规、细心。"
   };
   if (results.length) {
     const top = results.slice(0, 5);
     const topNames = [...new Set(top.map(x => x.name))].slice(0, 3);
     const topRoles = [...new Set(top.map(x => x.role))].slice(0, 3);
-    topRoles.forEach(role => { if (ROLE_TIP[role]) tips.push("🎯 " + ROLE_TIP[role]); });
-    if (topNames.length) tips.push("📌 你匹配度最高的公司是「" + topNames.map(esc).join("、") + "」，建议把这些公司的岗位方向关键词写进简历的相应经历里。");
+    topRoles.forEach(role => { if (ROLE_TIP[role]) tips.push(ROLE_TIP[role]); });
+    if (topNames.length) tips.push("📌 你匹配度最高的公司是「" + topNames.map(esc).join("、") + "」，建议优先对照这些岗位的 JD 补强关键词。");
   }
-  tips.push("💡 通用建议：成果尽量数据化（如『提升转化率 30%』『负责 XX 项目，覆盖 10w 用户』）；关键词尽量与目标 JD 对齐；结构按「教育—实习—项目—技能」清晰分栏。");
+  tips.push("💡 通用建议：关键词对齐目标 JD、成果数据化、经历按「背景—动作—结果」写、控制一页以内、避免复杂排版导致解析失败。");
   return tips;
 }
-
 function renderAdvice(tips) {
   document.getElementById("resumeAdvice").innerHTML =
     `<h3 class="match-results-title">📝 简历修改建议</h3>` + tips.map(t => `<div class="advice-item">${t}</div>`).join("");
 }
 
-function analyzeResume() {
-  const text = document.getElementById("resumeInput").value;
-  if (!text.trim()) { alert("请先粘贴简历"); return; }
-  const r = parseResume(text);
-  renderSummary(r);
+// —— 文件解析 ——
+async function extractPdfText(buf) {
+  const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+  let text = "";
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const c = await page.getTextContent();
+    text += c.items.map(it => it.str).join(" ") + "\n";
+  }
+  return text;
+}
+async function extractDocxText(buf) {
+  const zip = await JSZip.loadAsync(buf);
+  const xml = await zip.file("word/document.xml").async("string");
+  const doc = new DOMParser().parseFromString(xml, "application/xml");
+  const paras = [...doc.getElementsByTagName("w:p")];
+  return paras.map(p => [...p.getElementsByTagName("w:t")].map(t => t.textContent).join("")).join("\n");
+}
+
+// —— 主流程 ——
+function runAnalysis(text) {
+  const p = extractProfile(text);
+  renderSummary(p);
   const results = [];
   data.forEach(d => {
     (d.role || []).forEach(role => {
-      results.push({ name: d.name, en: d.en, role: role, score: matchScore(d, role, r), url: d.url, reason: buildReason(d, role, r) });
+      results.push({ name: d.name, en: d.en, role: role, score: scoreCandidate(p, d, role), url: d.url, reason: buildReason(p, d, role) });
     });
   });
   results.sort((a, b) => b.score - a.score);
   renderResults(results);
-  renderAdvice(generateAdvice(r, results));
+  renderAdvice(generateAdvice(p, results));
   document.getElementById("matchResults").scrollIntoView({ behavior: "smooth", block: "start" });
 }
-
+function analyzeResume() {
+  if (!resumeText) { alert("请先上传 PDF / Word 简历文件"); return; }
+  runAnalysis(resumeText);
+}
 function clearResume() {
-  document.getElementById("resumeInput").value = "";
+  resumeText = "";
+  document.getElementById("resumeFile").value = "";
+  document.getElementById("uploadName").style.display = "none";
   document.getElementById("resumeSummary").innerHTML = "";
-  document.getElementById("matchResults").innerHTML = '<div class="match-empty">在这里粘贴简历后点击「分析匹配」，即可看到与你匹配度最高的企业和岗位方向。</div>';
+  document.getElementById("matchResults").innerHTML = '<div class="match-empty">上传 PDF / Word 简历后会自动解析，即可看到与你匹配度最高的企业和岗位方向。</div>';
   document.getElementById("resumeAdvice").innerHTML = "";
 }
+
+document.getElementById("resumeFile").addEventListener("change", e => {
+  const f = e.target.files[0];
+  if (!f) return;
+  document.getElementById("uploadName").textContent = "📄 " + f.name + "（解析中…）";
+  document.getElementById("uploadName").style.display = "block";
+  const reader = new FileReader();
+  reader.onload = async ev => {
+    const buf = ev.target.result;
+    try {
+      let text = "";
+      const n = f.name.toLowerCase();
+      if (n.endsWith(".pdf")) text = await extractPdfText(buf);
+      else if (n.endsWith(".docx")) text = await extractDocxText(buf);
+      else { alert("请上传 PDF 或 Word(.docx) 文件"); clearResume(); return; }
+      if (!text.trim()) { alert("未能从文件中解析出文本（可能是扫描件/图片版 PDF）。"); clearResume(); return; }
+      resumeText = text;
+      document.getElementById("uploadName").textContent = "✅ " + f.name + "（解析成功）";
+      runAnalysis(resumeText);
+    } catch (err) {
+      document.getElementById("uploadName").textContent = "❌ 解析失败，请确认是 PDF 或 Word 文件";
+      console.error(err);
+    }
+  };
+  reader.readAsArrayBuffer(f);
+});
 
 clearResume();
 </script>
