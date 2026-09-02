@@ -768,9 +768,14 @@ function extractProfile(text) {
 }
 
 // —— 评分 ——
+function jdProfile(d, role) {
+  if (d.jd && d.jd[role]) return String(d.jd[role]).split(/[\s,，、/]+/).filter(Boolean);
+  return ROLE_PROFILE[role] || [];
+}
+
 function scoreCandidate(p, d, role) {
   const detected = new Set(p.skills);
-  const profile = ROLE_PROFILE[role] || [];
+  const profile = jdProfile(d, role);
   const jdHit = profile.length ? profile.filter(k => detected.has(k)).length / profile.length : 0.5;
   const edu = p.eduFinal / 100;
   let exp = 0;
@@ -790,7 +795,7 @@ function scoreCandidate(p, d, role) {
 
 function buildReason(p, d, role) {
   const parts = [];
-  const profile = ROLE_PROFILE[role] || [];
+  const profile = jdProfile(d, role);
   const hit = profile.filter(k => p.skills.includes(k));
   if (hit.length) parts.push("JD命中·" + hit.slice(0, 3).join("/"));
   parts.push("学历·" + p.edu + (p.elite.length ? "(" + p.elite[0] + ")" : ""));
