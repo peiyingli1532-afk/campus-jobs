@@ -87,6 +87,9 @@
     padding: 16px 18px; box-shadow: var(--shadow); transition: box-shadow .15s, transform .15s;
   }
   .card:hover { box-shadow: 0 4px 12px rgba(16,24,40,.09); }
+  .card.hidden { opacity: .55; }
+  .new-badge { display: inline-block; background: #dc2626; color: #fff; font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 5px; margin-left: 6px; vertical-align: 2px; }
+  .hidden-badge { display: inline-block; background: #9ca3af; color: #fff; font-size: 11px; font-weight: 600; padding: 1px 7px; border-radius: 5px; margin-left: 6px; vertical-align: 2px; }
   .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
   .card-name { font-size: 16px; font-weight: 700; }
   .card-name .en { font-size: 12px; font-weight: 500; color: var(--muted); margin-left: 6px; }
@@ -199,6 +202,7 @@
         <input id="search" type="text" placeholder="搜索公司名 / 岗位方向 / 校招项目…">
       </div>
       <button class="btn ghost" id="resetBtn" title="清空全部筛选">重置</button>
+      <button class="btn ghost" id="hiddenBtn">显示已隐藏</button>
       <button class="btn primary" id="addBtn">＋ 新增</button>
       <button class="btn" id="exportBtn">导出</button>
       <button class="btn" id="importBtn">导入</button>
@@ -378,7 +382,7 @@ let SEED = [
     deadline:"8月18日启动", salary:"约15k–17.5k（参考）", note:"" },
   { name:"SHEIN", en:"希音", city:["深圳"], ind:["出海"], role:["运营","职能","管培生"],
     url:"https://careers.shein.cn/Students-&-Graduates", desc:"全球运营/职能管理/管培生方向，深圳为办公地之一。",
-    deadline:"以官网为准", salary:"管培生16k–21k（以岗位为准）", note:"" },
+    deadline:"以官网为准", salary:"管培生16k–21k（以岗位为准）", note:"27届秋招尚未开放，等开放后再恢复", hidden:true },
   { name:"影石 Insta360", en:"Insta360", city:["深圳"], ind:["出海","科技"], role:["产品","运营","销售","管培生"],
     url:"https://www.insta360.com/cn/jobs", desc:"2027秋季校招，产品经理/产品运营/海外销售/影石管培生/职能等方向，深圳/上海/珠海。",
     deadline:"以官网为准", salary:"以官网为准", note:"" },
@@ -399,7 +403,7 @@ let SEED = [
     deadline:"以官网为准", salary:"以官网为准", note:"" },
   { name:"追觅", en:"Dreame", city:["深圳"], ind:["出海","科技"], role:["产品","运营","销售"],
     url:"https://dreame.zhiye.com/Campus", desc:"2027校招，智能清洁硬件出海，产品/市场/运营方向，深圳/苏州。",
-    deadline:"以官网为准", salary:"以官网为准", note:"" },
+    deadline:"以官网为准", salary:"以官网为准", note:"深圳无校招岗，等深圳开放27届校招再恢复", hidden:true },
   { name:"极兔速递", en:"J&T Express", city:["深圳"], ind:["出海"], role:["运营","销售","管培生","职能"],
     url:"https://jtexpress.jobs.feishu.cn/478610", desc:"2027校招「繁星计划」，物流营运/市场/管培/职能方向，深圳/上海/海外。",
     deadline:"以官网为准", salary:"约12万–35万（参考）", note:"总部上海，深圳为办公地之一" },
@@ -419,7 +423,7 @@ let SEED = [
     deadline:"招满即止", salary:"以官网为准", note:"官方网申入口（MokaHR）" },
   { name:"小马智行", en:"Pony.ai", city:["深圳"], ind:["AI"], role:["产品"],
     url:"https://campus.pony.ai", desc:"2027校招，按Generalist Engineer招聘（以技术岗为主），产品/职能岗较少。",
-    deadline:"9月上旬面试", salary:"以官网为准", note:"以技术岗为主" },
+    deadline:"9月上旬面试", salary:"以官网为准", note:"深圳岗位仅实习、无27届校招岗，等深圳开放校招再恢复", hidden:true },
   { name:"元象", en:"XVERSE", city:["深圳"], ind:["AI"], role:["产品","运营","职能"],
     url:"https://careers.xverse.cn", desc:"AI与3D技术服务，大模型算法/海外产品运营等方向，深圳南山。",
     deadline:"以官网为准", salary:"以官网为准", note:"" },
@@ -470,6 +474,7 @@ let selectedCity = new Set();
 let selectedInd = new Set();
 let selectedRole = new Set();
 let selectedStatus = null;
+let showHidden = false;
 let query = "";
 
 const ROLE_ORDER = ["产品","运营","销售","管培生","职能"];
@@ -499,7 +504,7 @@ function loadData() {
   saved.forEach(s => {
     if (!data.some(d => d.name === s.name)) data.push(s);
   });
-  data.forEach(d => { if (!d.status) d.status = "待投递"; });
+  data.forEach(d => { if (!d.status) d.status = "待投递"; if (d.hidden == null) d.hidden = false; });
   saveData();
 }
 function saveData() {
@@ -560,9 +565,12 @@ function render() {
     v => selectedRole.has(v) ? selectedRole.delete(v) : selectedRole.add(v));
   renderStatusChips();
 
-  const list = data.filter(matches);
+  const list = data.filter(d => matches(d) && (showHidden || !d.hidden));
+  const hiddenCount = data.filter(d => d.hidden).length;
+  document.getElementById("hiddenBtn").textContent = showHidden ? "收起已隐藏" : `显示已隐藏 (${hiddenCount})`;
   document.getElementById("stats").innerHTML =
     `共 <b>${data.length}</b> 家公司 · 当前显示 <b>${list.length}</b> 家` +
+    (hiddenCount ? ` · 已隐藏 <b>${hiddenCount}</b> 家` : "") +
     (list.length < data.length ? ` <span class="hint">（已筛选）</span>` : "");
 
   const wrap = document.getElementById("list");
@@ -580,9 +588,9 @@ function render() {
       d.ind.map(i => `<span class="tag ind">${i}</span>`).join("") +
       d.role.map(r => `<span class="tag role">${r}</span>`).join("");
     return `
-    <div class="card">
+    <div class="card${d.hidden ? " hidden" : ""}">
       <div class="card-top">
-        <div class="card-name">${esc(d.name)}<span class="en">${esc(d.en || "")}</span></div>
+        <div class="card-name">${esc(d.name)}<span class="en">${esc(d.en || "")}</span>${isNew(d) ? ' <span class="new-badge">NEW</span>' : ""}${d.hidden ? ' <span class="hidden-badge">已隐藏</span>' : ""}</div>
         <div class="card-actions">
           <select class="status-select ${statusClass}" onchange="setStatus(${realIdx}, this.value)">
             ${STATUS_ORDER.map(s => `<option value="${s}" ${s === status ? "selected" : ""}>${s}</option>`).join("")}
@@ -610,6 +618,11 @@ function esc(s) {
     "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
   }[c]));
 }
+function isNew(d) {
+  if (!d.addedDate) return false;
+  const days = (Date.now() - new Date(d.addedDate + "T00:00:00").getTime()) / 86400000;
+  return days >= 0 && days < 3;
+}
 
 // ============ 事件 ============
 document.getElementById("search").addEventListener("input", e => { query = e.target.value.trim(); render(); });
@@ -617,6 +630,7 @@ document.getElementById("resetBtn").onclick = () => {
   selectedCity.clear(); selectedInd.clear(); selectedRole.clear(); selectedStatus = null;
   query = ""; document.getElementById("search").value = ""; render();
 };
+document.getElementById("hiddenBtn").onclick = () => { showHidden = !showHidden; render(); };
 
 // 新增 / 编辑
 let editingIdx = null;
@@ -843,7 +857,7 @@ function renderResults(results) {
     <div class="match-result">
       <div class="match-rank">#${i + 1}</div>
       <div class="match-main">
-        <div class="match-name">${esc(x.name)}<span class="en">${esc(x.en || "")}</span><span class="match-role">${esc(x.role)}</span></div>
+        <div class="match-name">${esc(x.name)}<span class="en">${esc(x.en || "")}</span><span class="match-role">${esc(x.role)}</span>${isNew(x) ? ' <span class="new-badge">NEW</span>' : ""}</div>
         <div class="match-reason">${esc(x.reason)}</div>
       </div>
       <div class="score-wrap">
@@ -911,9 +925,9 @@ function runAnalysis(text) {
   const p = extractProfile(text);
   renderSummary(p);
   const results = [];
-  data.forEach(d => {
+  data.filter(d => !d.hidden).forEach(d => {
     (d.role || []).forEach(role => {
-      results.push({ name: d.name, en: d.en, role: role, score: scoreCandidate(p, d, role), url: d.url, reason: buildReason(p, d, role) });
+      results.push({ name: d.name, en: d.en, role: role, score: scoreCandidate(p, d, role), url: d.url, reason: buildReason(p, d, role), addedDate: d.addedDate });
     });
   });
   results.sort((a, b) => b.score - a.score);
