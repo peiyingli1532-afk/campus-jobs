@@ -1,0 +1,1002 @@
+[
+  {
+    "name": "腾讯",
+    "en": "Tencent",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "互联网",
+      "科技",
+      "AI"
+    ],
+    "role": [
+      "产品",
+      "运营",
+      "职能"
+    ],
+    "url": "https://join.qq.com",
+    "desc": "2027校园招聘，技术/产品/设计/市场/职能五大类100+岗位，新增大量AI原生岗位（AI产品经理等）。",
+    "deadline": "8月已启动，滚动招满即止",
+    "salary": "以官网为准",
+    "note": ""
+  },
+  {
+    "name": "字节跳动",
+    "en": "ByteDance",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "互联网",
+      "AI"
+    ],
+    "role": [
+      "产品",
+      "运营",
+      "销售"
+    ],
+    "url": "https://jobs.bytedance.com/campus",
+    "desc": "2027校招，产品/运营/商业化等方向，深圳为办公地之一。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "深圳为办公地之一"
+  },
+  {
+    "name": "美团",
+    "en": "Meituan",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "互联网"
+    ],
+    "role": [
+      "产品",
+      "运营",
+      "销售"
+    ],
+    "url": "https://campus.meituan.com",
+    "desc": "2027校招，产品/运营/业务等方向，深圳为办公地之一。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "深圳为办公地之一"
+  },
+  {
+    "name": "阿里巴巴",
+    "en": "Alibaba",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "互联网"
+    ],
+    "role": [
+      "产品",
+      "运营",
+      "销售"
+    ],
+    "url": "https://talent.alibaba.com/campus",
+    "desc": "2027届应届生招聘，产品/运营/商务拓展等方向，8月5日启动。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "深圳为办公地之一"
+  },
+  {
+    "name": "京东",
+    "en": "JD",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "互联网"
+    ],
+    "role": [
+      "产品",
+      "运营",
+      "销售",
+      "职能"
+    ],
+    "url": "https://campus.jd.com",
+    "desc": "2027校招「JDS-新星计划」，采销/产品/运营/职能等方向。",
+    "deadline": "网申至11月30日",
+    "salary": "以官网为准",
+    "note": "深圳为办公地之一"
+  },
+  {
+    "name": "快手",
+    "en": "Kuaishou",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "互联网"
+    ],
+    "role": [
+      "产品",
+      "运营",
+      "销售"
+    ],
+    "url": "https://campus.kuaishou.cn",
+    "desc": "2027全球校招（8月12日开放），产品/运营/商业化等方向。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "深圳为办公地之一"
+  },
+  {
+    "name": "网易",
+    "en": "NetEase",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "互联网"
+    ],
+    "role": [
+      "产品",
+      "运营",
+      "职能"
+    ],
+    "url": "https://campus.163.com",
+    "desc": "2027届校招（8月20日启动），产品/运营/职能/市场等方向。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "深圳为办公地之一"
+  },
+  {
+    "name": "腾讯音乐",
+    "en": "Tencent Music",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "互联网"
+    ],
+    "role": [
+      "产品",
+      "运营",
+      "职能"
+    ],
+    "url": "https://join.tencentmusic.com/campus",
+    "desc": "2027校招，产品/内容/市场/职能方向，每人限投1职。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": ""
+  },
+  {
+    "name": "华为",
+    "en": "HUAWEI",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "科技"
+    ],
+    "role": [
+      "销售",
+      "职能"
+    ],
+    "url": "https://career.huawei.com",
+    "desc": "2027校招（含实习生），销售类「消费者管理培训生」、职能等方向。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": ""
+  },
+  {
+    "name": "荣耀",
+    "en": "HONOR",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "科技"
+    ],
+    "role": [
+      "产品",
+      "运营"
+    ],
+    "url": "https://www.honor.com/cn/career/",
+    "desc": "2027校招，14大类别70+岗位，AI类岗位占比超60%，含产品/营销等方向。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": ""
+  },
+  {
+    "name": "中兴通讯",
+    "en": "ZTE",
+    "city": [
+      "深圳",
+      "香港"
+    ],
+    "ind": [
+      "科技"
+    ],
+    "role": [
+      "销售",
+      "运营"
+    ],
+    "url": "https://job.zte.com.cn",
+    "desc": "2027校招，营销类（MKT经理-技术、客户经理）、运营支撑类等方向，含深圳/香港。",
+    "deadline": "网申约6月底—8月底",
+    "salary": "以官网为准",
+    "note": ""
+  },
+  {
+    "name": "比亚迪",
+    "en": "BYD",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "科技"
+    ],
+    "role": [
+      "职能",
+      "管培生"
+    ],
+    "url": "https://job.byd.com",
+    "desc": "2027秋季校招「寻找爱迪生」，境内毕业2026.9—2027.8，含职能/管理方向。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": ""
+  },
+  {
+    "name": "迈瑞医疗",
+    "en": "Mindray",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "科技"
+    ],
+    "role": [
+      "销售",
+      "运营",
+      "职能"
+    ],
+    "url": "https://career.mindray.com/campus",
+    "desc": "2027校招，研发/营销/供应链/技术支持/职能五大类，深圳为主要地点。",
+    "deadline": "网申约9月1日—9月29日",
+    "salary": "以官网为准",
+    "note": ""
+  },
+  {
+    "name": "大疆",
+    "en": "DJI",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "科技",
+      "出海"
+    ],
+    "role": [
+      "产品",
+      "销售"
+    ],
+    "url": "https://careers.dji.com",
+    "desc": "2027「拓疆者」校招，销售培训生（国内/海外）、产品运营岗、售前方案等；限投1个职位。",
+    "deadline": "6月开启，招满即止",
+    "salary": "以官网为准",
+    "note": ""
+  },
+  {
+    "name": "微众银行",
+    "en": "WeBank",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "互联网",
+      "金融"
+    ],
+    "role": [
+      "产品",
+      "运营",
+      "职能"
+    ],
+    "url": "https://hr.webank.com",
+    "desc": "2027校招（含暑期实习），技术/数据/产品（互联网产品、产品运营）等方向，深圳总部。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": ""
+  },
+  {
+    "name": "富途",
+    "en": "Futu",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "互联网",
+      "金融",
+      "出海"
+    ],
+    "role": [
+      "产品",
+      "运营",
+      "销售"
+    ],
+    "url": "https://join.futunn.com",
+    "desc": "金融科技/互联网券商方向，深圳总部（香港亦有岗位）。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": ""
+  },
+  {
+    "name": "货拉拉",
+    "en": "Huolala",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "互联网",
+      "科技"
+    ],
+    "role": [
+      "产品",
+      "运营",
+      "职能"
+    ],
+    "url": "https://join.huolala.cn",
+    "desc": "互联网货运平台，深圳总部。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": ""
+  },
+  {
+    "name": "平安人寿",
+    "en": "Ping An Life",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "金融"
+    ],
+    "role": [
+      "产品",
+      "运营",
+      "管培生",
+      "职能"
+    ],
+    "url": "https://campus.pingan.com/life",
+    "desc": "2027校招「NS管培生」计划（规模约500-1000人），产品/运营/业务/职能方向，专业不限。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": ""
+  },
+  {
+    "name": "招商基金",
+    "en": "CMF",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "金融"
+    ],
+    "role": [
+      "销售",
+      "产品"
+    ],
+    "url": "https://cmfchina.zhiye.com/campus/jobs",
+    "desc": "2027校招，机构销售/营销运营/产品经理/投顾等岗位，面向硕士及以上。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "面向硕士及以上"
+  },
+  {
+    "name": "招商银行",
+    "en": "CMB",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "金融"
+    ],
+    "role": [
+      "销售",
+      "职能",
+      "管培生"
+    ],
+    "url": "https://career.cmbchina.com",
+    "desc": "2027秋招「梦想靠岸」，总行/分行/子公司，产品/营销/管培/职能方向，深圳总部。",
+    "deadline": "网申截至10月10日",
+    "salary": "以官网为准",
+    "note": ""
+  },
+  {
+    "name": "金证科技",
+    "en": "Kingdom",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "金融",
+      "科技"
+    ],
+    "role": [
+      "职能"
+    ],
+    "url": "https://szkingdom.zhiye.com/campus",
+    "desc": "2027届秋季校招，金融科技方向，招聘150余人。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": ""
+  },
+  {
+    "name": "传音控股",
+    "en": "Transsion",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "科技",
+      "出海"
+    ],
+    "role": [
+      "产品",
+      "运营",
+      "销售",
+      "职能"
+    ],
+    "url": "https://transsion.zhiye.com/campus",
+    "desc": "2027全球校招（雏鹰计划/TAIG-AI计划/海东青计划），产品/运营/市场/职能方向，品牌TECNO、itel、Infinix。",
+    "deadline": "8月启动",
+    "salary": "以官网为准",
+    "note": ""
+  },
+  {
+    "name": "安克创新",
+    "en": "Anker",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "出海",
+      "科技"
+    ],
+    "role": [
+      "产品",
+      "销售",
+      "职能"
+    ],
+    "url": "https://career.anker-in.com",
+    "desc": "2027全球校招（8月18日启动），产品/市场/职能方向，深圳/长沙/苏州等。",
+    "deadline": "8月18日启动",
+    "salary": "约15k–17.5k（参考）",
+    "note": ""
+  },
+  {
+    "name": "SHEIN",
+    "en": "希音",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "出海"
+    ],
+    "role": [
+      "运营",
+      "职能",
+      "管培生"
+    ],
+    "url": "https://careers.shein.cn/Students-&-Graduates",
+    "desc": "全球运营/职能管理/管培生方向，深圳为办公地之一。",
+    "deadline": "以官网为准",
+    "salary": "管培生16k–21k（以岗位为准）",
+    "note": ""
+  },
+  {
+    "name": "影石 Insta360",
+    "en": "Insta360",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "出海",
+      "科技"
+    ],
+    "role": [
+      "产品",
+      "运营",
+      "销售",
+      "管培生"
+    ],
+    "url": "https://www.insta360.com/cn/jobs",
+    "desc": "2027秋季校招，产品经理/产品运营/海外销售/影石管培生/职能等方向，深圳/上海/珠海。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": ""
+  },
+  {
+    "name": "拓竹科技",
+    "en": "Bambu Lab",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "出海",
+      "科技"
+    ],
+    "role": [
+      "产品",
+      "销售",
+      "职能"
+    ],
+    "url": "https://bambulab.com/zh/join-us",
+    "desc": "2027秋招正式批（史上最大规模，100+岗位），产品/海外营销/GTM零售/职能方向，深圳总部。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": ""
+  },
+  {
+    "name": "韶音科技",
+    "en": "Shokz",
+    "city": [
+      "深圳",
+      "香港"
+    ],
+    "ind": [
+      "出海",
+      "科技"
+    ],
+    "role": [
+      "产品",
+      "销售",
+      "管培生",
+      "职能"
+    ],
+    "url": "https://hr.shokz.com.cn",
+    "desc": "2027秋季校招，产品/营销运营/公司级管培/职能方向，深圳总部，部分岗位base香港。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": ""
+  },
+  {
+    "name": "万兴科技",
+    "en": "Wondershare",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "出海",
+      "科技"
+    ],
+    "role": [
+      "产品",
+      "运营"
+    ],
+    "url": "https://wondersharecampus.zhiye.com/",
+    "desc": "2027秋招，AI产品经理/AI社媒策划等方向，长沙/深圳/杭州等。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "公众号「万兴人」"
+  },
+  {
+    "name": "云鲸智能",
+    "en": "Narwal",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "出海",
+      "科技"
+    ],
+    "role": [
+      "运营",
+      "职能"
+    ],
+    "url": "https://careers.narwal.com/campus",
+    "desc": "2027校招，GTM/电商运营/新零售营销等方向，扫拖机器人出海。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "总部东莞、深圳有研发中心"
+  },
+  {
+    "name": "绿联科技",
+    "en": "UGREEN",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "出海",
+      "科技"
+    ],
+    "role": [
+      "产品",
+      "销售",
+      "运营"
+    ],
+    "url": "https://hrh5.ugreensmart.com/UgreenWeiXin/campus",
+    "desc": "2027校招，3C消费电子出海，海外产品/海外销售/运营等方向，深圳。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": ""
+  },
+  {
+    "name": "追觅",
+    "en": "Dreame",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "出海",
+      "科技"
+    ],
+    "role": [
+      "产品",
+      "运营",
+      "销售"
+    ],
+    "url": "https://dreame.zhiye.com/Campus",
+    "desc": "2027校招，智能清洁硬件出海，产品/市场/运营方向，深圳/苏州。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": ""
+  },
+  {
+    "name": "极兔速递",
+    "en": "J&T Express",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "出海"
+    ],
+    "role": [
+      "运营",
+      "销售",
+      "管培生",
+      "职能"
+    ],
+    "url": "https://jtexpress.jobs.feishu.cn/478610",
+    "desc": "2027校招「繁星计划」，物流营运/市场/管培/职能方向，深圳/上海/海外。",
+    "deadline": "以官网为准",
+    "salary": "约12万–35万（参考）",
+    "note": "总部上海，深圳为办公地之一"
+  },
+  {
+    "name": "商汤科技",
+    "en": "SenseTime",
+    "city": [
+      "深圳",
+      "香港"
+    ],
+    "ind": [
+      "AI"
+    ],
+    "role": [
+      "产品",
+      "职能"
+    ],
+    "url": "https://hr.sensetime.com",
+    "desc": "「无限原力」顶尖人才计划等，深圳/香港均有岗位。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": ""
+  },
+  {
+    "name": "优必选",
+    "en": "UBTECH",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "AI"
+    ],
+    "role": [
+      "产品",
+      "职能"
+    ],
+    "url": "https://ubtrobot.zhiye.com",
+    "desc": "2027校招，人形机器人方向，网申8月19日开启，11月发offer。",
+    "deadline": "网申8月19日起",
+    "salary": "以官网为准",
+    "note": ""
+  },
+  {
+    "name": "云天励飞",
+    "en": "Intellifusion",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "AI",
+      "科技"
+    ],
+    "role": [
+      "职能"
+    ],
+    "url": "https://intellif.zhiye.com/Campus",
+    "desc": "2027校园招聘，AI推理芯片方向。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "公众号「云天励飞招聘」"
+  },
+  {
+    "name": "元戎启行",
+    "en": "DeepRoute",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "AI"
+    ],
+    "role": [
+      "产品",
+      "运营"
+    ],
+    "url": "https://app.mokahr.com/campus-recruitment/deeproute/145894",
+    "desc": "2027秋招（7月6日开放），产品经理/商业分析/用户增长运营/品牌创意等岗位，base深圳/北京/上海。",
+    "deadline": "招满即止",
+    "salary": "以官网为准",
+    "note": "官方网申入口（MokaHR）"
+  },
+  {
+    "name": "小马智行",
+    "en": "Pony.ai",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "AI"
+    ],
+    "role": [
+      "产品"
+    ],
+    "url": "https://campus.pony.ai",
+    "desc": "2027校招，按Generalist Engineer招聘（以技术岗为主），产品/职能岗较少。",
+    "deadline": "9月上旬面试",
+    "salary": "以官网为准",
+    "note": "以技术岗为主"
+  },
+  {
+    "name": "元象",
+    "en": "XVERSE",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "AI"
+    ],
+    "role": [
+      "产品",
+      "运营",
+      "职能"
+    ],
+    "url": "https://careers.xverse.cn",
+    "desc": "AI与3D技术服务，大模型算法/海外产品运营等方向，深圳南山。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": ""
+  },
+  {
+    "name": "追一科技",
+    "en": "Zhuiyi",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "AI"
+    ],
+    "role": [
+      "产品",
+      "职能"
+    ],
+    "url": "https://zhuiyi.ai/talent/",
+    "desc": "对话式AI/NLP方向，深圳。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "以技术岗为主"
+  },
+  {
+    "name": "汇丰",
+    "en": "HSBC",
+    "city": [
+      "香港"
+    ],
+    "ind": [
+      "金融"
+    ],
+    "role": [
+      "管培生",
+      "销售"
+    ],
+    "url": "https://www.hsbc.com/careers/students-and-graduates",
+    "desc": "环球毕业生培训计划（Global Graduate Programme），含商业银行/财富管理等方向，滚动招聘。",
+    "deadline": "9–10月开放，滚动",
+    "salary": "本地MT约34.5k–36k HKD/月",
+    "note": ""
+  },
+  {
+    "name": "中银香港",
+    "en": "BOCHK",
+    "city": [
+      "香港"
+    ],
+    "ind": [
+      "金融"
+    ],
+    "role": [
+      "管培生",
+      "职能"
+    ],
+    "url": "https://www.boc.cn/aboutboc/bi4",
+    "desc": "2026秋季校招（约300人），见习管理人员（24个月MT计划）、客户服务主任等。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "中国银行统一校招网申，中银香港归入「港澳台及海外机构」；公众号「中国银行人才招聘」"
+  },
+  {
+    "name": "友邦保险",
+    "en": "AIA",
+    "city": [
+      "香港"
+    ],
+    "ind": [
+      "金融"
+    ],
+    "role": [
+      "管培生",
+      "销售"
+    ],
+    "url": "https://www.aia.com.hk",
+    "desc": "财富管理经理/管理培训生等，欢迎IANG/高才通签证持有者。",
+    "deadline": "以官网为准",
+    "salary": "提成制，参考口径较高",
+    "note": "香港岗位多由区域团队招聘，认准官方渠道"
+  },
+  {
+    "name": "渣打银行",
+    "en": "Standard Chartered",
+    "city": [
+      "香港"
+    ],
+    "ind": [
+      "金融"
+    ],
+    "role": [
+      "管培生",
+      "销售"
+    ],
+    "url": "https://www.sc.com/careers",
+    "desc": "环球银行/交易服务等方向实习及毕业生计划，香港。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "校招入口以官网为准"
+  },
+  {
+    "name": "恒生银行",
+    "en": "Hang Seng Bank",
+    "city": [
+      "香港"
+    ],
+    "ind": [
+      "金融"
+    ],
+    "role": [
+      "管培生",
+      "职能"
+    ],
+    "url": "https://www.hangseng.com/careers",
+    "desc": "学生实习计划及毕业生项目，含环球市场/零售银行/商业银行业务等。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "恒生属汇丰集团，全年仅可申请一次"
+  },
+  {
+    "name": "德勤",
+    "en": "Deloitte",
+    "city": [
+      "香港"
+    ],
+    "ind": [
+      "金融"
+    ],
+    "role": [
+      "管培生",
+      "职能"
+    ],
+    "url": "https://www.deloitte.com/cn/zh/careers",
+    "desc": "香港Graduate Programme，审计/咨询/税务等方向，不限专业。",
+    "deadline": "网申约8月—10月31日",
+    "salary": "以官网为准",
+    "note": "香港/澳门需英文简历；公众号「德勤招聘」"
+  },
+  {
+    "name": "毕马威",
+    "en": "KPMG",
+    "city": [
+      "香港"
+    ],
+    "ind": [
+      "金融"
+    ],
+    "role": [
+      "管培生",
+      "职能"
+    ],
+    "url": "https://app.mokahr.com/campus-recruitment/kpmg/74217#/jobs",
+    "desc": "香港Graduate Programme（Audit/Advisory/Tax等），滚动招聘。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "香港职位需持香港身份或有效工作许可"
+  },
+  {
+    "name": "安永",
+    "en": "EY",
+    "city": [
+      "香港"
+    ],
+    "ind": [
+      "金融"
+    ],
+    "role": [
+      "管培生",
+      "职能"
+    ],
+    "url": "https://www.ey.com/zh_cn/careers/campus-recruitment-in-hong-kong",
+    "desc": "香港毕业生计划（Graduate Programme），不限专业。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "香港网申系统 hkcareers.ey.com.cn"
+  },
+  {
+    "name": "普华永道",
+    "en": "PwC",
+    "city": [
+      "香港"
+    ],
+    "ind": [
+      "金融"
+    ],
+    "role": [
+      "管培生",
+      "职能"
+    ],
+    "url": "https://www.pwccn.com/en/careers/students.html",
+    "desc": "香港Graduate Programme，审计/咨询/税务等方向。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": ""
+  },
+  {
+    "name": "港交所",
+    "en": "HKEX",
+    "city": [
+      "香港"
+    ],
+    "ind": [
+      "金融"
+    ],
+    "role": [
+      "管培生",
+      "职能"
+    ],
+    "url": "https://www.hkexgroup.com/About-HKEX/Careers-at-HKEX/Early-Careers",
+    "desc": "Graduate Associate Programme，24个月轮岗，不限专业（GPA≥3.5）。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "深圳/上海亦有暑期实习"
+  },
+  {
+    "name": "顺丰速运",
+    "en": "SF Express",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "科技"
+    ],
+    "role": [
+      "运营",
+      "管培生",
+      "职能"
+    ],
+    "url": "https://campus.sf-express.com",
+    "desc": "2027校招，管培生/运营/职能方向，深圳总部。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": ""
+  }
+]
