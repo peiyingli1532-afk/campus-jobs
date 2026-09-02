@@ -784,7 +784,7 @@ function scoreCandidate(p, d, role) {
   if (p.langs.length) cert += 0.5;
   cert = Math.min(1, cert);
   const descHit = p.skills.length ? Math.min(1, p.skills.filter(s => (d.desc || "").includes(s)).length / 5) : 0.4;
-  const score = Math.round(100 * (0.40 * jdHit + 0.25 * edu + 0.15 * exp + 0.10 * cert + 0.10 * descHit));
+  const score = Math.round(100 * (0.45 * jdHit + 0.15 * edu + 0.20 * exp + 0.10 * cert + 0.10 * descHit));
   return Math.max(0, Math.min(100, score));
 }
 
@@ -852,10 +852,10 @@ function renderResults(results) {
 }
 function generateAdvice(p, results) {
   const tips = [];
-  if (p.edu === "未识别") tips.push("① 未识别到「学历」。校招中学历/学校是硬性门槛（占 25%），建议在简历顶部写清学校、学历、毕业时间。");
+  if (p.edu === "未识别") tips.push("① 未识别到「学历」。校招中学历/学校是硬性门槛（初筛可能直接卡学历），建议在简历顶部写清学校、学历、毕业时间。");
   else if (p.eduFinal < 75) tips.push("① 你的学历层级（" + p.edu + "）在部分学历要求高的岗位（金融/投行等）可能不占优，可突出学校排名/绩点/获奖弥补。");
   if (!p.majors.length) tips.push("② 未识别到「专业」。建议写清专业，专业相关度是初筛的重要维度。");
-  if (p.skills.length < 3) tips.push("③ 技能关键词偏少（识别到 " + p.skills.length + " 个）。JD 关键词匹配占 40%，建议把目标岗位 JD 里的词（需求分析、数据分析、用户运营等）写进技能和经历。");
+  if (p.skills.length < 3) tips.push("③ 技能关键词偏少（识别到 " + p.skills.length + " 个）。JD 关键词匹配占 45%，建议把目标岗位 JD 里的词（需求分析、数据分析、用户运营等）写进技能和经历。");
   if (!p.intern) tips.push("④ 未识别到「实习经历」。大厂 AI 筛选很看重相关实习，建议补充实习/项目（哪怕是课程项目）。");
   if (!p.quantified) tips.push("⑤ 缺少量化成果。建议把成果数字化（如『提升转化率 30%』『覆盖 10w 用户』），AI 筛选对数字更敏感。");
   if (!p.certs.length && !p.langs.length) tips.push("⑥ 未识别到证书/语言成绩。建议补充（英语六级/雅思、CFA/CPA 等），能加分。");
