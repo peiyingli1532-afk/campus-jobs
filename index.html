@@ -152,6 +152,7 @@
   .score-mid { background: #f59e0b; }
   .score-low { background: #cbd5e1; }
   .match-empty { color: var(--muted); padding: 30px; text-align: center; font-size: 14px; }
+  .advice-item { padding: 9px 12px; border-left: 3px solid #f59e0b; background: #fffbeb; border-radius: 0 8px 8px 0; margin-bottom: 8px; font-size: 13px; line-height: 1.6; }
 
   /* 弹窗 */
   .overlay { position: fixed; inset: 0; background: rgba(15,23,42,.45); display: none; align-items: center; justify-content: center; z-index: 50; padding: 20px; }
@@ -228,6 +229,7 @@
       </div>
       <div id="resumeSummary"></div>
       <div id="matchResults"></div>
+      <div id="resumeAdvice"></div>
     </div>
   </div>
 
@@ -795,6 +797,37 @@ function renderResults(results) {
   el.innerHTML = `<h3 class="match-results-title">🎯 匹配结果（按匹配度降序，共 ${results.length} 条，展示前 ${top.length}）</h3>` + rows;
 }
 
+function generateAdvice(r, results) {
+  const tips = [];
+  if (!r.roles.length) tips.push("① 未识别到「意向岗位」。建议在简历开头明确写『意向岗位：产品经理 / 运营 / 管培生 等』——这是匹配度里权重最高的一项（45%）。");
+  if (!r.inds.length) tips.push("② 未识别到「行业偏好」。建议在实习/项目描述里带上目标行业关键词（互联网 / 科技 / AI / 出海 / 金融），占 25%。");
+  if (!r.cities.length) tips.push("③ 未识别到「意向城市」。建议写『意向城市：深圳』或『香港』，占 15%。");
+  if (!r.edus.length) tips.push("④ 未识别到「学历/毕业时间」。建议写清学校、学历、毕业年份（校招看重应届身份）。");
+  if (r.skills.length < 3) tips.push("⑤ 技能关键词偏少（识别到 " + r.skills.length + " 个）。建议补充与目标岗位相关的技能词，如数据分析、Excel、英语、项目管理、用户研究等。");
+
+  const ROLE_TIP = {
+    "产品": "产品岗：建议补充「需求分析、竞品分析、数据驱动、PRD、Axure/Figma」等关键词，并用项目经历证明。",
+    "运营": "运营岗：建议补充「增长、活动策划、用户运营、数据分析(Excel/SQL)、社群/内容」等关键词，尽量写量化结果。",
+    "销售": "销售岗：建议补充「业绩数字、客户资源、商务谈判、渠道拓展、GTM」等关键词，突出结果导向。",
+    "管培生": "管培生：建议突出「领导力、社团/学生会、跨部门协作、快速学习、轮岗适应力」。",
+    "职能": "职能岗：建议突出「专业证书、办公软件、流程优化、细心严谨、合规意识」。"
+  };
+  if (results.length) {
+    const top = results.slice(0, 5);
+    const topNames = [...new Set(top.map(x => x.name))].slice(0, 3);
+    const topRoles = [...new Set(top.map(x => x.role))].slice(0, 3);
+    topRoles.forEach(role => { if (ROLE_TIP[role]) tips.push("🎯 " + ROLE_TIP[role]); });
+    if (topNames.length) tips.push("📌 你匹配度最高的公司是「" + topNames.map(esc).join("、") + "」，建议把这些公司的岗位方向关键词写进简历的相应经历里。");
+  }
+  tips.push("💡 通用建议：成果尽量数据化（如『提升转化率 30%』『负责 XX 项目，覆盖 10w 用户』）；关键词尽量与目标 JD 对齐；结构按「教育—实习—项目—技能」清晰分栏。");
+  return tips;
+}
+
+function renderAdvice(tips) {
+  document.getElementById("resumeAdvice").innerHTML =
+    `<h3 class="match-results-title">📝 简历修改建议</h3>` + tips.map(t => `<div class="advice-item">${t}</div>`).join("");
+}
+
 function analyzeResume() {
   const text = document.getElementById("resumeInput").value;
   if (!text.trim()) { alert("请先粘贴简历"); return; }
@@ -808,6 +841,7 @@ function analyzeResume() {
   });
   results.sort((a, b) => b.score - a.score);
   renderResults(results);
+  renderAdvice(generateAdvice(r, results));
   document.getElementById("matchResults").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
@@ -815,6 +849,7 @@ function clearResume() {
   document.getElementById("resumeInput").value = "";
   document.getElementById("resumeSummary").innerHTML = "";
   document.getElementById("matchResults").innerHTML = '<div class="match-empty">在这里粘贴简历后点击「分析匹配」，即可看到与你匹配度最高的企业和岗位方向。</div>';
+  document.getElementById("resumeAdvice").innerHTML = "";
 }
 
 clearResume();
