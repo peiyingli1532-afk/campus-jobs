@@ -57,7 +57,8 @@ def call_deepseek(current, news, today):
         "以及今天搜索到的校招新闻。请基于新闻对清单做增/改：\n"
         "- 有新公司或新一批校招启动/截止日期变化，更新对应字段；\n"
         "- 若新闻显示某公司已明确不招/停止，可删除；\n"
-        "- 字段结构必须与现有完全一致：name/en/city/ind/role/url/desc/deadline/salary/note(可空)/hidden(可空布尔)；\n"
+        "- 字段结构必须与现有完全一致：name/en/city/ind/role/url/desc/deadline/salary/note(可空)/hidden(可空布尔)/jd(可选，{岗位方向:\"关键词 关键词\"}画像)；\n"
+        "- 已有公司的 jd 字段要原样保留不变；新增公司时要为它的每个岗位方向生成 jd 关键词画像(8~15个空格分隔关键词，结合该公司业务特点)；\n"
         "- ind 行业可选值：互联网、科技、AI、出海、金融、外企；外资企业可同时标『外企』+其行业(如 ind:['金融','外企'])；\n"
         "- 只输出更新后的完整 JSON 数组，不要任何解释、不要 markdown 代码块。"
     )
