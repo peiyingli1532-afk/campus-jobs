@@ -123,6 +123,36 @@
   .link-btn:hover { background: #dbe7fd; }
   .empty { text-align: center; color: var(--muted); padding: 60px 20px; font-size: 14px; }
 
+  /* 顶部 tab */
+  .tabs { display: flex; gap: 8px; margin: 0 0 14px; }
+  .tab { padding: 8px 18px; font-size: 14px; border-radius: 999px; cursor: pointer; border: 1px solid var(--border); background: #fff; color: var(--muted); font-weight: 500; transition: all .15s; }
+  .tab.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  /* 简历匹配 */
+  .match-panel { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; box-shadow: var(--shadow); }
+  .resume-input { width: 100%; min-height: 200px; padding: 12px; font-size: 14px; border: 1px solid var(--border); border-radius: 10px; resize: vertical; font-family: inherit; line-height: 1.7; }
+  .resume-input:focus { outline: none; border-color: var(--accent); }
+  .match-actions { display: flex; gap: 10px; margin: 12px 0; }
+  .resume-summary { background: var(--accent-soft); border: 1px solid #d3e0fb; border-radius: 10px; padding: 12px 14px; margin-bottom: 16px; }
+  .resume-summary h3, .match-results-title { margin: 0 0 8px; font-size: 14px; }
+  .resume-summary .row { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13px; }
+  .resume-summary .k { color: var(--muted); }
+  .chip-mini { display: inline-block; padding: 1px 8px; border-radius: 5px; background: #fff; border: 1px solid var(--border); font-size: 12px; margin: 1px 3px 1px 0; }
+  .match-result { display: flex; align-items: center; gap: 14px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px; margin-bottom: 8px; background: #fff; }
+  .match-rank { font-size: 13px; color: var(--muted); width: 30px; text-align: center; font-weight: 600; flex: 0 0 auto; }
+  .match-main { flex: 1; min-width: 0; }
+  .match-name { font-weight: 600; font-size: 14px; }
+  .match-role { font-size: 12px; color: #7c3aed; margin-left: 6px; }
+  .match-reason { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .score-wrap { display: flex; align-items: center; gap: 8px; width: 180px; flex: 0 0 auto; }
+  .score-bar { flex: 1; height: 8px; border-radius: 999px; background: #eef0f3; overflow: hidden; }
+  .score-fill { height: 100%; border-radius: 999px; }
+  .score-num { font-weight: 700; font-size: 15px; width: 40px; text-align: right; }
+  .score-high { background: #16a34a; }
+  .score-mid { background: #f59e0b; }
+  .score-low { background: #cbd5e1; }
+  .match-empty { color: var(--muted); padding: 30px; text-align: center; font-size: 14px; }
+
   /* 弹窗 */
   .overlay { position: fixed; inset: 0; background: rgba(15,23,42,.45); display: none; align-items: center; justify-content: center; z-index: 50; padding: 20px; }
   .overlay.show { display: flex; }
@@ -149,6 +179,12 @@
     <span class="badge-official">全部为官网投递渠道</span>
   </header>
 
+  <div class="tabs">
+    <button class="tab on" id="tabBrowse" onclick="switchTab('browse')">岗位浏览</button>
+    <button class="tab" id="tabMatch" onclick="switchTab('match')">简历匹配</button>
+  </div>
+
+  <div id="browseView">
   <div class="toolbar">
     <div class="search-row">
       <div class="search-box">
@@ -181,6 +217,19 @@
 
   <div class="stats" id="stats"></div>
   <div class="list" id="list"></div>
+  </div>
+
+  <div id="matchView" style="display:none">
+    <div class="match-panel">
+      <textarea id="resumeInput" class="resume-input" placeholder="在此粘贴你的简历全文（含教育背景、实习/项目经历、技能、意向岗位、意向城市等）…"></textarea>
+      <div class="match-actions">
+        <button class="btn primary" onclick="analyzeResume()">🔍 分析匹配</button>
+        <button class="btn ghost" onclick="clearResume()">清空</button>
+      </div>
+      <div id="resumeSummary"></div>
+      <div id="matchResults"></div>
+    </div>
+  </div>
 
   <footer>数据更新于 2026-09-01 · 具体岗位 / 截止日期 / 薪资以各公司官网实时信息为准 · 数据保存在浏览器本地</footer>
 </div>
@@ -647,6 +696,128 @@ async function bootstrap() {
   render();
 }
 bootstrap();
+</script>
+<script>
+// ============ 简历匹配（纯本地规则） ============
+const ROLE_KW = {
+  "产品": ["产品经理","产品策划","产品运营","产品岗","产品实习","产品设计","需求分析","竞品分析","PRD","产品方向"],
+  "运营": ["运营","用户运营","内容运营","活动运营","新媒体","社群运营","电商运营","内容策划","短视频","直播运营","增长"],
+  "销售": ["销售","商务拓展","商务","客户经理","渠道","市场拓展","BD","大客户","GTM"],
+  "管培生": ["管培生","管理培训生","管培","轮岗","培训生","MT","储备干部"],
+  "职能": ["职能","人力资源","HR","财务","会计","法务","行政","招聘","薪酬","审计","税务","公关","政府关系"]
+};
+const IND_KW = {
+  "互联网": ["互联网","电商","内容平台","社交","短视频","游戏","社区","SaaS","在线","直播"],
+  "科技": ["科技","硬件","芯片","半导体","通信","机器人","智能制造","消费电子","嵌入式","自动驾驶"],
+  "AI": ["人工智能","AI","机器学习","深度学习","算法","大模型","NLP","计算机视觉","数据科学","AIGC"],
+  "出海": ["出海","海外","跨境电商","全球化","国际业务","外贸","本地化"],
+  "金融": ["金融","银行","证券","保险","投资","基金","风控","量化","资管","投行"]
+};
+const CITY_KW = { "深圳": ["深圳","深圳市"], "香港": ["香港","Hong Kong"] };
+const EDU_KW = ["博士","硕士","研究生","本科","985","211","海归","留学","应届"];
+const SKILLS = ["Python","SQL","Excel","数据分析","Tableau","英语","粤语","日语","项目管理","用户研究","用户调研","增长","文案","视频剪辑","Photoshop","Figma","PPT","Axure","市场分析","竞品分析","社群运营","直播","投放","A/B测试","埋点","原型设计","需求文档","逻辑思维","沟通表达"];
+
+function switchTab(t) {
+  document.getElementById("browseView").style.display = (t === "match") ? "none" : "block";
+  document.getElementById("matchView").style.display = (t === "match") ? "block" : "none";
+  document.getElementById("tabBrowse").classList.toggle("on", t !== "match");
+  document.getElementById("tabMatch").classList.toggle("on", t === "match");
+}
+
+function parseResume(text) {
+  const t = text || "";
+  const has = kws => kws.some(w => t.includes(w));
+  return {
+    roles: Object.keys(ROLE_KW).filter(k => has(ROLE_KW[k])),
+    inds: Object.keys(IND_KW).filter(k => has(IND_KW[k])),
+    cities: Object.keys(CITY_KW).filter(k => has(CITY_KW[k])),
+    edus: EDU_KW.filter(w => t.includes(w)),
+    skills: SKILLS.filter(w => t.includes(w))
+  };
+}
+
+function matchScore(d, role, r) {
+  const targetHit = r.roles.length ? (r.roles.includes(role) ? 1 : 0.3) : 0.6;
+  const indScore = r.inds.length ? (d.ind.filter(i => r.inds.includes(i)).length / r.inds.length) : 0.6;
+  const cityScore = r.cities.length ? (d.city.some(c => r.cities.includes(c)) ? 1 : 0) : 0.6;
+  const skillScore = r.skills.length ? (r.skills.filter(s => (d.desc || "").includes(s)).length / r.skills.length) : 0.5;
+  return Math.round(100 * (0.45 * targetHit + 0.25 * indScore + 0.15 * cityScore + 0.15 * skillScore));
+}
+
+function buildReason(d, role, r) {
+  const parts = [];
+  if (r.roles.length) parts.push(r.roles.includes(role) ? "岗位命中·" + role : "岗位方向·" + role);
+  else parts.push("岗位方向·" + role);
+  const indHit = d.ind.filter(i => r.inds.includes(i));
+  if (indHit.length) parts.push("行业·" + indHit.join("/"));
+  if (r.cities.length && d.city.some(c => r.cities.includes(c))) parts.push("城市·" + d.city.join("/"));
+  const skillHits = r.skills.filter(s => (d.desc || "").includes(s));
+  if (skillHits.length) parts.push("技能命中" + skillHits.length + "项");
+  return parts.join(" ｜ ");
+}
+
+function chips(arr, empty) {
+  return arr.length ? arr.map(x => `<span class="chip-mini">${esc(x)}</span>`).join("") : `<span class="chip-mini" style="color:#b0b5bc">${empty || "未识别"}</span>`;
+}
+
+function renderSummary(r) {
+  document.getElementById("resumeSummary").innerHTML = `
+    <h3>📄 我的简历（解析结果）</h3>
+    <div class="row">
+      <span><span class="k">意向岗位：</span>${chips(r.roles)}</span>
+      <span><span class="k">行业偏好：</span>${chips(r.inds)}</span>
+      <span><span class="k">意向城市：</span>${chips(r.cities)}</span>
+      <span><span class="k">学历：</span>${chips(r.edus)}</span>
+    </div>
+    <div class="row" style="margin-top:6px"><span class="k">技能：</span>${chips(r.skills)}</div>`;
+}
+
+function renderResults(results) {
+  const el = document.getElementById("matchResults");
+  if (!results.length) { el.innerHTML = '<div class="match-empty">暂无数据</div>'; return; }
+  const top = results.slice(0, 60);
+  const rows = top.map((x, i) => {
+    const cls = x.score >= 80 ? "score-high" : (x.score >= 60 ? "score-mid" : "score-low");
+    return `
+    <div class="match-result">
+      <div class="match-rank">#${i + 1}</div>
+      <div class="match-main">
+        <div class="match-name">${esc(x.name)}<span class="en">${esc(x.en || "")}</span><span class="match-role">${esc(x.role)}</span></div>
+        <div class="match-reason">${esc(x.reason)}</div>
+      </div>
+      <div class="score-wrap">
+        <div class="score-bar"><div class="score-fill ${cls}" style="width:${x.score}%"></div></div>
+        <div class="score-num">${x.score}</div>
+      </div>
+      <a class="btn small" href="${esc(x.url || "#")}" target="_blank" rel="noopener noreferrer">投递 ↗</a>
+    </div>`;
+  }).join("");
+  el.innerHTML = `<h3 class="match-results-title">🎯 匹配结果（按匹配度降序，共 ${results.length} 条，展示前 ${top.length}）</h3>` + rows;
+}
+
+function analyzeResume() {
+  const text = document.getElementById("resumeInput").value;
+  if (!text.trim()) { alert("请先粘贴简历"); return; }
+  const r = parseResume(text);
+  renderSummary(r);
+  const results = [];
+  data.forEach(d => {
+    (d.role || []).forEach(role => {
+      results.push({ name: d.name, en: d.en, role: role, score: matchScore(d, role, r), url: d.url, reason: buildReason(d, role, r) });
+    });
+  });
+  results.sort((a, b) => b.score - a.score);
+  renderResults(results);
+  document.getElementById("matchResults").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function clearResume() {
+  document.getElementById("resumeInput").value = "";
+  document.getElementById("resumeSummary").innerHTML = "";
+  document.getElementById("matchResults").innerHTML = '<div class="match-empty">在这里粘贴简历后点击「分析匹配」，即可看到与你匹配度最高的企业和岗位方向。</div>';
+}
+
+clearResume();
 </script>
 </body>
 </html>
