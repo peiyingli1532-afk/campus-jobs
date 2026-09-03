@@ -193,8 +193,6 @@
   .hint { font-size: 12px; color: var(--muted); }
   footer { margin-top: 40px; text-align: center; font-size: 12px; color: #b0b5bc; }
 </style>
-<script src="libs/jszip.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -813,7 +811,24 @@ function renderDashboard() {
   document.getElementById("statusTable").innerHTML = rows.join("") || '<div class="match-empty">暂无投递记录</div>';
 }
 
-if (window.pdfjsLib) { pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js"; }
+function loadScript(src) {
+  return new Promise((resolve, reject) => {
+    const s = document.createElement("script");
+    s.src = src;
+    s.onload = resolve;
+    s.onerror = () => reject(new Error("加载失败: " + src));
+    document.head.appendChild(s);
+  });
+}
+const PDFJS_URL = "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js";
+const PDFWORKER_URL = "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
+async function ensurePdfjs() {
+  if (!window.pdfjsLib) await loadScript(PDFJS_URL);
+  pdfjsLib.GlobalWorkerOptions.workerSrc = PDFWORKER_URL;
+}
+async function ensureJszip() {
+  if (!window.JSZip) await loadScript("libs/jszip.min.js");
+}
 
 // —— 简历信息抽取 ——
 const EDU_TIER = { "博士": 100, "硕士": 85, "研究生": 85, "本科": 70, "专科": 55 };
@@ -1038,8 +1053,8 @@ document.getElementById("resumeFile").addEventListener("change", e => {
     try {
       let text = "";
       const n = f.name.toLowerCase();
-      if (n.endsWith(".pdf")) text = await extractPdfText(buf);
-      else if (n.endsWith(".docx")) text = await extractDocxText(buf);
+      if (n.endsWith(".pdf")) { await ensurePdfjs(); text = await extractPdfText(buf); }
+      else if (n.endsWith(".docx")) { await ensureJszip(); text = await extractDocxText(buf); }
       else { alert("请上传 PDF 或 Word(.docx) 文件"); clearResume(); return; }
       if (!text.trim()) { alert("未能从文件中解析出文本（可能是扫描件/图片版 PDF）。"); clearResume(); return; }
       resumeText = text;
