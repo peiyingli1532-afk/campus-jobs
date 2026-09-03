@@ -87,9 +87,7 @@
     padding: 16px 18px; box-shadow: var(--shadow); transition: box-shadow .15s, transform .15s;
   }
   .card:hover { box-shadow: 0 4px 12px rgba(16,24,40,.09); }
-  .card.hidden { opacity: .55; }
   .new-badge { display: inline-block; background: #dc2626; color: #fff; font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 5px; margin-left: 6px; vertical-align: 2px; }
-  .hidden-badge { display: inline-block; background: #9ca3af; color: #fff; font-size: 11px; font-weight: 600; padding: 1px 7px; border-radius: 5px; margin-left: 6px; vertical-align: 2px; }
   .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
   .card-name { font-size: 16px; font-weight: 700; }
   .card-name .en { font-size: 12px; font-weight: 500; color: var(--muted); margin-left: 6px; }
@@ -220,7 +218,6 @@
         <input id="search" type="text" placeholder="搜索公司名 / 岗位方向 / 校招项目…">
       </div>
       <button class="btn ghost" id="resetBtn" title="清空全部筛选">重置</button>
-      <button class="btn ghost" id="hiddenBtn">显示已隐藏</button>
       <button class="btn primary" id="addBtn">＋ 新增</button>
       <button class="btn" id="exportBtn">导出</button>
       <button class="btn" id="importBtn">导入</button>
@@ -518,7 +515,6 @@ let selectedCity = new Set();
 let selectedInd = new Set();
 let selectedRole = new Set();
 let selectedStatus = null;
-let showHidden = false;
 let query = "";
 
 const ROLE_ORDER = ["产品","运营","销售","管培生","职能"];
@@ -609,13 +605,11 @@ function render() {
     v => selectedRole.has(v) ? selectedRole.delete(v) : selectedRole.add(v));
   renderStatusChips();
 
-  const list = data.filter(d => matches(d) && (showHidden || !d.hidden));
-  const hiddenCount = data.filter(d => d.hidden).length;
-  document.getElementById("hiddenBtn").textContent = showHidden ? "收起已隐藏" : `显示已隐藏 (${hiddenCount})`;
+  const list = data.filter(d => matches(d) && !d.hidden);
+  const total = data.filter(d => !d.hidden).length;
   document.getElementById("stats").innerHTML =
-    `共 <b>${data.length}</b> 家公司 · 当前显示 <b>${list.length}</b> 家` +
-    (hiddenCount ? ` · 已隐藏 <b>${hiddenCount}</b> 家` : "") +
-    (list.length < data.length ? ` <span class="hint">（已筛选）</span>` : "");
+    `共 <b>${total}</b> 家公司 · 当前显示 <b>${list.length}</b> 家` +
+    (list.length < total ? ` <span class="hint">（已筛选）</span>` : "");
 
   const wrap = document.getElementById("list");
   if (!list.length) {
@@ -632,9 +626,9 @@ function render() {
       d.ind.map(i => `<span class="tag ind">${i}</span>`).join("") +
       d.role.map(r => `<span class="tag role">${r}</span>`).join("");
     return `
-    <div class="card${d.hidden ? " hidden" : ""}">
+    <div class="card">
       <div class="card-top">
-        <div class="card-name">${esc(d.name)}<span class="en">${esc(d.en || "")}</span>${isNew(d) ? ' <span class="new-badge">NEW</span>' : ""}${d.hidden ? ' <span class="hidden-badge">已隐藏</span>' : ""}</div>
+        <div class="card-name">${esc(d.name)}<span class="en">${esc(d.en || "")}</span>${isNew(d) ? ' <span class="new-badge">NEW</span>' : ""}</div>
         <div class="card-actions">
           <select class="status-select ${statusClass}" onchange="setStatus(${realIdx}, this.value)">
             ${STATUS_ORDER.map(s => `<option value="${s}" ${s === status ? "selected" : ""}>${s}</option>`).join("")}
@@ -674,7 +668,6 @@ document.getElementById("resetBtn").onclick = () => {
   selectedCity.clear(); selectedInd.clear(); selectedRole.clear(); selectedStatus = null;
   query = ""; document.getElementById("search").value = ""; render();
 };
-document.getElementById("hiddenBtn").onclick = () => { showHidden = !showHidden; render(); };
 
 // 新增 / 编辑
 let editingIdx = null;
