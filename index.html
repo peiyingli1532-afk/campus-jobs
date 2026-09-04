@@ -192,20 +192,70 @@
   .modal-foot { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; }
   .hint { font-size: 12px; color: var(--muted); }
   footer { margin-top: 40px; text-align: center; font-size: 12px; color: #b0b5bc; }
+
+  /* ===== UI 优化 ===== */
+  body { background: linear-gradient(180deg, #eef2f9 0%, #f5f6f8 280px); }
+  .hero {
+    background: linear-gradient(135deg, #2563eb 0%, #4f46e5 60%, #7c3aed 100%);
+    border-radius: 18px; padding: 24px 26px 20px; color: #fff;
+    margin-bottom: 18px; box-shadow: 0 10px 30px rgba(79,70,229,.28);
+  }
+  .hero h1 { color: #fff; font-size: 26px; letter-spacing: .5px; }
+  .hero .subtitle { color: rgba(255,255,255,.85); margin: 4px 0 0; }
+  .hero .subtitle strong { color: #fff; }
+  .hero-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; }
+  .hero .badge-official { background: rgba(255,255,255,.18); color: #fff; border: 1px solid rgba(255,255,255,.3); }
+  .hero-stats { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+  .hero-stat { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22); border-radius: 12px; padding: 10px 18px; min-width: 84px; text-align: center; }
+  .hs-num { display: block; font-size: 24px; font-weight: 700; line-height: 1.1; }
+  .hs-label { font-size: 12px; opacity: .85; }
+
+  .tabs { display: flex; gap: 6px; margin: 0 0 16px; background: #e9edf3; padding: 5px; border-radius: 12px; width: fit-content; }
+  .tab { padding: 8px 18px; font-size: 14px; border-radius: 9px; cursor: pointer; border: none; background: transparent; color: #5b6470; font-weight: 600; transition: all .18s; }
+  .tab:hover { color: #1f2329; }
+  .tab.on { background: #fff; color: #2563eb; box-shadow: 0 2px 8px rgba(16,24,40,.08); }
+
+  .toolbar { padding: 16px 18px; border-radius: 14px; box-shadow: 0 2px 10px rgba(16,24,40,.06); }
+  .btn { border-radius: 10px; font-weight: 500; }
+  .btn.primary { background: linear-gradient(135deg, #2563eb, #4f46e5); border: none; box-shadow: 0 3px 10px rgba(37,99,235,.25); }
+  .btn.primary:hover { background: linear-gradient(135deg, #1d4ed8, #4338ca); }
+
+  .chip { background: #f1f3f7; border: 1px solid #e6e8ec; }
+  .chip.on { background: #eef4ff; color: #2563eb; border-color: #bfd4fb; }
+
+  .card { border-radius: 14px; border-left: 3px solid transparent; transition: box-shadow .18s, transform .18s, border-color .18s; }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(16,24,40,.1); border-left-color: #2563eb; }
+  .card-name { font-size: 17px; }
+  .tags { gap: 7px; }
+  .tag { border-radius: 7px; font-size: 12px; }
+
+  @media (max-width: 640px) {
+    .wrap { padding: 16px 12px 60px; }
+    .hero { padding: 18px 18px 16px; }
+    .hero h1 { font-size: 21px; }
+    .search-row { flex-wrap: wrap; }
+    .filter-label { width: 52px; }
+    .score-wrap { width: 120px; }
+  }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <header>
-    <h1>校招 · 官网投递岗位筛选器</h1>
-    <p class="subtitle">仅收录<strong>企业官网</strong>投递渠道（不包含招聘软件），可按城市 / 行业 / 岗位类别筛选</p>
-    <span class="badge-official">全部为官网投递渠道</span>
+  <header class="hero">
+    <div class="hero-top">
+      <div>
+        <h1>校招岗位筛选器</h1>
+        <p class="subtitle">深圳 · 香港 ｜ 仅收录<strong>企业官网</strong>投递渠道 ｜ 27届秋招</p>
+      </div>
+      <span class="badge-official">官网直投</span>
+    </div>
+    <div class="hero-stats" id="heroStats"></div>
   </header>
 
   <div class="tabs">
-    <button class="tab on" id="tabBrowse" onclick="switchTab('browse')">岗位浏览</button>
-    <button class="tab" id="tabMatch" onclick="switchTab('match')">简历匹配</button>
-    <button class="tab" id="tabDash" onclick="switchTab('dash')">数据看板</button>
+    <button class="tab on" id="tabBrowse" onclick="switchTab('browse')">🔍 岗位浏览</button>
+    <button class="tab" id="tabMatch" onclick="switchTab('match')">📄 简历匹配</button>
+    <button class="tab" id="tabDash" onclick="switchTab('dash')">📊 数据看板</button>
   </div>
 
   <div id="browseView">
@@ -602,6 +652,7 @@ function render() {
   renderChips("roleChips", ROLE_ORDER, uniqValues("role"), selectedRole,
     v => selectedRole.has(v) ? selectedRole.delete(v) : selectedRole.add(v));
   renderStatusChips();
+  updateHeroStats();
 
   const list = data.filter(d => matches(d) && !d.hidden);
   const total = data.filter(d => !d.hidden).length;
@@ -658,6 +709,20 @@ function isNew(d) {
   if (!d.addedDate) return false;
   const days = (Date.now() - new Date(d.addedDate + "T00:00:00").getTime()) / 86400000;
   return days >= 0 && days < 3;
+}
+function updateHeroStats() {
+  const el = document.getElementById("heroStats");
+  if (!el) return;
+  const active = data.filter(d => !d.hidden);
+  const total = active.length;
+  const progress = active.filter(d => ["已投递","已笔试","已面试","已Offer"].includes(d.status || "待投递")).length;
+  const offer = active.filter(d => (d.status || "待投递") === "已Offer").length;
+  const newCount = active.filter(d => isNew(d)).length;
+  el.innerHTML = `
+    <div class="hero-stat"><span class="hs-num">${total}</span><span class="hs-label">在招公司</span></div>
+    <div class="hero-stat"><span class="hs-num">${progress}</span><span class="hs-label">推进中</span></div>
+    <div class="hero-stat"><span class="hs-num">${offer}</span><span class="hs-label">已 Offer</span></div>
+    <div class="hero-stat"><span class="hs-num">${newCount}</span><span class="hs-label">新增</span></div>`;
 }
 
 // ============ 事件 ============
