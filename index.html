@@ -38,7 +38,7 @@
     background: var(--green-soft); color: var(--green);
     font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px;
   }
-  .badge-official::before { content: "✓"; font-weight: 700; }
+  .badge-official::before { content: ""; font-weight: 700; }
 
   /* 搜索 + 工具栏 */
   .toolbar {
@@ -64,6 +64,8 @@
   .btn.ghost { background: transparent; border-color: transparent; color: var(--muted); }
   .btn.ghost:hover { color: var(--text); background: var(--chip-hover); }
   .btn.small { padding: 4px 9px; font-size: 12px; border-radius: 7px; }
+  .btn.ghost.on { color: #2563eb; background: #eef4ff; }
+  .fav-btn.on { color: #d97706; border-color: #fbbf24; background: #fffbeb; }
 
   /* 筛选组 */
   .filter-group { margin-top: 12px; display: flex; align-items: flex-start; gap: 10px; }
@@ -253,18 +255,24 @@
   </header>
 
   <div class="tabs">
-    <button class="tab on" id="tabBrowse" onclick="switchTab('browse')">🔍 岗位浏览</button>
-    <button class="tab" id="tabMatch" onclick="switchTab('match')">📄 简历匹配</button>
-    <button class="tab" id="tabDash" onclick="switchTab('dash')">📊 数据看板</button>
+    <button class="tab on" id="tabBrowse" onclick="switchTab('browse')">岗位浏览</button>
+    <button class="tab" id="tabMatch" onclick="switchTab('match')">简历匹配</button>
+    <button class="tab" id="tabDash" onclick="switchTab('dash')">数据看板</button>
   </div>
 
   <div id="browseView">
   <div class="toolbar">
     <div class="search-row">
       <div class="search-box">
-        <span class="icon">🔍</span>
-        <input id="search" type="text" placeholder="搜索公司名 / 岗位方向 / 校招项目…">
+        <span class="icon"></span>
+        <input id="search" type="text" placeholder="搜索公司名 / 岗位 / 行业 / JD关键词…">
       </div>
+      <select id="sortSelect" class="btn">
+        <option value="default">默认排序</option>
+        <option value="name">按公司名</option>
+        <option value="status">按投递状态</option>
+      </select>
+      <button class="btn ghost" id="favBtn">只看收藏</button>
       <button class="btn ghost" id="resetBtn" title="清空全部筛选">重置</button>
       <button class="btn primary" id="addBtn">＋ 新增</button>
       <button class="btn" id="exportBtn">导出</button>
@@ -297,11 +305,11 @@
     <div class="match-panel">
       <label class="upload-zone" for="resumeFile">
         <input type="file" id="resumeFile" accept=".pdf,.docx" hidden>
-        <div class="upload-hint">📄 点击选择简历文件（支持 PDF / Word .docx）</div>
+        <div class="upload-hint">点击选择简历文件（支持 PDF / Word .docx）</div>
         <div class="upload-name" id="uploadName" style="display:none"></div>
       </label>
       <div class="match-actions">
-        <button class="btn primary" onclick="analyzeResume()">🔍 分析匹配</button>
+        <button class="btn primary" onclick="analyzeResume()">分析匹配</button>
         <button class="btn ghost" onclick="clearResume()">清空</button>
       </div>
       <div id="resumeSummary"></div>
@@ -312,11 +320,11 @@
 
   <div id="dashView" style="display:none">
     <div class="dash-section">
-      <h3 class="dash-title">📊 投递状态分布（横版条形图）</h3>
+      <h3 class="dash-title">投递状态分布（横版条形图）</h3>
       <div id="statusChart"></div>
     </div>
     <div class="dash-section">
-      <h3 class="dash-title">📋 投递状态明细（哪些公司 · 哪些岗位）</h3>
+      <h3 class="dash-title">投递状态明细（哪些公司 · 哪些岗位）</h3>
       <div id="statusTable"></div>
     </div>
   </div>
@@ -563,6 +571,8 @@ let selectedCity = new Set();
 let selectedInd = new Set();
 let selectedRole = new Set();
 let selectedStatus = null;
+let sortBy = "default";
+let onlyFav = false;
 let query = "";
 
 const ROLE_ORDER = ["产品","运营","销售","管培生","职能"];
@@ -587,12 +597,15 @@ function loadData() {
   saved.forEach(s => { byName[s.name] = s; });
   data.forEach(d => {
     const s = byName[d.name];
-    if (s && s.status) d.status = s.status;
+    if (s) {
+      if (s.status) d.status = s.status;
+      if (s.fav != null) d.fav = s.fav;
+    }
   });
   saved.forEach(s => {
     if (!data.some(d => d.name === s.name)) data.push(s);
   });
-  data.forEach(d => { if (!d.status) d.status = "待投递"; if (d.hidden == null) d.hidden = false; });
+  data.forEach(d => { if (!d.status) d.status = "待投递"; if (d.hidden == null) d.hidden = false; if (d.fav == null) d.fav = false; });
   saveData();
 }
 function saveData() {
@@ -639,10 +652,16 @@ function matches(d) {
   if (selectedRole.size && !d.role.some(r => selectedRole.has(r))) return false;
   if (selectedStatus && (d.status || "待投递") !== selectedStatus) return false;
   if (query) {
-    const hay = [d.name, d.en, d.desc, d.note, d.city.join(" "), d.ind.join(" "), d.role.join(" ")].join(" ").toLowerCase();
+    const jd = d.jd ? Object.values(d.jd).join(" ") : "";
+    const hay = [d.name, d.en, d.desc, d.note, d.city.join(" "), d.ind.join(" "), d.role.join(" "), jd].join(" ").toLowerCase();
     if (!hay.includes(query.toLowerCase())) return false;
   }
   return true;
+}
+function sortList(list) {
+  if (sortBy === "name") return list.slice().sort((a, b) => (a.name || "").localeCompare(b.name || "", "zh"));
+  if (sortBy === "status") return list.slice().sort((a, b) => STATUS_ORDER.indexOf(a.status || "待投递") - STATUS_ORDER.indexOf(b.status || "待投递"));
+  return list;
 }
 function render() {
   renderChips("cityChips", CITY_ORDER, uniqValues("city"), selectedCity,
@@ -654,7 +673,7 @@ function render() {
   renderStatusChips();
   updateHeroStats();
 
-  const list = data.filter(d => matches(d) && !d.hidden);
+  const list = sortList(data.filter(d => matches(d) && !d.hidden && (!onlyFav || d.fav)));
   const total = data.filter(d => !d.hidden).length;
   document.getElementById("stats").innerHTML =
     `共 <b>${total}</b> 家公司 · 当前显示 <b>${list.length}</b> 家` +
@@ -671,7 +690,7 @@ function render() {
     const statusClass = STATUS_CLASS[status] || "s-todo";
     const tags =
       `<span class="status-badge ${statusClass}">${status}</span>` +
-      d.city.map(c => `<span class="tag city">📍 ${c}</span>`).join("") +
+      d.city.map(c => `<span class="tag city">${c}</span>`).join("") +
       d.ind.map(i => `<span class="tag ind">${i}</span>`).join("") +
       d.role.map(r => `<span class="tag role">${r}</span>`).join("");
     return `
@@ -682,6 +701,7 @@ function render() {
           <select class="status-select ${statusClass}" onchange="setStatus(${realIdx}, this.value)">
             ${STATUS_ORDER.map(s => `<option value="${s}" ${s === status ? "selected" : ""}>${s}</option>`).join("")}
           </select>
+          <button class="btn small fav-btn${d.fav ? " on" : ""}" onclick="toggleFav(${realIdx})">${d.fav ? "已收藏" : "收藏"}</button>
           <button class="btn small" onclick="editEntry(${realIdx})">编辑</button>
           <button class="btn small" onclick="delEntry(${realIdx})">删除</button>
         </div>
@@ -692,7 +712,7 @@ function render() {
         <span><span class="k">截止：</span>${esc(d.deadline || "以官网为准")}</span>
         <span><span class="k">薪资：</span>${esc(d.salary || "以官网为准")}</span>
       </div>
-      ${d.note ? `<div class="note">⚠ ${esc(d.note)}</div>` : ""}
+      ${d.note ? `<div class="note">${esc(d.note)}</div>` : ""}
       <div class="card-foot">
         <a class="link-btn" href="${esc(d.url || "#")}" target="_blank" rel="noopener noreferrer">官网投递 ↗</a>
         <span class="badge-official">企业官网</span>
@@ -731,6 +751,8 @@ document.getElementById("resetBtn").onclick = () => {
   selectedCity.clear(); selectedInd.clear(); selectedRole.clear(); selectedStatus = null;
   query = ""; document.getElementById("search").value = ""; render();
 };
+document.getElementById("sortSelect").addEventListener("change", e => { sortBy = e.target.value; render(); });
+document.getElementById("favBtn").onclick = () => { onlyFav = !onlyFav; document.getElementById("favBtn").classList.toggle("on", onlyFav); render(); };
 
 // 新增 / 编辑
 let editingIdx = null;
@@ -781,6 +803,7 @@ function delEntry(idx) {
 window.editEntry = editEntry;
 window.delEntry = delEntry;
 window.setStatus = function(idx, val) { data[idx].status = val; saveData(); render(); };
+window.toggleFav = function(idx) { data[idx].fav = !data[idx].fav; saveData(); render(); };
 function editEntry(idx) { openModal(idx); }
 
 // 导出 / 导入
@@ -996,7 +1019,7 @@ function renderSummary(p) {
   if (p.leadership) expParts.push("有社团/管理");
   if (p.quantified) expParts.push("有量化成果");
   document.getElementById("resumeSummary").innerHTML = `
-    <h3>📄 我的简历（解析结果）</h3>
+    <h3>我的简历（解析结果）</h3>
     <div class="row">
       <span><span class="k">学历：</span>${chips([p.edu + (p.elite.length ? "·" + p.elite[0] : "")])}</span>
       <span><span class="k">专业：</span>${chips(p.majors)}</span>
@@ -1026,7 +1049,7 @@ function renderResults(results) {
       <a class="btn small" href="${esc(x.url || "#")}" target="_blank" rel="noopener noreferrer">投递 ↗</a>
     </div>`;
   }).join("");
-  el.innerHTML = `<h3 class="match-results-title">🎯 匹配结果（按匹配度降序，共 ${results.length} 条，展示前 ${top.length}）</h3>` + rows;
+  el.innerHTML = `<h3 class="match-results-title">匹配结果（按匹配度降序，共 ${results.length} 条，展示前 ${top.length}）</h3>` + rows;
 }
 function generateAdvice(p, results) {
   const tips = [];
@@ -1039,25 +1062,25 @@ function generateAdvice(p, results) {
   if (!p.certs.length && !p.langs.length) tips.push("⑥ 未识别到证书/语言成绩。建议补充（英语六级/雅思、CFA/CPA 等），能加分。");
 
   const ROLE_TIP = {
-    "产品": "🎯 产品岗 JD 高频词：需求分析、竞品分析、用户研究、数据分析、PRD、原型(Axure/Figma)。建议把这些词+对应经历写进简历。",
-    "运营": "🎯 运营岗 JD 高频词：用户运营、活动策划、增长、转化率、社群/内容、数据分析(Excel/SQL)。",
-    "销售": "🎯 销售岗 JD 高频词：业绩数字、客户关系、商务谈判、渠道拓展、抗压。",
-    "管培生": "🎯 管培生 JD 高频词：领导力、团队协作、跨部门、快速学习、社团/学生会。",
-    "职能": "🎯 职能岗 JD 高频词：专业证书、办公软件、流程、合规、细心。"
+    "产品": "产品岗 JD 高频词：需求分析、竞品分析、用户研究、数据分析、PRD、原型(Axure/Figma)。建议把这些词+对应经历写进简历。",
+    "运营": "运营岗 JD 高频词：用户运营、活动策划、增长、转化率、社群/内容、数据分析(Excel/SQL)。",
+    "销售": "销售岗 JD 高频词：业绩数字、客户关系、商务谈判、渠道拓展、抗压。",
+    "管培生": "管培生 JD 高频词：领导力、团队协作、跨部门、快速学习、社团/学生会。",
+    "职能": "职能岗 JD 高频词：专业证书、办公软件、流程、合规、细心。"
   };
   if (results.length) {
     const top = results.slice(0, 5);
     const topNames = [...new Set(top.map(x => x.name))].slice(0, 3);
     const topRoles = [...new Set(top.map(x => x.role))].slice(0, 3);
     topRoles.forEach(role => { if (ROLE_TIP[role]) tips.push(ROLE_TIP[role]); });
-    if (topNames.length) tips.push("📌 你匹配度最高的公司是「" + topNames.map(esc).join("、") + "」，建议优先对照这些岗位的 JD 补强关键词。");
+    if (topNames.length) tips.push("你匹配度最高的公司是「" + topNames.map(esc).join("、") + "」，建议优先对照这些岗位的 JD 补强关键词。");
   }
-  tips.push("💡 通用建议：关键词对齐目标 JD、成果数据化、经历按「背景—动作—结果」写、控制一页以内、避免复杂排版导致解析失败。");
+  tips.push("通用建议：关键词对齐目标 JD、成果数据化、经历按「背景—动作—结果」写、控制一页以内、避免复杂排版导致解析失败。");
   return tips;
 }
 function renderAdvice(tips) {
   document.getElementById("resumeAdvice").innerHTML =
-    `<h3 class="match-results-title">📝 简历修改建议</h3>` + tips.map(t => `<div class="advice-item">${t}</div>`).join("");
+    `<h3 class="match-results-title">简历修改建议</h3>` + tips.map(t => `<div class="advice-item">${t}</div>`).join("");
 }
 
 // —— 文件解析 ——
@@ -1110,7 +1133,7 @@ function clearResume() {
 document.getElementById("resumeFile").addEventListener("change", e => {
   const f = e.target.files[0];
   if (!f) return;
-  document.getElementById("uploadName").textContent = "📄 " + f.name + "（解析中…）";
+  document.getElementById("uploadName").textContent = "" + f.name + "（解析中…）";
   document.getElementById("uploadName").style.display = "block";
   const reader = new FileReader();
   reader.onload = async ev => {
@@ -1123,10 +1146,10 @@ document.getElementById("resumeFile").addEventListener("change", e => {
       else { alert("请上传 PDF 或 Word(.docx) 文件"); clearResume(); return; }
       if (!text.trim()) { alert("未能从文件中解析出文本（可能是扫描件/图片版 PDF）。"); clearResume(); return; }
       resumeText = text;
-      document.getElementById("uploadName").textContent = "✅ " + f.name + "（解析成功）";
+      document.getElementById("uploadName").textContent = "" + f.name + "（解析成功）";
       runAnalysis(resumeText);
     } catch (err) {
-      document.getElementById("uploadName").textContent = "❌ 解析失败，请确认是 PDF 或 Word 文件";
+      document.getElementById("uploadName").textContent = "解析失败，请确认是 PDF 或 Word 文件";
       console.error(err);
     }
   };
