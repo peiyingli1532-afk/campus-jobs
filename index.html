@@ -160,6 +160,26 @@
   .score-low { background: #cbd5e1; }
   .match-empty { color: var(--muted); padding: 30px; text-align: center; font-size: 14px; }
   .advice-item { padding: 9px 12px; border-left: 3px solid #f59e0b; background: #fffbeb; border-radius: 0 8px 8px 0; margin-bottom: 8px; font-size: 13px; line-height: 1.6; }
+  .section-divider { border: none; border-top: 1px solid var(--border); margin: 18px 0; }
+  .key-row { display: flex; gap: 8px; margin: 10px 0; }
+  .key-row input { flex: 1; padding: 8px 11px; font-size: 13px; border: 1px solid var(--border); border-radius: 8px; }
+  .jd-result { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; }
+  .jd-result.veto { border-color: #fca5a5; background: #fef2f2; }
+  .jd-result-top { display: flex; align-items: center; gap: 10px; }
+  .jd-rank { font-size: 13px; color: var(--muted); font-weight: 600; }
+  .jd-name { font-weight: 600; font-size: 15px; flex: 1; }
+  .jd-score { font-size: 20px; font-weight: 700; color: #2563eb; }
+  .veto-badge { background: #dc2626; color: #fff; font-size: 11px; font-weight: 600; padding: 1px 8px; border-radius: 5px; }
+  .jd-summary { font-size: 13px; color: #3c4248; margin-top: 6px; }
+  .jd-dims { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .dim-chip { font-size: 12px; background: #f1f3f7; border: 1px solid #e6e8ec; border-radius: 6px; padding: 2px 8px; color: #4b525a; }
+  .jd-duty { margin-top: 8px; }
+  .duty-line { font-size: 12.5px; color: #3c4248; padding: 2px 0; }
+  .duty-status { font-size: 11px; font-weight: 600; padding: 0 6px; border-radius: 4px; margin-right: 4px; }
+  .duty-status.完全匹配 { background: #f0fdf4; color: #16a34a; }
+  .duty-status.部分匹配 { background: #fffbeb; color: #d97706; }
+  .duty-status.缺失 { background: #fef2f2; color: #dc2626; }
+  .jd-veto-reason { font-size: 12px; color: #dc2626; margin-top: 8px; }
 
   /* 数据看板 */
   .dash-section { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; box-shadow: var(--shadow); margin-bottom: 14px; }
@@ -316,6 +336,24 @@
       <div id="resumeSummary"></div>
       <div id="matchResults"></div>
       <div id="resumeAdvice"></div>
+      <hr class="section-divider">
+      <h3 class="dash-title">岗位 JD 匹配（比一比投哪个岗位最匹配）</h3>
+      <p class="hint">粘贴多个岗位 JD：每个用「岗位名：XXX」开头命名，不同岗位之间用一行「====」分隔</p>
+      <textarea id="jdInput" class="resume-input" placeholder="岗位名：腾讯-产品经理
+负责XX产品需求分析、竞品分析、PRD撰写…
+
+====
+岗位名：美团-用户运营
+负责用户增长、活动策划、社群运营…"></textarea>
+      <div class="key-row">
+        <input id="apiKeyInput" type="password" placeholder="DeepSeek API Key（只存本机浏览器，不上传）">
+        <button class="btn" onclick="saveApiKey()">保存 Key</button>
+      </div>
+      <div class="match-actions">
+        <button class="btn primary" onclick="analyzeJDMatch()">分析 JD 匹配</button>
+        <button class="btn ghost" onclick="clearJD()">清空</button>
+      </div>
+      <div id="jdResults"></div>
     </div>
   </div>
 
@@ -2601,6 +2639,116 @@ document.getElementById("resumeFile").addEventListener("change", e => {
   };
   reader.readAsArrayBuffer(f);
 });
+
+// ============ JD 匹配（调用 DeepSeek） ============
+function getDeepSeekKey() { return localStorage.getItem("deepseek_key") || ""; }
+function saveApiKey() {
+  const k = document.getElementById("apiKeyInput").value.trim();
+  if (!k) { alert("请输入 API Key"); return; }
+  localStorage.setItem("deepseek_key", k);
+  document.getElementById("apiKeyInput").value = "";
+  document.getElementById("jdResults").innerHTML = '<div class="match-empty">Key 已保存到本机浏览器，可以开始分析。</div>';
+}
+const JD_SYSTEM_PROMPT = `你是资深校招简历筛选专家。给一份简历和多个岗位JD，对每个岗位做匹配度评估，帮助求职者判断"投哪个岗位最匹配"。
+
+【评分维度（总分100）】
+1. 硬性门槛匹配（25分）：学历（全日制/统招/985/211/海外名校）、专业对口程度、工作年限、行业背景、证书/资质、地域（年龄不作为评分项）。
+2. 核心技能匹配（25分）：JD要求的技术栈/工具/方法论；简历实际掌握并验证过的技能；技能深度（精通>熟悉>了解）。
+3. 项目/业务经验匹配（20分）：项目类型与岗位业务方向的重合度；项目规模与复杂度；是否有从0到1、规模化、跨团队等JD强调的经验。
+4. 岗位职责匹配（15分）：JD每条职责 vs 简历中的对应经历，逐条标注"完全匹配/部分匹配/缺失"。
+5. 软素质/隐性要求（8分）：领导力/带团队、沟通协调/跨部门、抗压/自驱、英语能力。
+6. 加分项匹配（5分）：JD中"加分项"命中了哪些；简历独有亮点。
+7. 简历呈现质量（2分）：是否量化成果、是否针对该岗位调整、表达是否清晰逻辑自洽。
+
+【硬性门槛否决检查（独立，不计入总分）】
+若JD明确要求且可识别（如"硕士及以上""必须有CPA/PMP/法考""限XX专业""要求X年经验"）而简历不满足，则 veto=true 并写明原因。
+
+【输出】只输出一个 JSON 对象，不要任何解释、不要 markdown：
+{"results":[{"name":"岗位名","total":78,"veto":false,"vetoReason":"","summary":"一句话","dimensions":{"硬性门槛":22,"核心技能":19,"项目经验":15,"岗位职责":11,"软素质":6,"加分项":3,"呈现质量":2},"职责对比":[{"职责":"...","状态":"完全匹配|部分匹配|缺失"}]}]}`;
+
+function parseJDs(text) {
+  return (text || "").split(/\n?\s*={3,}\s*\n?/).map(s => s.trim()).filter(Boolean).map((b, i) => {
+    const lines = b.split(/\n/);
+    let name = "岗位" + (i + 1);
+    let body = b;
+    const m = lines[0].match(/^(?:岗位名|职位|岗位|JD名称)[：:]\s*(.+)$/);
+    if (m) {
+      name = m[1].trim();
+      body = lines.slice(1).join("\n").trim();
+    }
+    return { name, text: body };
+  });
+}
+
+async function callDeepSeekMatch(resume, jds) {
+  const resp = await fetch("https://api.deepseek.com/v1/chat/completions", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Authorization": "Bearer " + getDeepSeekKey() },
+    body: JSON.stringify({
+      model: "deepseek-v4-pro",
+      messages: [
+        { role: "system", content: JD_SYSTEM_PROMPT },
+        { role: "user", content: JSON.stringify({ resume, jds }) },
+      ],
+      temperature: 0.2, stream: false,
+    }),
+  });
+  if (!resp.ok) throw new Error("DeepSeek 调用失败: HTTP " + resp.status);
+  const data = await resp.json();
+  const content = (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) || "";
+  try { return JSON.parse(content); }
+  catch (e) {
+    const m = content.match(/\{[\s\S]*\}/);
+    if (m) return JSON.parse(m[0]);
+    throw new Error("模型未返回合法 JSON");
+  }
+}
+
+async function analyzeJDMatch() {
+  if (!resumeText) { alert("请先上传简历文件"); return; }
+  if (!getDeepSeekKey()) { alert("请先在下方填写并保存 DeepSeek API Key（只存本机）"); return; }
+  const raw = document.getElementById("jdInput").value.trim();
+  if (!raw) { alert("请粘贴岗位JD文本"); return; }
+  const jds = parseJDs(raw);
+  if (!jds.length) { alert("未能识别岗位JD，请用「岗位名：」标注、用「====」分隔"); return; }
+  const el = document.getElementById("jdResults");
+  el.innerHTML = '<div class="match-empty">正在分析 ' + jds.length + ' 个岗位（约需 10-30 秒）…</div>';
+  try {
+    const data = await callDeepSeekMatch(resumeText, jds);
+    renderJDResults(data);
+  } catch (e) {
+    el.innerHTML = '<div class="match-empty">分析失败：' + esc(String((e && e.message) || e)) + '</div>';
+  }
+}
+
+function renderJDResults(data) {
+  const el = document.getElementById("jdResults");
+  const results = (data && data.results) || [];
+  if (!results.length) { el.innerHTML = '<div class="match-empty">没有返回结果</div>'; return; }
+  results.sort((a, b) => (a.veto ? 1 : 0) - (b.veto ? 1 : 0) || (b.total || 0) - (a.total || 0));
+  el.innerHTML = '<h3 class="match-results-title">JD 匹配结果（按匹配分降序）</h3>' + results.map((r, i) => {
+    const dims = r.dimensions ? Object.entries(r.dimensions).map(([k, v]) => '<span class="dim-chip">' + esc(k) + ' ' + esc(String(v)) + '</span>').join("") : "";
+    const duty = r.职责对比 ? r.职责对比.map(d => '<div class="duty-line"><span class="duty-status ' + esc(d.状态 || "") + '">' + esc(d.状态 || "") + '</span> ' + esc(d.职责 || "") + '</div>').join("") : "";
+    return `
+    <div class="jd-result${r.veto ? " veto" : ""}">
+      <div class="jd-result-top">
+        <span class="jd-rank">#${i + 1}</span>
+        <span class="jd-name">${esc(r.name || "岗位")}</span>
+        ${r.veto ? '<span class="veto-badge">不满足硬性门槛</span>' : ""}
+        <span class="jd-score">${r.total != null ? r.total : "?"}</span>
+      </div>
+      ${r.summary ? `<div class="jd-summary">${esc(r.summary)}</div>` : ""}
+      ${dims ? `<div class="jd-dims">${dims}</div>` : ""}
+      ${duty ? `<div class="jd-duty">${duty}</div>` : ""}
+      ${r.vetoReason ? `<div class="jd-veto-reason">${esc(r.vetoReason)}</div>` : ""}
+    </div>`;
+  }).join("");
+}
+
+function clearJD() {
+  document.getElementById("jdInput").value = "";
+  document.getElementById("jdResults").innerHTML = "";
+}
 
 clearResume();
 </script>
