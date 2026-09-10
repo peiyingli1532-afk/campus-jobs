@@ -2285,7 +2285,7 @@ function matches(d) {
 function sortList(list) {
   if (sortBy === "name") return list.slice().sort((a, b) => (a.name || "").localeCompare(b.name || "", "zh"));
   if (sortBy === "status") return list.slice().sort((a, b) => STATUS_ORDER.indexOf(a.status || "待投递") - STATUS_ORDER.indexOf(b.status || "待投递"));
-  if (sortBy === "publish") return list.slice().sort((a, b) => (b.publishDate || "").localeCompare(a.publishDate || ""));
+  if (sortBy === "publish") return list.slice().sort((a, b) => (b.publishDate || b.addedDate || "").localeCompare(a.publishDate || a.addedDate || ""));
   return list;
 }
 function render() {
