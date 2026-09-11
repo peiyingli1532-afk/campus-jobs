@@ -1984,7 +1984,7 @@ function updateHeroStats() {
 }
 
 // ============ 事件 ============
-document.getElementById("search").addEventListener("input", e => { query = e.target.value.trim(); render(); });
+document.getElementById("search").addEventListener("input", e => { query = e.target.value.trim().slice(0, 200); render(); });
 document.getElementById("resetBtn").onclick = () => {
   selectedCity.clear(); selectedInd.clear(); selectedRole.clear(); selectedStatus = null;
   query = ""; document.getElementById("search").value = ""; render();
@@ -2061,10 +2061,11 @@ document.getElementById("importFile").addEventListener("change", e => {
   reader.onload = () => {
     try {
       const arr = JSON.parse(reader.result);
-      if (!Array.isArray(arr)) throw new Error("格式错误");
+      const valid = Array.isArray(arr) && arr.every(x => x && typeof x.name === "string" && Array.isArray(x.city) && Array.isArray(x.role));
+      if (!valid) { alert("文件格式不正确，请导入由本工具导出的 JSON"); return; }
       if (!confirm(`导入将覆盖当前 ${data.length} 条数据为 ${arr.length} 条，确认？`)) return;
       data = arr; saveData(); render();
-    } catch (err) { alert("导入失败：请选择由本工具导出的 JSON 文件"); }
+    } catch (err) { alert("文件格式不正确，请导入由本工具导出的 JSON"); }
   };
   reader.readAsText(file);
   e.target.value = "";
