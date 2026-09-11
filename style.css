@@ -269,3 +269,20 @@
     .filter-label { width: 52px; }
     .score-wrap { width: 120px; }
   }
+
+  @media (max-width: 768px) {
+    /* 筛选组纵向排列 */
+    .filter-group { flex-direction: column; align-items: stretch; gap: 6px; }
+    .filter-label { width: auto; padding-top: 0; }
+    /* 卡片顶部纵向 + 操作按钮换行 */
+    .card .card-top { flex-direction: column; align-items: stretch; }
+    .card-actions { flex-wrap: wrap; }
+    /* 工具栏搜索行纵向堆叠 */
+    .toolbar .search-row { flex-direction: column; align-items: stretch; }
+    /* 看板条形图字号缩小 */
+    .bar-row { gap: 8px; }
+    .bar-label { font-size: 12px; width: 52px; }
+    .bar-count { font-size: 12px; }
+    /* sticky 降级为 relative */
+    .toolbar { position: relative; top: auto; }
+  }
