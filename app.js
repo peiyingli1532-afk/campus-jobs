@@ -1768,6 +1768,7 @@ let SEED = [
 // ============ 状态 ============
 const STORAGE_KEY = "campusFilterData_v2";
 export let data = [];
+let jdIndex = new Map();
 let selectedCity = new Set();
 let selectedInd = new Set();
 let selectedRole = new Set();
@@ -1807,11 +1808,32 @@ function loadData() {
     if (!data.some(d => d.name === s.name)) data.push(s);
   });
   data.forEach(d => { if (!d.status) d.status = "待投递"; if (d.hidden == null) d.hidden = false; if (d.fav == null) d.fav = false; });
+  buildJdIndex();
   saveData();
 }
-function saveData() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+function buildJdIndex() {
+  jdIndex = new Map();
+  data.forEach(d => {
+    const set = new Set();
+    if (d.jd) {
+      Object.values(d.jd).forEach(str => {
+        String(str).split(/[\s,，、/]+/).forEach(k => { if (k) set.add(k.toLowerCase()); });
+      });
+    }
+    jdIndex.set(d.name, set);
+  });
 }
+let saveTimer = null;
+function saveData() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  }, 500);
+}
+window.addEventListener("beforeunload", () => {
+  if (saveTimer) { clearTimeout(saveTimer); }
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+});
 
 // ============ 渲染 ============
 function uniqValues(field) {
@@ -1864,9 +1886,12 @@ function matches(d) {
   if (selectedRole.size && !d.role.some(r => selectedRole.has(r))) return false;
   if (selectedStatus && (d.status || "待投递") !== selectedStatus) return false;
   if (query) {
-    const jd = d.jd ? Object.values(d.jd).join(" ") : "";
-    const hay = [d.name, d.en, d.desc, d.note, d.city.join(" "), d.ind.join(" "), d.role.join(" "), jd].join(" ").toLowerCase();
-    if (!hay.includes(query.toLowerCase())) return false;
+    const q = query.toLowerCase();
+    const hay = [d.name, d.en, d.desc, d.note, d.city.join(" "), d.ind.join(" "), d.role.join(" ")].join(" ").toLowerCase();
+    if (hay.includes(q)) return true;
+    const jdSet = jdIndex.get(d.name);
+    if (jdSet && jdSet.has(q)) return true;
+    return false;
   }
   return true;
 }
@@ -2049,7 +2074,10 @@ document.getElementById("importFile").addEventListener("change", e => {
 // 优先拉取云端 data.json（托管时自动最新）；本地文件/离线则回退到内置 SEED
 async function bootstrap() {
   try {
-    const res = await fetch("data.json?t=" + Date.now(), { cache: "no-store" });
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 5000);
+    const res = await fetch("data.json?t=" + Date.now(), { cache: "no-store", signal: controller.signal });
+    clearTimeout(timer);
     if (res.ok) {
       const j = await res.json();
       if (Array.isArray(j) && j.length) SEED = j;
