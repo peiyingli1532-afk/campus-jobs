@@ -93,16 +93,25 @@ const ROLE_PROFILE = {
   "职能": ["人力资源","招聘","薪酬绩效","财务","会计","审计","税务","法务","合规","行政","办公软件","Excel","PowerPoint"]
 };
 
+// 否定前缀检测：关键词前若紧跟"不/没/无/非"（排除"非常/不错/不过/无论"等非否定词）则不计命中
+function hasKeyword(text, keyword) {
+  const idx = text.indexOf(keyword);
+  if (idx === -1) return false;
+  const before = text.slice(Math.max(0, idx - 8), idx);
+  const seg = before.split(/[，。；、！？\n]/).pop();
+  return !/(?:不(?!错|过)|没|无(?!论)|非(?!常))/.test(seg);
+}
+
 function extractProfile(text) {
   const t = text || "";
-  const has = kws => kws.some(w => t.includes(w));
+  const has = kws => kws.some(w => hasKeyword(t, w));
   let edu = "未识别", eduScore = 60;
   for (const k of Object.keys(EDU_TIER)) { if (t.includes(k)) { edu = k; eduScore = EDU_TIER[k]; break; } }
   const elite = SCHOOL_ELITE.filter(w => t.includes(w));
   const eduFinal = Math.min(100, eduScore + (elite.length ? 10 : 0));
   const majors = Object.keys(MAJORS).filter(k => has(MAJORS[k]));
-  const skills = SKILLS.filter(w => t.includes(w));
-  const certs = CERTS.filter(w => t.includes(w));
+  const skills = SKILLS.filter(w => hasKeyword(t, w));
+  const certs = CERTS.filter(w => hasKeyword(t, w));
   const langs = [];
   if (/雅思|托福|专八|托业/i.test(t)) langs.push("英语(雅思/托福)");
   else if (/六级|CET-?6/i.test(t)) langs.push("英语六级");
@@ -117,6 +126,19 @@ function extractProfile(text) {
 }
 
 // —— 评分 ——
+const SCORE_WEIGHTS = { jdHit: 0.45, edu: 0.15, exp: 0.20, cert: 0.10, descHit: 0.10 };
+const ROLE_WEIGHT_OVERRIDES = {
+  "产品": { jdHit: 0.55, exp: 0.10 },
+  "运营": { exp: 0.25 },
+  "销售": { jdHit: 0.35, exp: 0.30 },
+};
+function getWeights(role) {
+  const w = { ...SCORE_WEIGHTS, ...(ROLE_WEIGHT_OVERRIDES[role] || {}) };
+  const sum = Object.values(w).reduce((a, b) => a + b, 0) || 1;
+  Object.keys(w).forEach(k => { w[k] = w[k] / sum; });
+  return w;
+}
+
 function jdProfile(d, role) {
   if (d.jd && d.jd[role]) return String(d.jd[role]).split(/[\s,，、/]+/).filter(Boolean);
   return ROLE_PROFILE[role] || [];
@@ -138,7 +160,9 @@ function scoreCandidate(p, d, role) {
   if (p.langs.length) cert += 0.5;
   cert = Math.min(1, cert);
   const descHit = p.skills.length ? Math.min(1, p.skills.filter(s => (d.desc || "").includes(s)).length / 5) : 0.4;
-  const score = Math.round(100 * (0.45 * jdHit + 0.15 * edu + 0.20 * exp + 0.10 * cert + 0.10 * descHit));
+  const components = { jdHit, edu, exp, cert, descHit };
+  const weights = getWeights(role);
+  const score = Math.round(100 * Object.entries(weights).reduce((sum, [k, w]) => sum + w * (components[k] || 0), 0));
   return Math.max(0, Math.min(100, score));
 }
 
