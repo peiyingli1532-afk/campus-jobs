@@ -1819,6 +1819,14 @@ function uniqValues(field) {
   data.forEach(d => (d[field] || []).forEach(v => s.add(v)));
   return s;
 }
+function setupChip(chip) {
+  chip.tabIndex = 0;
+  chip.setAttribute("role", "button");
+  chip.addEventListener("keydown", e => {
+    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); chip.click(); }
+  });
+}
+
 function renderChips(containerId, order, values, selected, onToggle) {
   const el = document.getElementById(containerId);
   el.innerHTML = "";
@@ -1828,6 +1836,7 @@ function renderChips(containerId, order, values, selected, onToggle) {
     chip.className = "chip" + (selected.has(v) ? " on" : "");
     chip.textContent = v;
     chip.onclick = () => { onToggle(v); render(); };
+    setupChip(chip);
     el.appendChild(chip);
   });
 }
@@ -1838,12 +1847,14 @@ function renderStatusChips() {
   all.className = "chip" + (selectedStatus == null ? " on" : "");
   all.textContent = "全部";
   all.onclick = () => { selectedStatus = null; render(); };
+  setupChip(all);
   el.appendChild(all);
   STATUS_ORDER.forEach(s => {
     const chip = document.createElement("div");
     chip.className = "chip" + (selectedStatus === s ? " on" : "");
     chip.textContent = s;
     chip.onclick = () => { selectedStatus = (selectedStatus === s ? null : s); render(); };
+    setupChip(chip);
     el.appendChild(chip);
   });
 }
@@ -1900,7 +1911,7 @@ function render() {
       <div class="card-top">
         <div class="card-name">${esc(d.name)}<span class="en">${esc(d.en || "")}</span>${isNew(d) ? ' <span class="new-badge">NEW</span>' : ""}</div>
         <div class="card-actions">
-          <select class="status-select ${statusClass}" onchange="setStatus(${realIdx}, this.value)">
+          <select class="status-select ${statusClass}" onchange="setStatus(${realIdx}, this.value)" aria-label="选择投递状态">
             ${STATUS_ORDER.map(s => `<option value="${s}" ${s === status ? "selected" : ""}>${s}</option>`).join("")}
           </select>
           <button class="btn small fav-btn${d.fav ? " on" : ""}" onclick="toggleFav(${realIdx})">${d.fav ? "已收藏" : "收藏"}</button>
@@ -1978,6 +1989,7 @@ function closeModal() { document.getElementById("overlay").classList.remove("sho
 document.getElementById("addBtn").onclick = () => openModal(null);
 document.getElementById("cancelBtn").onclick = closeModal;
 document.getElementById("overlay").addEventListener("click", e => { if (e.target.id === "overlay") closeModal(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && document.getElementById("overlay").classList.contains("show")) closeModal(); });
 document.getElementById("saveBtn").onclick = () => {
   const name = document.getElementById("f_name").value.trim();
   if (!name) { alert("请填写公司名"); return; }
