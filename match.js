@@ -361,16 +361,23 @@ const JD_SYSTEM_PROMPT = `你是资深校招简历筛选专家。给一份简历
 
 function parseJDs(text) {
   return (text || "").split(/\n?\s*={3,}\s*\n?/).map(s => s.trim()).filter(Boolean).map((b, i) => {
-    const lines = b.split(/\n/);
-    let name = "岗位" + (i + 1);
+    const lines = b.split(/\n/).map(l => l.trim()).filter(Boolean);
+    if (!lines.length) return null;
+    const first = lines[0];
+    let name = "";
     let body = b;
-    const m = lines[0].match(/^(?:岗位名|职位|岗位|JD名称)[：:]\s*(.+)$/);
+    const m = first.match(/^(?:岗位名称|岗位名|职位名称|招聘岗位|招聘职位|职位|岗位|JD名称)[：:]\s*(.+)$/);
     if (m) {
       name = m[1].trim();
       body = lines.slice(1).join("\n").trim();
+    } else if (first.length <= 40) {
+      // 第一行较短，当作岗位名称（去掉常见的包裹符号）
+      name = first.replace(/^[【\[《（(]+|[】\]》）)]+$/g, "").trim();
+      body = lines.slice(1).join("\n").trim() || b;
     }
+    if (!name) name = "岗位" + (i + 1);
     return { name, text: body };
-  });
+  }).filter(Boolean);
 }
 
 async function callDeepSeekMatch(resume, jds) {
