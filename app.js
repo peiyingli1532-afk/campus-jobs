@@ -1722,7 +1722,7 @@ let SEED = [
       "销售",
       "职能"
     ],
-    "url": "https://skyworth.zhiye.com/Campus",
+    "url": "https://skyworth.hotjob.cn",
     "desc": "2027届全球校园招聘正式启动，面向海内外2027届毕业生，岗位含研发/智能制造/营销/职能等，深圳总部。",
     "deadline": "以官网为准",
     "salary": "以官网为准",
