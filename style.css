@@ -216,10 +216,10 @@
   .field { margin-bottom: 12px; }
   .field label { display: block; font-size: 13px; color: var(--text-weak); margin-bottom: 5px; }
   .field label em { color: var(--text-faint); font-style: normal; font-size: 12px; margin-left: 6px; }
-  .field input, .field textarea {
-    width: 100%; padding: 8px 11px; font-size: 14px; border: 1px solid var(--border); border-radius: 8px; outline: none; font-family: inherit;
+  .field input, .field textarea, .field select {
+    width: 100%; padding: 8px 11px; font-size: 14px; border: 1px solid var(--border); border-radius: 8px; outline: none; font-family: inherit; background: var(--card); color: var(--text);
   }
-  .field input:focus, .field textarea:focus { border-color: var(--accent); }
+  .field input:focus, .field textarea:focus, .field select:focus { border-color: var(--accent); }
   .field textarea { resize: vertical; min-height: 52px; }
   .modal-foot { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; }
   .hint { font-size: 12px; color: var(--muted); }
