@@ -12,7 +12,7 @@
     <div class="hero-top">
       <div>
         <h1>校招岗位筛选器</h1>
-        <p class="subtitle">深圳 · 香港 ｜ 仅收录<strong>企业官网</strong>投递渠道 ｜ 27届秋招</p>
+        <p class="subtitle">北上广深 · 香港 ｜ 官网 / 官方公众号直投 ｜ 27届秋招 · 非技术岗</p>
       </div>
       <span class="badge-official">官网直投</span>
     </div>
@@ -113,7 +113,7 @@
     </div>
   </div>
 
-  <footer>数据每日 9:00 自动更新 · 具体岗位/截止/薪资以各公司官网为准 · 投递状态保存在浏览器本地</footer>
+  <footer>数据每日 9:00 自动更新 · 具体岗位/截止/薪资以各公司官方渠道为准 · 投递状态保存在浏览器本地</footer>
 </div>
 
 <!-- 新增/编辑弹窗 -->
@@ -130,19 +130,26 @@
     </div>
     <div class="field">
       <label for="f_city">城市 <em>多个用逗号分隔</em></label>
-      <input id="f_city" type="text" placeholder="深圳, 香港">
+      <input id="f_city" type="text" placeholder="北京, 上海, 广州, 深圳, 香港">
     </div>
     <div class="field">
       <label for="f_ind">行业 <em>多个用逗号分隔</em></label>
-      <input id="f_ind" type="text" placeholder="互联网, 科技, AI, 出海, 金融">
+      <input id="f_ind" type="text" placeholder="互联网, 科技, 金融, 快消, 制造, 汽车, 医药, 咨询">
     </div>
     <div class="field">
       <label for="f_role">岗位类别 <em>多个用逗号分隔</em></label>
       <input id="f_role" type="text" placeholder="产品, 运营, 销售, 管培生, 职能">
     </div>
     <div class="field">
-      <label for="f_url">官网投递链接</label>
-      <input id="f_url" type="text" placeholder="https://…">
+      <label for="f_url">投递链接</label>
+      <input id="f_url" type="text" placeholder="官网 或 公众号文章链接 https://…">
+    </div>
+    <div class="field">
+      <label for="f_src">来源类型</label>
+      <select id="f_src">
+        <option value="官网">企业官网</option>
+        <option value="公众号">微信公众号</option>
+      </select>
     </div>
     <div class="field">
       <label for="f_desc">校招项目 / 岗位说明</label>
