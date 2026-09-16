@@ -9,7 +9,9 @@ let SEED = [
     "en": "Tencent",
     "city": [
       "深圳",
-      "香港"
+      "香港",
+      "北京",
+      "上海"
     ],
     "ind": [
       "互联网",
@@ -37,6 +39,8 @@ let SEED = [
     "name": "字节跳动",
     "en": "ByteDance",
     "city": [
+      "北京",
+      "上海",
       "深圳"
     ],
     "ind": [
@@ -65,6 +69,8 @@ let SEED = [
     "name": "美团",
     "en": "Meituan",
     "city": [
+      "北京",
+      "上海",
       "深圳"
     ],
     "ind": [
@@ -92,6 +98,9 @@ let SEED = [
     "name": "阿里巴巴",
     "en": "Alibaba",
     "city": [
+      "北京",
+      "上海",
+      "广州",
       "深圳"
     ],
     "ind": [
@@ -118,6 +127,8 @@ let SEED = [
     "name": "京东",
     "en": "JD",
     "city": [
+      "北京",
+      "上海",
       "深圳"
     ],
     "ind": [
@@ -147,6 +158,7 @@ let SEED = [
     "name": "快手",
     "en": "Kuaishou",
     "city": [
+      "北京",
       "深圳"
     ],
     "ind": [
@@ -174,6 +186,9 @@ let SEED = [
     "name": "网易",
     "en": "NetEase",
     "city": [
+      "广州",
+      "北京",
+      "上海",
       "深圳"
     ],
     "ind": [
@@ -200,7 +215,9 @@ let SEED = [
     "name": "腾讯音乐",
     "en": "Tencent Music",
     "city": [
-      "深圳"
+      "深圳",
+      "北京",
+      "上海"
     ],
     "ind": [
       "互联网"
@@ -1652,6 +1669,8 @@ let SEED = [
     "name": "小米",
     "en": "Xiaomi",
     "city": [
+      "北京",
+      "上海",
       "深圳"
     ],
     "ind": [
@@ -1738,6 +1757,8 @@ let SEED = [
     "name": "百度",
     "en": "Baidu",
     "city": [
+      "北京",
+      "上海",
       "深圳"
     ],
     "ind": [
@@ -1944,6 +1965,383 @@ let SEED = [
       "销售": "市场销售 渠道 客户 基金 金融 营销 商务",
       "职能": "运营支持 人力资源 财务 合规 风控 行政"
     }
+  },
+  {
+    "name": "蔚来",
+    "en": "NIO",
+    "city": [
+      "上海"
+    ],
+    "ind": [
+      "汽车"
+    ],
+    "role": [
+      "销售",
+      "市场",
+      "运营",
+      "管培生"
+    ],
+    "url": "https://campus.nio.com/",
+    "desc": "2027届营销Sparks及「未来星」营销管训班：蔚来/乐道顾问、交付运营、区域市场、空间运营、用户关系、售后服务、能源运营等非技术岗，工作地覆盖全国100+城市。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "营销管训班以上海为核心培养基地",
+    "addedDate": "2026-09-16",
+    "publishDate": "2026-09-16",
+    "jd": {
+      "营销": "销售 客户 用户 交付 市场 门店 顾问 社群",
+      "运营": "用户运营 活动 空间 能源 服务 增长"
+    }
+  },
+  {
+    "name": "理想汽车",
+    "en": "Li Auto",
+    "city": [
+      "北京",
+      "上海",
+      "深圳"
+    ],
+    "ind": [
+      "汽车"
+    ],
+    "role": [
+      "产品",
+      "销售",
+      "职能"
+    ],
+    "url": "https://www.lixiang.com/employ/campus/list.html",
+    "desc": "2027届校招含产品、销售与服务、供应链、项目管理、职能与综合管理十大类，非技术岗覆盖北京/上海/深圳等。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "可同时投递2个职位",
+    "addedDate": "2026-09-16",
+    "publishDate": "2026-09-16",
+    "jd": {
+      "产品": "需求 用户 竞品 数据分析 项目管理 车企",
+      "销售": "客户 交付 门店 服务 顾问",
+      "职能": "人力 财务 行政 采购 供应链"
+    }
+  },
+  {
+    "name": "小鹏汽车",
+    "en": "XPENG",
+    "city": [
+      "广州",
+      "深圳",
+      "上海",
+      "北京"
+    ],
+    "ind": [
+      "汽车"
+    ],
+    "role": [
+      "销售",
+      "市场",
+      "职能",
+      "运营"
+    ],
+    "url": "https://xiaopeng.jobs.feishu.cn/campus",
+    "desc": "2027届「探索者计划」：16大岗位类别，含营销服、海外业务、职能等非技术板块，工作地广州/深圳/上海/北京。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-16",
+    "publishDate": "2026-09-16",
+    "jd": {
+      "营销服": "销售 市场 交付 客户 门店 顾问",
+      "海外": "出海 海外 本地化 市场 运营",
+      "职能": "人力 财务 行政 法务"
+    }
+  },
+  {
+    "name": "阿斯利康",
+    "en": "AstraZeneca",
+    "city": [
+      "上海",
+      "北京",
+      "广州",
+      "香港"
+    ],
+    "ind": [
+      "医药",
+      "外企"
+    ],
+    "role": [
+      "管培生",
+      "职能",
+      "销售"
+    ],
+    "url": "https://app.mokahr.com/campus-recruitment/astrazeneca/144981",
+    "desc": "2027 amAZinger培训生项目：商业运营管理培训生(上海)、研发培训生(北京/上海/广州/香港)、生产运营管培生。",
+    "deadline": "10月31日",
+    "salary": "以官网为准",
+    "note": "要求流利英文",
+    "addedDate": "2026-09-16",
+    "publishDate": "2026-09-16",
+    "jd": {
+      "管培生": "轮岗 商业运营 管理 医药 市场 战略",
+      "销售": "医药代表 学术推广 客户",
+      "职能": "人力 财务 供应链 注册"
+    }
+  },
+  {
+    "name": "强生",
+    "en": "Johnson & Johnson",
+    "city": [
+      "北京"
+    ],
+    "ind": [
+      "医药",
+      "外企"
+    ],
+    "role": [
+      "管培生",
+      "职能"
+    ],
+    "url": "https://chinacampus.jnj.com.cn",
+    "desc": "2027届秋招：注册事务管理培训生、环境健康与安全管理培训生(北京)，GOLD全球运营领导力项目(西安)。",
+    "deadline": "10月31日",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-16",
+    "publishDate": "2026-09-16",
+    "jd": {
+      "管培生": "GOLD 供应链 生产 运营 领导力 轮岗",
+      "职能": "注册 环境健康安全 合规 医药"
+    }
+  },
+  {
+    "name": "中金公司",
+    "en": "CICC",
+    "city": [
+      "北京",
+      "上海",
+      "深圳"
+    ],
+    "ind": [
+      "金融"
+    ],
+    "role": [
+      "职能",
+      "运营",
+      "管培生"
+    ],
+    "url": "https://cicc.zhiye.com",
+    "desc": "2027届校招：投行、股票、固收、资管、财富管理、研究、管理支持等，非技术岗含财富管理/研究/管理支持。",
+    "deadline": "10月28日",
+    "salary": "以官网为准",
+    "note": "公众号「中金Career」",
+    "addedDate": "2026-09-16",
+    "publishDate": "2026-09-16",
+    "jd": {
+      "财富管理": "客户 理财 资产配置 高净值",
+      "研究": "行业研究 分析 报告 估值",
+      "职能": "管理支持 人力 财务 风控 合规"
+    }
+  },
+  {
+    "name": "国家电网",
+    "en": "State Grid",
+    "city": [
+      "北京"
+    ],
+    "ind": [
+      "能源"
+    ],
+    "role": [
+      "职能",
+      "人力"
+    ],
+    "url": "https://zhaopin.sgcc.com.cn",
+    "desc": "2027届校招（人力资源招聘平台）：财会、人力、管理、法学、新闻等非电工类专业岗位，总部及在京单位。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "第一批统考预计11月公告",
+    "addedDate": "2026-09-16",
+    "publishDate": "2026-09-16",
+    "jd": {
+      "职能": "财务 会计 人力 管理 法学 新闻 党建",
+      "营销": "客户 服务 电费 市场"
+    }
+  },
+  {
+    "name": "哔哩哔哩",
+    "en": "bilibili",
+    "city": [
+      "上海",
+      "北京",
+      "深圳"
+    ],
+    "ind": [
+      "传媒",
+      "互联网"
+    ],
+    "role": [
+      "产品",
+      "运营",
+      "市场",
+      "职能"
+    ],
+    "url": "https://jobs.bilibili.com/campus",
+    "desc": "2027届秋招：产品运营、内容、市场营销、大职能(财务/投资)、游戏运营等非技术岗，工作地上海/北京/深圳。",
+    "deadline": "10月3日",
+    "salary": "以官网为准",
+    "note": "公众号「哔哩哔哩招聘」",
+    "addedDate": "2026-09-16",
+    "publishDate": "2026-09-16",
+    "jd": {
+      "产品运营": "产品 用户 增长 数据分析 需求 社区",
+      "内容": "内容 社区 创作者 运营 生态",
+      "市场": "品牌 商务 营销 市场",
+      "职能": "财务 投资 人力"
+    }
+  },
+  {
+    "name": "雀巢",
+    "en": "Nestlé",
+    "city": [
+      "北京",
+      "上海",
+      "广州"
+    ],
+    "ind": [
+      "快消",
+      "外企"
+    ],
+    "role": [
+      "管培生",
+      "市场",
+      "销售",
+      "职能",
+      "人力"
+    ],
+    "url": "https://app.mokahr.com/campus-recruitment/nestlegcr",
+    "desc": "2027届管培生（面向2026/2027届）：市场营销、销售、供应链、财务、人力资源、跨境电商、商业管理等方向。",
+    "deadline": "11月30日",
+    "salary": "以官网为准",
+    "note": "每人限投2个岗位；公众号「雀巢中国招聘」",
+    "addedDate": "2026-09-16",
+    "publishDate": "2026-09-16",
+    "jd": {
+      "管培生": "轮岗 市场 销售 供应链 财务 人力 商业管理",
+      "市场": "品牌 营销 市场 电商",
+      "销售": "客户 渠道 销售 零售"
+    }
+  },
+  {
+    "name": "辉瑞",
+    "en": "Pfizer",
+    "city": [
+      "北京",
+      "上海"
+    ],
+    "ind": [
+      "医药",
+      "外企"
+    ],
+    "role": [
+      "管培生",
+      "市场",
+      "销售"
+    ],
+    "url": "https://www.pfizer.com.cn/zh-hans/about/careers/careers-campus",
+    "desc": "2027届管理培训生：36个月跨职能轮岗，覆盖市场部、销售部、市场准入、商务零售、战略与发展/医学部。",
+    "deadline": "10月25日",
+    "salary": "以官网为准",
+    "note": "要求医药健康相关专业",
+    "addedDate": "2026-09-16",
+    "publishDate": "2026-09-16",
+    "jd": {
+      "管培生": "轮岗 市场 销售 准入 商务 战略 医学",
+      "市场": "品牌 营销 市场 医药"
+    }
+  },
+  {
+    "name": "罗氏",
+    "en": "Roche",
+    "city": [
+      "上海"
+    ],
+    "ind": [
+      "医药",
+      "外企"
+    ],
+    "role": [
+      "市场",
+      "职能",
+      "管培生"
+    ],
+    "url": "https://careers.roche.com/cn/zh/startup-china-pharma",
+    "desc": "StartUp人才发展项目（36个月4次轮岗）：市场（客户交互部）、市场准入、医学方向，总部上海。",
+    "deadline": "10月11日",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-16",
+    "publishDate": "2026-09-16",
+    "jd": {
+      "市场": "品牌 客户交互 市场 医药",
+      "准入": "市场准入 医保 政策 商业",
+      "管培生": "轮岗 医学 商业 市场"
+    }
+  },
+  {
+    "name": "名创优品",
+    "en": "MINISO",
+    "city": [
+      "广州"
+    ],
+    "ind": [
+      "零售"
+    ],
+    "role": [
+      "管培生",
+      "市场",
+      "销售",
+      "职能"
+    ],
+    "url": "https://miniso.zhiye.com/campus",
+    "desc": "2027届「黑马工程」管培生（面向2026/2027届）：商品、营销、海外、渠道、财经等方向。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "公众号「MINISO名创优品招聘」",
+    "addedDate": "2026-09-16",
+    "publishDate": "2026-09-16",
+    "jd": {
+      "管培生": "商品 营销 海外 渠道 财经 零售",
+      "海外": "出海 海外 本地化 运营",
+      "商品": "选品 采购 供应链 商品"
+    }
+  },
+  {
+    "name": "华润置地",
+    "en": "CR Land",
+    "city": [
+      "深圳",
+      "北京",
+      "上海",
+      "广州"
+    ],
+    "ind": [
+      "地产"
+    ],
+    "role": [
+      "管培生",
+      "职能",
+      "运营",
+      "市场"
+    ],
+    "url": "https://app.mokahr.com/campus-recruitment/crland/168540",
+    "desc": "2027届校招「百匠新人/万象生/万悦生」管培生：投资、运营、商业管理、营销、职能等非技术方向。",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "公众号「华润置地招聘」",
+    "addedDate": "2026-09-16",
+    "publishDate": "2026-09-16",
+    "jd": {
+      "管培生": "百匠新人 万象生 投资 运营 商业管理 地产",
+      "职能": "人力 财务 法务 行政",
+      "营销": "市场 营销 招商 商业"
+    }
   }
 ];
 
@@ -1960,12 +2358,12 @@ let onlyFav = false;
 let query = "";
 
 const ROLE_ORDER = ["产品","运营","销售","管培生","职能","市场","品牌","人力"];
-const IND_ORDER = ["互联网","科技","AI","出海","金融","外企"];
-const CITY_ORDER = ["深圳","香港"];
-export const STATUS_ORDER = ["待投递","已投递","已笔试","已面试","已Offer","已淘汰","已截止"];
+const IND_ORDER = ["互联网","科技","AI","出海","金融","外企","快消","制造","汽车","医药","咨询","能源","地产","物流","传媒","零售","教育"];
+const CITY_ORDER = ["北京","上海","广州","深圳","香港"];
+export const STATUS_ORDER = ["待投递","已投递","已笔试","已面试","已Offer","已淘汰","已放弃"];
 const STATUS_CLASS = {
   "待投递":"s-todo", "已投递":"s-applied", "已笔试":"s-exam", "已面试":"s-interview",
-  "已Offer":"s-offer", "已淘汰":"s-reject", "已截止":"s-closed"
+  "已Offer":"s-offer", "已淘汰":"s-reject", "已放弃":"s-closed"
 };
 
 // ============ 存储 ============
@@ -2134,8 +2532,8 @@ function render() {
       </div>
       ${d.note ? `<div class="note">${esc(d.note)}</div>` : ""}
       <div class="card-foot">
-        <a class="link-btn" href="${esc(d.url || "#")}" target="_blank" rel="noopener noreferrer">官网投递 ↗</a>
-        <span class="badge-official">企业官网</span>
+        <a class="link-btn" href="${esc(d.url || "#")}" target="_blank" rel="noopener noreferrer">${d.src === "公众号" ? "公众号投递 ↗" : "官网投递 ↗"}</a>
+        <span class="badge-official">${d.src === "公众号" ? "微信公众号" : "企业官网"}</span>
       </div>
     </div>`;
   }).join("");
@@ -2186,6 +2584,7 @@ function openModal(idx) {
   document.getElementById("f_ind").value = (d.ind || []).join(", ");
   document.getElementById("f_role").value = (d.role || []).join(", ");
   document.getElementById("f_url").value = d.url || "";
+  document.getElementById("f_src").value = d.src === "公众号" ? "公众号" : "官网";
   document.getElementById("f_desc").value = d.desc || "";
   document.getElementById("f_deadline").value = d.deadline || "";
   document.getElementById("f_salary").value = d.salary || "";
@@ -2212,6 +2611,7 @@ document.getElementById("saveBtn").onclick = () => {
     salary: document.getElementById("f_salary").value.trim(),
     note: document.getElementById("f_note").value.trim(),
   };
+  if (document.getElementById("f_src").value === "公众号") obj.src = "公众号";
   if (editingIdx == null) data.push(obj); else data[editingIdx] = obj;
   saveData(); closeModal(); render();
 };
