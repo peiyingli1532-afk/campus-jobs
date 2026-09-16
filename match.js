@@ -15,7 +15,7 @@ function switchTab(t) {
 
 const STATUS_COLOR = {
   "待投递": "#6b7280", "已投递": "#2563eb", "已笔试": "#7c3aed", "已面试": "#d97706",
-  "已Offer": "#16a34a", "已淘汰": "#dc2626", "已截止": "#4b5563"
+  "已Offer": "#16a34a", "已淘汰": "#dc2626", "已放弃": "#4b5563"
 };
 
 function renderDashboard() {
