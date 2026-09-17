@@ -2342,6 +2342,1731 @@ let SEED = [
       "职能": "人力 财务 法务 行政",
       "营销": "市场 营销 招商 商业"
     }
+  },
+  {
+    "name": "拼多多",
+    "city": [
+      "上海"
+    ],
+    "ind": [
+      "互联网",
+      "零售"
+    ],
+    "role": [
+      "产品",
+      "运营",
+      "职能"
+    ],
+    "url": "https://careers.pddglobalhr.com/campus",
+    "desc": "2027届校招，含产品/运营/职能",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "PDD Holdings"
+  },
+  {
+    "name": "小红书",
+    "city": [
+      "北京",
+      "上海",
+      "广州",
+      "深圳"
+    ],
+    "ind": [
+      "互联网",
+      "零售"
+    ],
+    "role": [
+      "产品",
+      "运营",
+      "市场",
+      "职能",
+      "人力"
+    ],
+    "url": "https://campus.xiaohongshu.com",
+    "desc": "2027届秋招，含产品/商业/运营/HR/职能",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "Xiaohongshu"
+  },
+  {
+    "name": "唯品会",
+    "city": [
+      "广州"
+    ],
+    "ind": [
+      "零售",
+      "互联网"
+    ],
+    "role": [
+      "运营",
+      "销售",
+      "市场",
+      "管培生"
+    ],
+    "url": "https://job.vip.com",
+    "desc": "2027届校招，含商务/运营/营销/管培",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "Vipshop"
+  },
+  {
+    "name": "得物",
+    "city": [
+      "上海",
+      "北京",
+      "广州"
+    ],
+    "ind": [
+      "零售",
+      "互联网"
+    ],
+    "role": [
+      "产品",
+      "运营",
+      "职能"
+    ],
+    "url": "https://campus.dewu.com",
+    "desc": "2027届校招，含产品/运营/供应链/职能",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "Dewu (Poizon)"
+  },
+  {
+    "name": "滴滴出行",
+    "city": [
+      "北京",
+      "上海",
+      "广州",
+      "深圳"
+    ],
+    "ind": [
+      "互联网"
+    ],
+    "role": [
+      "产品",
+      "运营",
+      "职能"
+    ],
+    "url": "https://campus.didiglobal.com",
+    "desc": "2027届秋招，含产品/商业分析/运营/职能",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "DiDi Global"
+  },
+  {
+    "name": "贝壳找房",
+    "city": [
+      "北京"
+    ],
+    "ind": [
+      "互联网",
+      "地产"
+    ],
+    "role": [
+      "产品",
+      "运营",
+      "职能"
+    ],
+    "url": "https://campus.ke.com",
+    "desc": "2027届校招，含产品/运营/职能",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "KE Holdings"
+  },
+  {
+    "name": "挚文集团",
+    "city": [
+      "北京"
+    ],
+    "ind": [
+      "互联网"
+    ],
+    "role": [
+      "产品",
+      "运营"
+    ],
+    "url": "https://campus.hellogroup.com",
+    "desc": "2027届校招，含运营/产品类",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "Hello Group (MOMO)"
+  },
+  {
+    "name": "携程集团",
+    "city": [
+      "上海",
+      "北京",
+      "广州",
+      "深圳"
+    ],
+    "ind": [
+      "互联网"
+    ],
+    "role": [
+      "产品",
+      "运营",
+      "职能",
+      "管培生"
+    ],
+    "url": "https://careers.ctrip.com/#/campus",
+    "desc": "2027届秋招，含产品/运营/职能/人才计划",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "Trip.com Group"
+  },
+  {
+    "name": "米哈游",
+    "city": [
+      "上海",
+      "北京"
+    ],
+    "ind": [
+      "互联网",
+      "出海"
+    ],
+    "role": [
+      "产品",
+      "运营",
+      "市场"
+    ],
+    "url": "https://campus.mihoyo.com",
+    "desc": "2027届秋招，产品策划/运营/市场商务",
+    "deadline": "10月31日",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "miHoYo"
+  },
+  {
+    "name": "莉莉丝",
+    "city": [
+      "上海"
+    ],
+    "ind": [
+      "互联网",
+      "出海"
+    ],
+    "role": [
+      "产品",
+      "运营",
+      "管培生"
+    ],
+    "url": "https://jobs.lilith.com/",
+    "desc": "2027届秋招，关卡策划/运营/全球发行管培",
+    "deadline": "11月30日",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "Lilith Games"
+  },
+  {
+    "name": "叠纸游戏",
+    "city": [
+      "上海"
+    ],
+    "ind": [
+      "互联网"
+    ],
+    "role": [
+      "产品",
+      "市场",
+      "运营",
+      "职能"
+    ],
+    "url": "https://career.papegames.com/campus/position/list",
+    "desc": "2027届秋招，产品策划/市场运营/职能",
+    "deadline": "10月31日",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "Papergames"
+  },
+  {
+    "name": "三七互娱",
+    "city": [
+      "广州",
+      "北京",
+      "上海"
+    ],
+    "ind": [
+      "互联网",
+      "出海"
+    ],
+    "role": [
+      "运营",
+      "市场",
+      "职能"
+    ],
+    "url": "https://zhaopin.37.com",
+    "desc": "2027届秋招，游戏运营/海外运营/创意策划/职能",
+    "deadline": "10月15日",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "37 Interactive"
+  },
+  {
+    "name": "完美世界",
+    "city": [
+      "北京",
+      "上海"
+    ],
+    "ind": [
+      "互联网"
+    ],
+    "role": [
+      "运营",
+      "职能",
+      "市场"
+    ],
+    "url": "https://jobs.games.wanmei.com/school.html",
+    "desc": "2027届秋招，发行/运营/职能",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "Perfect World"
+  },
+  {
+    "name": "巨人网络",
+    "city": [
+      "上海"
+    ],
+    "ind": [
+      "互联网"
+    ],
+    "role": [
+      "产品",
+      "运营",
+      "市场"
+    ],
+    "url": "https://hr.ztgame.com/campus/",
+    "desc": "2027届秋招，游戏策划/运营/营销策划",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "Giant Network"
+  },
+  {
+    "name": "阅文集团",
+    "city": [
+      "上海",
+      "北京"
+    ],
+    "ind": [
+      "互联网",
+      "传媒"
+    ],
+    "role": [
+      "产品",
+      "运营",
+      "市场"
+    ],
+    "url": "https://join.yuewen.com/school",
+    "desc": "2027届校招，产品策划运营/内容/版权/市场",
+    "deadline": "10月31日",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "China Literature"
+  },
+  {
+    "name": "虎牙",
+    "city": [
+      "广州",
+      "深圳",
+      "上海"
+    ],
+    "ind": [
+      "互联网"
+    ],
+    "role": [
+      "产品",
+      "运营",
+      "职能"
+    ],
+    "url": "https://hr.huya.com",
+    "desc": "2027届校招，产品/运营/职能",
+    "deadline": "10月31日",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "Huya"
+  },
+  {
+    "name": "中国工商银行",
+    "city": [
+      "北京",
+      "上海",
+      "广州",
+      "深圳"
+    ],
+    "ind": [
+      "金融"
+    ],
+    "role": [
+      "管培生",
+      "销售",
+      "运营",
+      "职能"
+    ],
+    "url": "https://job.icbc.com.cn",
+    "desc": "星辰管培生/客户经理/客服经理等",
+    "deadline": "10月8日",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "ICBC"
+  },
+  {
+    "name": "中国建设银行",
+    "city": [
+      "北京",
+      "上海",
+      "广州",
+      "深圳"
+    ],
+    "ind": [
+      "金融"
+    ],
+    "role": [
+      "管培生",
+      "销售",
+      "职能",
+      "运营"
+    ],
+    "url": "https://job.ccb.com",
+    "desc": "管培生/综合营销岗等",
+    "deadline": "10月8日",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "CCB"
+  },
+  {
+    "name": "中国农业银行",
+    "city": [
+      "北京",
+      "上海",
+      "广州",
+      "深圳"
+    ],
+    "ind": [
+      "金融"
+    ],
+    "role": [
+      "管培生",
+      "销售",
+      "职能"
+    ],
+    "url": "https://career.abchina.com.cn",
+    "desc": "管培生/综合业务岗等",
+    "deadline": "10月8日",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "ABC"
+  },
+  {
+    "name": "中国银行",
+    "city": [
+      "北京",
+      "上海",
+      "广州",
+      "深圳"
+    ],
+    "ind": [
+      "金融"
+    ],
+    "role": [
+      "管培生",
+      "销售",
+      "职能",
+      "运营"
+    ],
+    "url": "https://www.boc.cn/aboutboc/bi4/",
+    "desc": "管培生/营销服务/综合柜员等",
+    "deadline": "10月9日",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "BOC"
+  },
+  {
+    "name": "交通银行",
+    "city": [
+      "北京",
+      "上海",
+      "广州",
+      "深圳"
+    ],
+    "ind": [
+      "金融"
+    ],
+    "role": [
+      "管培生",
+      "销售",
+      "职能",
+      "运营"
+    ],
+    "url": "https://job.bankcomm.com",
+    "desc": "应届生项目/营销/营运方向",
+    "deadline": "10月18日",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "BOCOM"
+  },
+  {
+    "name": "邮储银行",
+    "city": [
+      "北京",
+      "上海",
+      "广州",
+      "深圳"
+    ],
+    "ind": [
+      "金融"
+    ],
+    "role": [
+      "管培生",
+      "销售",
+      "职能"
+    ],
+    "url": "https://www.psbc.com/cn/gyyc/rczp/xyzp/202609/t20260907_460394.html",
+    "desc": "总行及分行管培/销售类",
+    "deadline": "10月7日",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "PSBC"
+  },
+  {
+    "name": "浦发银行",
+    "city": [
+      "北京",
+      "上海",
+      "广州",
+      "深圳"
+    ],
+    "ind": [
+      "金融"
+    ],
+    "role": [
+      "管培生",
+      "销售",
+      "运营",
+      "职能"
+    ],
+    "url": "https://job.spdb.com.cn",
+    "desc": "管培生/业务储备生/运营储备生",
+    "deadline": "10月8日",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "SPDB"
+  },
+  {
+    "name": "中信银行",
+    "city": [
+      "北京",
+      "上海",
+      "广州",
+      "深圳"
+    ],
+    "ind": [
+      "金融"
+    ],
+    "role": [
+      "管培生",
+      "销售",
+      "职能",
+      "运营"
+    ],
+    "url": "https://job.citicbank.com",
+    "desc": "管培生/客户经理等",
+    "deadline": "10月9日",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "CITIC Bank"
+  },
+  {
+    "name": "民生银行",
+    "city": [
+      "北京",
+      "上海",
+      "广州",
+      "深圳"
+    ],
+    "ind": [
+      "金融"
+    ],
+    "role": [
+      "管培生",
+      "销售",
+      "职能"
+    ],
+    "url": "https://career.cmbc.com.cn",
+    "desc": "扬帆/启航计划（管理储备与营销）",
+    "deadline": "10月25日",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "CMBC"
+  },
+  {
+    "name": "易方达基金",
+    "city": [
+      "北京",
+      "上海",
+      "广州",
+      "深圳",
+      "香港"
+    ],
+    "ind": [
+      "金融"
+    ],
+    "role": [
+      "销售",
+      "市场",
+      "运营",
+      "职能"
+    ],
+    "url": "https://job.efunds.com.cn",
+    "desc": "渠道销售/市场营销/运营/职能",
+    "deadline": "10月11日",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "E Fund"
+  },
+  {
+    "name": "中国人寿",
+    "city": [
+      "北京",
+      "上海",
+      "广州",
+      "深圳"
+    ],
+    "ind": [
+      "金融"
+    ],
+    "role": [
+      "销售",
+      "人力",
+      "职能",
+      "管培生"
+    ],
+    "url": "https://www.chinalife.com.cn/chinalife/zhaopin",
+    "desc": "销售/人力/职能/管培",
+    "deadline": "10月15日",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "China Life"
+  },
+  {
+    "name": "广发证券",
+    "city": [
+      "北京",
+      "上海",
+      "广州",
+      "深圳",
+      "香港"
+    ],
+    "ind": [
+      "金融"
+    ],
+    "role": [
+      "销售",
+      "职能",
+      "市场"
+    ],
+    "url": "https://www.gf.com.cn",
+    "desc": "非IT岗投递邮箱 gfhr@gf.com.cn",
+    "deadline": "9月30日",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "GF Securities"
+  },
+  {
+    "name": "欧莱雅",
+    "city": [
+      "上海"
+    ],
+    "ind": [
+      "快消",
+      "外企"
+    ],
+    "role": [
+      "市场",
+      "品牌",
+      "销售",
+      "运营",
+      "人力"
+    ],
+    "url": "https://careers.loreal.com/zh_CN/jobs/SearchJobs/trainee",
+    "desc": "2027 SeedZ 管理培训生",
+    "deadline": "10月8日",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "L'Oréal"
+  },
+  {
+    "name": "达能",
+    "city": [
+      "上海",
+      "北京",
+      "广州"
+    ],
+    "ind": [
+      "快消",
+      "外企"
+    ],
+    "role": [
+      "市场",
+      "销售",
+      "职能",
+      "管培生"
+    ],
+    "url": "https://mp.weixin.qq.com/s/OOrW7DK7R1BNI9qn9xU2XA",
+    "desc": "2027职能/医药两大管培生，公众号「达能招聘」",
+    "deadline": "10月31日",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "Danone",
+    "src": "公众号"
+  },
+  {
+    "name": "百胜中国",
+    "city": [
+      "上海"
+    ],
+    "ind": [
+      "零售"
+    ],
+    "role": [
+      "运营",
+      "职能",
+      "品牌",
+      "管培生"
+    ],
+    "url": "https://mp.weixin.qq.com/s/GFrQLfW74FW3LR7-ggycxw",
+    "desc": "2027管培生，企划/供应链/职能，公众号投递",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "Yum China",
+    "src": "公众号"
+  },
+  {
+    "name": "蒙牛",
+    "city": [
+      "北京",
+      "上海"
+    ],
+    "ind": [
+      "快消"
+    ],
+    "role": [
+      "市场",
+      "销售",
+      "职能",
+      "人力"
+    ],
+    "url": "https://mengniu.zhiye.com/custom/xiaoyuan",
+    "desc": "2027「未来星」管培生",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "Mengniu"
+  },
+  {
+    "name": "安踏",
+    "city": [
+      "上海",
+      "北京",
+      "广州",
+      "深圳",
+      "香港"
+    ],
+    "ind": [
+      "零售"
+    ],
+    "role": [
+      "品牌",
+      "运营",
+      "销售",
+      "职能",
+      "人力"
+    ],
+    "url": "https://campus.anta.com",
+    "desc": "2027「生力军」全球校招，商品/品牌/零售/供应链/职能",
+    "deadline": "11月30日",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "Anta"
+  },
+  {
+    "name": "泡泡玛特",
+    "city": [
+      "北京",
+      "上海"
+    ],
+    "ind": [
+      "零售",
+      "传媒"
+    ],
+    "role": [
+      "运营",
+      "品牌",
+      "职能"
+    ],
+    "url": "https://popmart.zhiye.com/campus",
+    "desc": "2027秋招，零售运营/客户体验/创意内容/职能",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "Pop Mart"
+  },
+  {
+    "name": "农夫山泉",
+    "city": [
+      "北京",
+      "上海",
+      "广州",
+      "深圳"
+    ],
+    "ind": [
+      "快消"
+    ],
+    "role": [
+      "销售",
+      "品牌",
+      "职能",
+      "人力"
+    ],
+    "url": "https://jobs.yst.com.cn/campus",
+    "desc": "养生堂集团2027秋招，行销/品牌/职能",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "Nongfu Spring"
+  },
+  {
+    "name": "蓝月亮",
+    "city": [
+      "广州"
+    ],
+    "ind": [
+      "快消"
+    ],
+    "role": [
+      "市场",
+      "运营",
+      "人力",
+      "职能"
+    ],
+    "url": "https://career.bluemoon.com.cn/campus/position/list",
+    "desc": "2027校招，市场营销/内容运营/人资",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "Blue Moon"
+  },
+  {
+    "name": "麦当劳",
+    "city": [
+      "北京",
+      "上海",
+      "广州",
+      "深圳"
+    ],
+    "ind": [
+      "零售"
+    ],
+    "role": [
+      "管培生"
+    ],
+    "url": "https://storehire.mcdonalds.com.cn",
+    "desc": "2027菁英计划营运管培生",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "McDonald's"
+  },
+  {
+    "name": "礼来",
+    "city": [
+      "北京",
+      "上海",
+      "广州",
+      "深圳"
+    ],
+    "ind": [
+      "医药",
+      "外企"
+    ],
+    "role": [
+      "销售"
+    ],
+    "url": "https://careersite.tupu360.com/lilly",
+    "desc": "2027「礼想储备生」医药推广，医药相关专业",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "Eli Lilly"
+  },
+  {
+    "name": "联影医疗",
+    "city": [
+      "上海",
+      "北京",
+      "深圳"
+    ],
+    "ind": [
+      "医药",
+      "制造"
+    ],
+    "role": [
+      "市场",
+      "品牌",
+      "管培生",
+      "销售",
+      "职能"
+    ],
+    "url": "https://united-imaging.zhiye.com/campus",
+    "desc": "2027校招，市场品牌/管培/销售/职能",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "United Imaging"
+  },
+  {
+    "name": "金域医学",
+    "city": [
+      "广州"
+    ],
+    "ind": [
+      "医药"
+    ],
+    "role": [
+      "市场",
+      "销售",
+      "职能",
+      "人力"
+    ],
+    "url": "https://kingmed.zhiye.com/campus",
+    "desc": "2027校招，营销/财务/人力培训生",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "KingMed"
+  },
+  {
+    "name": "微创医疗",
+    "city": [
+      "上海"
+    ],
+    "ind": [
+      "医药",
+      "制造"
+    ],
+    "role": [
+      "管培生",
+      "销售",
+      "市场"
+    ],
+    "url": "https://app.mokahr.com/campus-recruitment/microport/56155",
+    "desc": "「十字星」管培生，营销复合方向",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "MicroPort"
+  },
+  {
+    "name": "特斯拉",
+    "city": [
+      "上海",
+      "北京",
+      "深圳",
+      "广州"
+    ],
+    "ind": [
+      "汽车",
+      "能源",
+      "外企"
+    ],
+    "role": [
+      "销售",
+      "职能",
+      "市场"
+    ],
+    "url": "https://careers.tesla.cn",
+    "desc": "销售交付/服务/职能/传播/物流运营",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "Tesla"
+  },
+  {
+    "name": "上汽集团",
+    "city": [
+      "上海"
+    ],
+    "ind": [
+      "汽车",
+      "制造"
+    ],
+    "role": [
+      "市场",
+      "品牌",
+      "职能"
+    ],
+    "url": "https://saic-recruit.saicmotor.com",
+    "desc": "营销品牌/采购供应链/财务/综合管理",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "SAIC Motor"
+  },
+  {
+    "name": "广汽集团",
+    "city": [
+      "广州",
+      "上海",
+      "北京",
+      "深圳"
+    ],
+    "ind": [
+      "汽车",
+      "制造"
+    ],
+    "role": [
+      "市场",
+      "运营",
+      "职能"
+    ],
+    "url": "https://mp.weixin.qq.com/s/X2pMm3kmNdPZwoS2BZzxbg",
+    "desc": "营销/新媒体运营/海外运营/财务金融，公众号投递",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "GAC Group",
+    "src": "公众号"
+  },
+  {
+    "name": "联想集团",
+    "city": [
+      "北京",
+      "深圳",
+      "上海",
+      "广州"
+    ],
+    "ind": [
+      "科技",
+      "制造"
+    ],
+    "role": [
+      "市场",
+      "销售",
+      "职能",
+      "管培生"
+    ],
+    "url": "https://talent.lenovo.com.cn/campus",
+    "desc": "市场销售/职能/供应链/管培生",
+    "deadline": "11月13日",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "Lenovo"
+  },
+  {
+    "name": "京东方",
+    "city": [
+      "北京",
+      "深圳",
+      "广州"
+    ],
+    "ind": [
+      "科技",
+      "制造"
+    ],
+    "role": [
+      "市场",
+      "销售",
+      "职能"
+    ],
+    "url": "https://campus.boe.com",
+    "desc": "市场营销/销售经理/职能类",
+    "deadline": "11月30日",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "BOE"
+  },
+  {
+    "name": "立讯精密",
+    "city": [
+      "北京",
+      "上海"
+    ],
+    "ind": [
+      "科技",
+      "制造"
+    ],
+    "role": [
+      "职能"
+    ],
+    "url": "https://mp.weixin.qq.com/s/8PwSYGP7mINK8rQGQgvtmg",
+    "desc": "职能岗/项目管理岗，公众号投递",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "Luxshare",
+    "src": "公众号"
+  },
+  {
+    "name": "OPPO",
+    "city": [
+      "深圳",
+      "北京",
+      "上海"
+    ],
+    "ind": [
+      "科技",
+      "制造"
+    ],
+    "role": [
+      "产品",
+      "品牌",
+      "销售",
+      "职能"
+    ],
+    "url": "https://careers.oppo.com/university/oppo/campus",
+    "desc": "品牌策划/销售服务/综合职能/产品",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17"
+  },
+  {
+    "name": "vivo",
+    "city": [
+      "深圳",
+      "北京",
+      "上海"
+    ],
+    "ind": [
+      "科技",
+      "制造"
+    ],
+    "role": [
+      "市场",
+      "销售",
+      "产品"
+    ],
+    "url": "https://hr-campus.vivo.com",
+    "desc": "营销/市场/产品运营/供应链",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17"
+  },
+  {
+    "name": "宁德时代",
+    "city": [
+      "北京",
+      "上海"
+    ],
+    "ind": [
+      "能源",
+      "制造"
+    ],
+    "role": [
+      "市场",
+      "职能"
+    ],
+    "url": "https://talent.catl.com",
+    "desc": "市场类/职能类非技术岗",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "CATL"
+  },
+  {
+    "name": "TCL实业",
+    "city": [
+      "深圳"
+    ],
+    "ind": [
+      "制造",
+      "科技"
+    ],
+    "role": [
+      "管培生",
+      "市场",
+      "职能"
+    ],
+    "url": "https://zhaopin.tcl.com",
+    "desc": "营销/人力/财务/供应链管培生",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "TCL Industries"
+  },
+  {
+    "name": "三一集团",
+    "city": [
+      "北京",
+      "上海",
+      "广州"
+    ],
+    "ind": [
+      "制造"
+    ],
+    "role": [
+      "销售",
+      "市场",
+      "职能"
+    ],
+    "url": "https://sanycampus.zhiye.com/campus/jobs",
+    "desc": "营销服务/商务采购/财务/综合管理",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "SANY Group"
+  },
+  {
+    "name": "歌尔股份",
+    "city": [
+      "北京",
+      "上海",
+      "深圳"
+    ],
+    "ind": [
+      "制造",
+      "科技"
+    ],
+    "role": [
+      "市场",
+      "销售",
+      "职能"
+    ],
+    "url": "https://goertek.hotjob.cn",
+    "desc": "商务拓展/品牌营销/职能",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "Goertek"
+  },
+  {
+    "name": "中国华能",
+    "city": [
+      "北京"
+    ],
+    "ind": [
+      "能源"
+    ],
+    "role": [
+      "管培生",
+      "职能"
+    ],
+    "url": "https://zhaopin.chng.com.cn",
+    "desc": "2027届秋招，二级单位管培/综合管理类",
+    "deadline": "10月31日",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "China Huaneng"
+  },
+  {
+    "name": "中国大唐",
+    "city": [
+      "北京"
+    ],
+    "ind": [
+      "能源"
+    ],
+    "role": [
+      "职能"
+    ],
+    "url": "https://zhaopin.china-cdt.com",
+    "desc": "2027届秋招，财经审计/综合文职/合规",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "China Datang"
+  },
+  {
+    "name": "国家能源集团",
+    "city": [
+      "北京"
+    ],
+    "ind": [
+      "能源"
+    ],
+    "role": [
+      "管培生",
+      "职能"
+    ],
+    "url": "https://zhaopin.chnenergy.com.cn",
+    "desc": "2027届统招与管培生，职能/管理类",
+    "deadline": "10月7日",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "CHN Energy"
+  },
+  {
+    "name": "中国石油",
+    "city": [
+      "北京"
+    ],
+    "ind": [
+      "能源"
+    ],
+    "role": [
+      "职能"
+    ],
+    "url": "https://zhaopin.cnpc.com.cn",
+    "desc": "2027届秋招，财务/管理等职能岗",
+    "deadline": "10月15日",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "CNPC"
+  },
+  {
+    "name": "中国石化",
+    "city": [
+      "北京"
+    ],
+    "ind": [
+      "能源"
+    ],
+    "role": [
+      "职能"
+    ],
+    "url": "http://job.sinopec.com",
+    "desc": "2027届招聘，综合职能类",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "Sinopec"
+  },
+  {
+    "name": "中国南方电网",
+    "city": [
+      "广州",
+      "深圳",
+      "北京"
+    ],
+    "ind": [
+      "能源"
+    ],
+    "role": [
+      "职能"
+    ],
+    "url": "https://zhaopin.csg.cn",
+    "desc": "2027届秋招，经营管理类（行政/人力/财会/营销）",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "China Southern Power Grid"
+  },
+  {
+    "name": "中国核工业集团",
+    "city": [
+      "北京"
+    ],
+    "ind": [
+      "能源"
+    ],
+    "role": [
+      "职能"
+    ],
+    "url": "https://hr.cnnc.com.cn",
+    "desc": "2027届秋招，财务会计/经济管理/人文社科",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "CNNC"
+  },
+  {
+    "name": "中通快递",
+    "city": [
+      "上海"
+    ],
+    "ind": [
+      "物流"
+    ],
+    "role": [
+      "管培生",
+      "运营"
+    ],
+    "url": "https://hr.zto.com/Campus",
+    "desc": "2027届校招，STAR/青鸟管培生",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "ZTO Express"
+  },
+  {
+    "name": "中国东方航空",
+    "city": [
+      "上海",
+      "北京",
+      "广州"
+    ],
+    "ind": [
+      "物流"
+    ],
+    "role": [
+      "管培生"
+    ],
+    "url": "https://job.ceair.com",
+    "desc": "2027全球校招，燕计划管培生",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "China Eastern"
+  },
+  {
+    "name": "埃森哲",
+    "city": [
+      "北京",
+      "上海",
+      "广州",
+      "深圳",
+      "香港"
+    ],
+    "ind": [
+      "咨询",
+      "外企"
+    ],
+    "role": [
+      "产品",
+      "运营",
+      "职能",
+      "人力"
+    ],
+    "url": "https://mp.weixin.qq.com/s/W1p7IAU55ky6xfgU1wc7yA",
+    "desc": "2027届秋招，财务/人才/产品/运营/咨询，公众号「埃森哲招聘求贤榜」",
+    "deadline": "11月8日",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "Accenture",
+    "src": "公众号"
+  },
+  {
+    "name": "新东方",
+    "city": [
+      "北京",
+      "上海",
+      "广州"
+    ],
+    "ind": [
+      "教育"
+    ],
+    "role": [
+      "产品",
+      "运营",
+      "市场",
+      "管培生",
+      "销售"
+    ],
+    "url": "https://zhaopin.xdf.cn",
+    "desc": "2027全球校招，新媒体/电商运营/市场/管培/东方甄选",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "New Oriental"
+  },
+  {
+    "name": "好未来",
+    "city": [
+      "北京",
+      "上海",
+      "香港"
+    ],
+    "ind": [
+      "教育"
+    ],
+    "role": [
+      "运营",
+      "市场",
+      "职能"
+    ],
+    "url": "https://ecuit.100tal.com/s/v2/dmdwSTdK",
+    "desc": "2027全球校招，市场增长/运营/职能，公众号「好未来招聘」",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "TAL Education"
+  },
+  {
+    "name": "高途",
+    "city": [
+      "北京",
+      "上海",
+      "广州",
+      "深圳"
+    ],
+    "ind": [
+      "教育"
+    ],
+    "role": [
+      "运营",
+      "职能",
+      "销售"
+    ],
+    "url": "https://mp.weixin.qq.com/s/ie5hYqrdC8Y2mrCUjVoV-A",
+    "desc": "2027全球校招，新媒体/内容运营/职能/顾问，公众号投递",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "Gaotu",
+    "src": "公众号"
+  },
+  {
+    "name": "作业帮",
+    "city": [
+      "北京",
+      "上海",
+      "香港"
+    ],
+    "ind": [
+      "教育",
+      "互联网"
+    ],
+    "role": [
+      "产品",
+      "运营",
+      "职能"
+    ],
+    "url": "https://app.mokahr.com/campus-recruitment/zuoyebang/144908",
+    "desc": "2027届秋招，产品经理/海外投放/题库运营/HRBP",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "Zuoyebang"
+  },
+  {
+    "name": "博世中国",
+    "city": [
+      "上海",
+      "北京",
+      "深圳",
+      "广州"
+    ],
+    "ind": [
+      "制造",
+      "外企"
+    ],
+    "role": [
+      "管培生",
+      "运营"
+    ],
+    "url": "https://www.bosch.cn/careers/college-recruitment/",
+    "desc": "2027届校招，商务运营/JMP未来领军人管培",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "Bosch China"
+  },
+  {
+    "name": "通用电气医疗",
+    "city": [
+      "北京",
+      "上海",
+      "广州"
+    ],
+    "ind": [
+      "医药",
+      "外企"
+    ],
+    "role": [
+      "管培生",
+      "职能",
+      "销售"
+    ],
+    "url": "https://app.mokahr.com/campus-recruitment/gehc/142250",
+    "desc": "2027届校招，商业领导力/财务/生产运营管培",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "GE HealthCare"
+  },
+  {
+    "name": "亚马逊",
+    "city": [
+      "北京",
+      "上海",
+      "深圳",
+      "香港"
+    ],
+    "ind": [
+      "互联网",
+      "外企",
+      "出海"
+    ],
+    "role": [
+      "销售",
+      "运营",
+      "职能"
+    ],
+    "url": "https://www.amazon.jobs/content/zh/career-programs/university",
+    "desc": "2027届校招，商务拓展/销售运营/项目经理",
+    "deadline": "以官网为准",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "Amazon"
+  },
+  {
+    "name": "戴尔科技",
+    "city": [
+      "广州"
+    ],
+    "ind": [
+      "科技",
+      "外企"
+    ],
+    "role": [
+      "销售"
+    ],
+    "url": "https://www.dell.com/zh-cn/campaigns/students/2027-autumn-recruitment.htm",
+    "desc": "2027届秋招销售岗（内部销售客户经理）",
+    "deadline": "11月30日",
+    "salary": "以官网为准",
+    "note": "",
+    "addedDate": "2026-09-17",
+    "publishDate": "2026-09-17",
+    "en": "Dell Technologies"
   }
 ];
 
